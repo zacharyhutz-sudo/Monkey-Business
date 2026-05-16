@@ -49,3 +49,13 @@ Test with:
 - Hid the old CSS-built scene pieces so the pixel background is the full office scene.
 - Changed the page pills/chips/buttons to a more squared-off look.
 - Updated asset query strings to `?v=9` for cache busting.
+
+
+## Version 10 Monkey Roster Update
+
+- Replaced the placeholder monkey art with 40 pixel monkey sprites that match the office background.
+- Added 30 normal monkeys and 10 super rare monkeys.
+- Hire odds are 90% normal and 10% super rare.
+- Super rare monkeys type at 5x the normal rate.
+- Each monkey type now has a unique name.
+- Super rare monkeys get a golden star badge and glow in the office.

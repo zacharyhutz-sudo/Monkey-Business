@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v9';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v10';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -14,27 +14,50 @@ const wordList = Array.isArray(window.MONKEY_WORDS) && window.MONKEY_WORDS.lengt
     : fallbackWords;
 
 const MONKEY_TYPES = [
-    { id: 'amber-tie', fur: '#7b4b2f', face: '#ddb38c', shirt: '#f6c445', accent: '#d94f35', accessory: 'tie', hat: 'none', glasses: false, headset: false, tuft: false, stripe: false, pocket: false },
-    { id: 'teal-visor', fur: '#6d4329', face: '#d4ab82', shirt: '#57c4c2', accent: '#2b7f88', accessory: 'none', hat: 'visor', glasses: false, headset: false, tuft: true, stripe: false, pocket: true },
-    { id: 'purple-glasses', fur: '#76503a', face: '#e1b792', shirt: '#9878ff', accent: '#5038b8', accessory: 'bowtie', hat: 'none', glasses: true, headset: false, tuft: false, stripe: false, pocket: false },
-    { id: 'forest-headset', fur: '#5d3f2c', face: '#d6ab7f', shirt: '#67b357', accent: '#2a6239', accessory: 'none', hat: 'none', glasses: false, headset: true, tuft: false, stripe: false, pocket: false },
-    { id: 'sunset-cap', fur: '#8b5838', face: '#e4bd93', shirt: '#ff8e64', accent: '#c7512f', accessory: 'badge', hat: 'cap', glasses: false, headset: false, tuft: false, stripe: true, pocket: false },
-    { id: 'sky-suspenders', fur: '#725240', face: '#e1bc94', shirt: '#9cd6ff', accent: '#3a79b7', accessory: 'suspenders', hat: 'none', glasses: false, headset: false, tuft: true, stripe: false, pocket: false },
-    { id: 'berry-beanie', fur: '#6f4732', face: '#d8af87', shirt: '#eb6fa1', accent: '#9d2b62', accessory: 'none', hat: 'beanie', glasses: false, headset: false, tuft: false, stripe: false, pocket: true },
-    { id: 'mint-bow', fur: '#7a5037', face: '#e0b48b', shirt: '#81d8b0', accent: '#2c8c66', accessory: 'bow', hat: 'none', glasses: false, headset: false, tuft: false, stripe: false, pocket: false },
-    { id: 'navy-vest', fur: '#644330', face: '#d8ab80', shirt: '#6f85d6', accent: '#31448c', accessory: 'vest', hat: 'none', glasses: false, headset: false, tuft: true, stripe: false, pocket: false },
-    { id: 'gold-flower', fur: '#865239', face: '#e2b78e', shirt: '#f2d15b', accent: '#b7860f', accessory: 'flower', hat: 'none', glasses: false, headset: false, tuft: false, stripe: false, pocket: true },
-    { id: 'orchid-scarf', fur: '#744936', face: '#ddb089', shirt: '#c38cff', accent: '#7f42c1', accessory: 'scarf', hat: 'none', glasses: false, headset: false, tuft: false, stripe: true, pocket: false },
-    { id: 'lime-headset', fur: '#68452f', face: '#d9af82', shirt: '#b9db58', accent: '#668423', accessory: 'none', hat: 'none', glasses: false, headset: true, tuft: true, stripe: false, pocket: false },
-    { id: 'rose-glasses', fur: '#7b4f39', face: '#e0b48d', shirt: '#f39ab5', accent: '#a73d60', accessory: 'tie', hat: 'none', glasses: true, headset: false, tuft: false, stripe: false, pocket: false },
-    { id: 'ocean-cap', fur: '#5f3e2b', face: '#d4ab82', shirt: '#6db5ff', accent: '#2160b1', accessory: 'none', hat: 'cap', glasses: false, headset: false, tuft: false, stripe: false, pocket: true },
-    { id: 'cocoa-bowtie', fur: '#8a5a40', face: '#e5bb94', shirt: '#d8b07c', accent: '#814f25', accessory: 'bowtie', hat: 'none', glasses: false, headset: false, tuft: true, stripe: false, pocket: false },
-    { id: 'jade-patch', fur: '#6c4631', face: '#d8ad83', shirt: '#4ed0b1', accent: '#1d8b78', accessory: 'badge', hat: 'none', glasses: false, headset: false, tuft: false, stripe: true, pocket: false },
-    { id: 'crimson-beanie', fur: '#734731', face: '#dcae84', shirt: '#f16c5b', accent: '#a13128', accessory: 'scarf', hat: 'beanie', glasses: false, headset: false, tuft: false, stripe: false, pocket: false },
-    { id: 'silver-visor', fur: '#705142', face: '#dfb890', shirt: '#ccd7df', accent: '#6c7f8d', accessory: 'vest', hat: 'visor', glasses: false, headset: false, tuft: true, stripe: false, pocket: false },
-    { id: 'peach-flower', fur: '#885742', face: '#e9bf98', shirt: '#ffb37f', accent: '#c46824', accessory: 'flower', hat: 'none', glasses: false, headset: false, tuft: false, stripe: false, pocket: true },
-    { id: 'midnight-headset', fur: '#55392b', face: '#cf9f76', shirt: '#6370c7', accent: '#252b70', accessory: 'suspenders', hat: 'none', glasses: false, headset: true, tuft: false, stripe: false, pocket: false }
+    { id: 'bongo-banks', name: 'Bongo Banks', sprite: 'monkeys/bongo-banks.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'milton-margins', name: 'Milton Margins', sprite: 'monkeys/milton-margins.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'quincy-quill', name: 'Quincy Quill', sprite: 'monkeys/quincy-quill.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'poppy-pages', name: 'Poppy Pages', sprite: 'monkeys/poppy-pages.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'beanie-bits', name: 'Beanie Bits', sprite: 'monkeys/beanie-bits.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'violet-vim', name: 'Violet Vim', sprite: 'monkeys/violet-vim.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'sunny-shades', name: 'Sunny Shades', sprite: 'monkeys/sunny-shades.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'capper-click', name: 'Capper Click', sprite: 'monkeys/capper-click.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'dreamer-desk', name: 'Dreamer Desk', sprite: 'monkeys/dreamer-desk.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'echo-ears', name: 'Echo Ears', sprite: 'monkeys/echo-ears.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'cedar-collar', name: 'Cedar Collar', sprite: 'monkeys/cedar-collar.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'mabel-memo', name: 'Mabel Memo', sprite: 'monkeys/mabel-memo.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'professor-peel', name: 'Professor Peel', sprite: 'monkeys/professor-peel.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'curl-carter', name: 'Curl Carter', sprite: 'monkeys/curl-carter.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'captain-carbons', name: 'Captain Carbons', sprite: 'monkeys/captain-carbons.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'lulu-ledger', name: 'Lulu Ledger', sprite: 'monkeys/lulu-ledger.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'mustache-morse', name: 'Mustache Morse', sprite: 'monkeys/mustache-morse.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'ollie-offset', name: 'Ollie Offset', sprite: 'monkeys/ollie-offset.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'sweater-sam', name: 'Sweater Sam', sprite: 'monkeys/sweater-sam.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'tango-tie', name: 'Tango Tie', sprite: 'monkeys/tango-tie.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'baron-bowler', name: 'Baron Bowler', sprite: 'monkeys/baron-bowler.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'gadget-gus', name: 'Gadget Gus', sprite: 'monkeys/gadget-gus.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'pencil-pam', name: 'Pencil Pam', sprite: 'monkeys/pencil-pam.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'harvey-highlight', name: 'Harvey Highlight', sprite: 'monkeys/harvey-highlight.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'sterling-steno', name: 'Sterling Steno', sprite: 'monkeys/sterling-steno.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'scout-script', name: 'Scout Script', sprite: 'monkeys/scout-script.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'olive-orbit', name: 'Olive Orbit', sprite: 'monkeys/olive-orbit.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'dapper-dawn', name: 'Dapper Dawn', sprite: 'monkeys/dapper-dawn.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'pearl-pixel', name: 'Pearl Pixel', sprite: 'monkeys/pearl-pixel.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'dr-hush', name: 'Dr. Hush', sprite: 'monkeys/dr-hush.png', rarity: 'normal', speedMultiplier: 1 },
+    { id: 'auric-ace', name: 'Auric Ace', sprite: 'monkeys/auric-ace.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'super-sonny', name: 'Super Sonny', sprite: 'monkeys/super-sonny.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'nova-nimbus', name: 'Nova Nimbus', sprite: 'monkeys/nova-nimbus.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'king-keystroke', name: 'King Keystroke', sprite: 'monkeys/king-keystroke.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'merlin-margin', name: 'Merlin Margin', sprite: 'monkeys/merlin-margin.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'halo-hugo', name: 'Halo Hugo', sprite: 'monkeys/halo-hugo.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'crystal-clack', name: 'Crystal Clack', sprite: 'monkeys/crystal-clack.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'robo-ribbon', name: 'Robo Ribbon', sprite: 'monkeys/robo-ribbon.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'volt-victor', name: 'Volt Victor', sprite: 'monkeys/volt-victor.png', rarity: 'super-rare', speedMultiplier: 5 },
+    { id: 'sultan-scroll', name: 'Sultan Scroll', sprite: 'monkeys/sultan-scroll.png', rarity: 'super-rare', speedMultiplier: 5 }
 ];
+
+const normalMonkeyTypeIds = MONKEY_TYPES.filter((type) => type.rarity === 'normal').map((type) => type.id);
+const superRareMonkeyTypeIds = MONKEY_TYPES.filter((type) => type.rarity === 'super-rare').map((type) => type.id);
 
 const wordsByLength = new Map();
 let maxWordLength = minWordLength;
@@ -106,15 +129,44 @@ function getMonkeyType(typeId) {
     return MONKEY_TYPES.find((type) => type.id === typeId) || MONKEY_TYPES[0];
 }
 
+function getRandomFromList(items) {
+    return items[Math.floor(Math.random() * items.length)];
+}
+
+function getUnusedTypeIds(poolIds) {
+    const usedTypeIds = new Set(monkeyRoster.filter((typeId) => poolIds.includes(typeId)));
+    const unused = poolIds.filter((typeId) => !usedTypeIds.has(typeId));
+    return unused.length > 0 ? unused : poolIds;
+}
+
 function getRandomMonkeyTypeId() {
-    const randomIndex = Math.floor(Math.random() * MONKEY_TYPES.length);
-    return MONKEY_TYPES[randomIndex].id;
+    const isSuperRareRoll = Math.random() < 0.10;
+    const sourcePool = isSuperRareRoll ? superRareMonkeyTypeIds : normalMonkeyTypeIds;
+    return getRandomFromList(getUnusedTypeIds(sourcePool));
+}
+
+function normalizeRosterEntry(entry) {
+    if (typeof entry === 'string') {
+        return MONKEY_TYPES.some((type) => type.id === entry) ? entry : getRandomFromList(normalMonkeyTypeIds);
+    }
+
+    if (entry && typeof entry === 'object' && typeof entry.typeId === 'string') {
+        return MONKEY_TYPES.some((type) => type.id === entry.typeId) ? entry.typeId : getRandomFromList(normalMonkeyTypeIds);
+    }
+
+    return getRandomFromList(normalMonkeyTypeIds);
+}
+
+function getMonkeyRarityLabel(monkeyType) {
+    return monkeyType.rarity === 'super-rare' ? 'Super Rare' : 'Normal';
 }
 
 function ensureMonkeyRosterMatchesCount() {
     if (!Array.isArray(monkeyRoster)) {
         monkeyRoster = [];
     }
+
+    monkeyRoster = monkeyRoster.map(normalizeRosterEntry);
 
     while (monkeyRoster.length < monkeysOwned) {
         monkeyRoster.push(getRandomMonkeyTypeId());
@@ -218,21 +270,31 @@ function findNewWordsAtEnd() {
     return foundWords;
 }
 
-function spawnFloatingReward(points, word) {
+function spawnFloatingMessage(message, extraClass = '') {
     if (!floatingRewardsLayer) {
         return;
     }
 
     const reward = document.createElement('span');
-    reward.className = 'float-reward';
-    reward.textContent = `+${points} 🍌 ${getDisplayWord(word).toUpperCase()}`;
-    reward.style.left = `${26 + Math.random() * 48}%`;
-    reward.style.bottom = `${52 + Math.random() * 24}px`;
+    reward.className = `float-reward ${extraClass}`.trim();
+    reward.textContent = message;
+    reward.style.left = `${18 + Math.random() * 60}%`;
+    reward.style.bottom = `${50 + Math.random() * 26}px`;
     floatingRewardsLayer.appendChild(reward);
 
     setTimeout(() => {
         reward.remove();
-    }, 1200);
+    }, 1250);
+}
+
+function spawnFloatingReward(points, word) {
+    spawnFloatingMessage(`+${points} 🍌 ${getDisplayWord(word).toUpperCase()}`);
+}
+
+function spawnMonkeyHireMessage(monkeyType) {
+    const prefix = monkeyType.rarity === 'super-rare' ? 'SUPER RARE' : 'HIRED';
+    const star = monkeyType.rarity === 'super-rare' ? ' ★' : '';
+    spawnFloatingMessage(`${prefix}: ${monkeyType.name.toUpperCase()}${star}`, monkeyType.rarity === 'super-rare' ? 'is-super-rare' : 'is-hire');
 }
 
 function awardWords(words) {
@@ -316,14 +378,19 @@ function buyMonkey() {
 
     bananas -= monkeyCost;
     monkeysOwned += 1;
-    monkeyRoster.push(getRandomMonkeyTypeId());
+
+    const hiredTypeId = getRandomMonkeyTypeId();
+    monkeyRoster.push(hiredTypeId);
+    const hiredMonkeyType = getMonkeyType(hiredTypeId);
+
     monkeyCost = Math.ceil(monkeyCost * 1.55);
 
     updateDisplay();
     saveGame();
+    spawnMonkeyHireMessage(hiredMonkeyType);
 
     requestAnimationFrame(() => {
-        animateMonkey(monkeysOwned - 1, '!');
+        animateMonkey(monkeysOwned - 1, hiredMonkeyType.rarity === 'super-rare' ? '★' : '!');
     });
 }
 
@@ -339,13 +406,20 @@ function runMonkeyTyping() {
 
     clearPendingMonkeyTyping();
 
-    monkeyRoster.forEach((_, index) => {
-        const delay = Math.min(index * 90, 900);
-        const timeoutId = setTimeout(() => {
-            typeRandomLetter('monkey', index);
-        }, delay);
+    monkeyRoster.forEach((typeId, index) => {
+        const monkeyType = getMonkeyType(typeId);
+        const speedMultiplier = Math.max(1, Number(monkeyType.speedMultiplier) || 1);
+        const perLetterDelay = monkeyTypingIntervalMs / speedMultiplier;
+        const jitter = Math.floor(Math.random() * 140);
 
-        pendingMonkeyTypeTimeouts.push(timeoutId);
+        for (let burst = 0; burst < speedMultiplier; burst += 1) {
+            const delay = Math.floor(jitter + burst * perLetterDelay);
+            const timeoutId = setTimeout(() => {
+                typeRandomLetter('monkey', index);
+            }, delay);
+
+            pendingMonkeyTypeTimeouts.push(timeoutId);
+        }
     });
 }
 
@@ -367,13 +441,19 @@ function renderMonkeyOffice() {
     monkeyOfficeGrid.innerHTML = monkeyRoster
         .map((typeId, index) => {
             const monkeyType = getMonkeyType(typeId);
+            const rarityClass = monkeyType.rarity === 'super-rare' ? ' is-super-rare' : '';
+            const rarityLabel = getMonkeyRarityLabel(monkeyType);
+            const rarityBadge = monkeyType.rarity === 'super-rare'
+                ? '<span class="monkey-rarity-star" aria-hidden="true">★</span>'
+                : '';
+
             return `
-                <div class="office-monkey" data-monkey-slot="${index}" aria-label="Monkey ${index + 1}">
+                <div class="office-monkey${rarityClass}" data-monkey-slot="${index}" title="${monkeyType.name} — ${rarityLabel}${monkeyType.rarity === 'super-rare' ? ' • 5x speed' : ''}" aria-label="${monkeyType.name}, ${rarityLabel}${monkeyType.rarity === 'super-rare' ? ', five times speed' : ''}">
                     <span class="letter-bubble" aria-hidden="true"></span>
+                    ${rarityBadge}
                     <div class="office-monkey-art">
-                        ${createMonkeySvg(monkeyType)}
+                        <img src="${monkeyType.sprite}" alt="" class="monkey-sprite" loading="lazy" />
                     </div>
-                    <span class="monkey-badge">#${index + 1}</span>
                 </div>
             `;
         })
@@ -425,7 +505,7 @@ function loadGame() {
         monkeyCost = Number(saveData.monkeyCost) || 50;
         typedStream = typeof saveData.typedStream === 'string' ? saveData.typedStream.slice(-maxSavedStreamLength) : '';
         recentWords = Array.isArray(saveData.recentWords) ? saveData.recentWords.slice(0, recentWordLimit) : [];
-        monkeyRoster = Array.isArray(saveData.monkeyRoster) ? saveData.monkeyRoster.filter((typeId) => typeof typeId === 'string') : [];
+        monkeyRoster = Array.isArray(saveData.monkeyRoster) ? saveData.monkeyRoster.map(normalizeRosterEntry) : [];
 
         ensureMonkeyRosterMatchesCount();
     } catch (error) {
@@ -460,136 +540,6 @@ function resetGame() {
         floatingRewardsLayer.innerHTML = '';
     }
     updateDisplay();
-}
-
-function createMonkeySvg(monkeyType) {
-    const fur = monkeyType.fur;
-    const face = monkeyType.face;
-    const shirt = monkeyType.shirt;
-    const accent = monkeyType.accent;
-    const darkFur = shadeColor(fur, -18);
-    const lightShirt = shadeColor(shirt, 16);
-
-    const rect = (x, y, w, h, fill, className = '') => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}"${className ? ` class="${className}"` : ''} />`;
-    const parts = [];
-
-    parts.push(rect(0, 23, 32, 5, '#cabca9', 'office-floor'));
-    parts.push(rect(4, 20, 24, 2, '#6e5238', 'desk-top'));
-    parts.push(rect(6, 22, 2, 4, '#87664a', 'desk-leg'));
-    parts.push(rect(24, 22, 2, 4, '#87664a', 'desk-leg'));
-    parts.push(rect(11, 15, 10, 4, '#505b67', 'typewriter-body'));
-    parts.push(rect(12, 14, 8, 1, '#7b8794', 'typewriter-top'));
-    parts.push(rect(14, 12, 4, 2, '#f8f4ec', 'typewriter-paper'));
-    parts.push(rect(12, 18, 8, 1, '#2f3740', 'typewriter-keys'));
-
-    parts.push(rect(8, 7, 4, 4, fur));
-    parts.push(rect(20, 7, 4, 4, fur));
-    parts.push(rect(10, 4, 12, 11, fur));
-    parts.push(rect(12, 6, 8, 7, face));
-    parts.push(rect(13, 7, 2, 2, '#181512'));
-    parts.push(rect(17, 7, 2, 2, '#181512'));
-    parts.push(rect(15, 9, 2, 1, darkFur));
-    parts.push(rect(14, 10, 4, 1, '#9b5c54'));
-    parts.push(rect(11, 5, 10, 1, darkFur));
-
-    if (monkeyType.tuft) {
-        parts.push(rect(15, 2, 2, 2, darkFur));
-        parts.push(rect(14, 3, 4, 1, darkFur));
-    }
-
-    if (monkeyType.glasses) {
-        parts.push(rect(12, 7, 3, 2, '#1b1e26'));
-        parts.push(rect(17, 7, 3, 2, '#1b1e26'));
-        parts.push(rect(15, 7, 2, 1, '#1b1e26'));
-    }
-
-    if (monkeyType.headset) {
-        parts.push(rect(9, 6, 1, 5, '#29323a'));
-        parts.push(rect(22, 6, 1, 5, '#29323a'));
-        parts.push(rect(10, 4, 12, 1, '#29323a'));
-        parts.push(rect(21, 10, 2, 1, accent));
-    }
-
-    if (monkeyType.hat === 'cap') {
-        parts.push(rect(11, 2, 10, 3, accent));
-        parts.push(rect(18, 5, 5, 1, accent));
-    } else if (monkeyType.hat === 'beanie') {
-        parts.push(rect(11, 2, 10, 3, accent));
-        parts.push(rect(12, 1, 8, 1, lightShirt));
-    } else if (monkeyType.hat === 'visor') {
-        parts.push(rect(11, 3, 10, 2, accent));
-        parts.push(rect(17, 5, 6, 1, accent));
-    }
-
-    parts.push(rect(10, 15, 12, 6, shirt));
-    parts.push(rect(8, 15, 3, 5, fur));
-    parts.push(rect(21, 15, 3, 5, fur));
-    parts.push(rect(12, 21, 2, 3, fur));
-    parts.push(rect(18, 21, 2, 3, fur));
-
-    if (monkeyType.stripe) {
-        parts.push(rect(10, 17, 12, 1, lightShirt));
-        parts.push(rect(10, 19, 12, 1, lightShirt));
-    }
-
-    if (monkeyType.pocket) {
-        parts.push(rect(18, 17, 3, 3, lightShirt));
-    }
-
-    switch (monkeyType.accessory) {
-        case 'tie':
-            parts.push(rect(15, 15, 2, 4, accent));
-            parts.push(rect(14, 18, 4, 2, accent));
-            break;
-        case 'bowtie':
-            parts.push(rect(13, 15, 2, 2, accent));
-            parts.push(rect(17, 15, 2, 2, accent));
-            parts.push(rect(15, 15, 2, 2, shadeColor(accent, -12)));
-            break;
-        case 'bow':
-            parts.push(rect(11, 5, 2, 2, accent));
-            parts.push(rect(14, 5, 2, 2, accent));
-            parts.push(rect(13, 5, 1, 1, '#f8d978'));
-            break;
-        case 'badge':
-            parts.push(rect(18, 16, 2, 2, '#ffe082'));
-            parts.push(rect(18, 18, 2, 1, '#cc8c00'));
-            break;
-        case 'suspenders':
-            parts.push(rect(12, 15, 1, 6, accent));
-            parts.push(rect(19, 15, 1, 6, accent));
-            break;
-        case 'vest':
-            parts.push(rect(11, 15, 3, 6, accent));
-            parts.push(rect(18, 15, 3, 6, accent));
-            break;
-        case 'flower':
-            parts.push(rect(20, 6, 2, 2, '#ff5f83'));
-            parts.push(rect(21, 8, 1, 2, '#2ca25f'));
-            break;
-        case 'scarf':
-            parts.push(rect(12, 15, 8, 2, accent));
-            parts.push(rect(17, 16, 2, 4, accent));
-            break;
-        default:
-            break;
-    }
-
-    return `
-        <svg viewBox="0 0 32 28" class="monkey-svg" role="img" aria-hidden="true" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
-            ${parts.join('')}
-        </svg>
-    `;
-}
-
-function shadeColor(hex, percent) {
-    const safeHex = hex.replace('#', '');
-    const value = parseInt(safeHex, 16);
-    const amount = Math.round(2.55 * percent);
-    const r = Math.max(0, Math.min(255, (value >> 16) + amount));
-    const g = Math.max(0, Math.min(255, ((value >> 8) & 0x00ff) + amount));
-    const b = Math.max(0, Math.min(255, (value & 0x0000ff) + amount));
-    return `#${(0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).slice(1)}`;
 }
 
 function preventDoubleTapZoom() {

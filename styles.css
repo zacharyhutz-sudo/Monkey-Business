@@ -565,39 +565,70 @@ button {
 
 .office-monkey {
     position: relative;
-    width: 58px;
-    min-height: 70px;
+    width: 82px;
+    min-height: 98px;
     display: grid;
     place-items: end center;
-    padding-bottom: 1px;
+    padding-bottom: 2px;
     transform-origin: center bottom;
 }
 
 .office-monkey::before {
     content: "";
     position: absolute;
-    left: 7px;
-    right: 7px;
-    bottom: 0;
-    height: 11px;
+    left: 10px;
+    right: 10px;
+    bottom: 2px;
+    height: 12px;
     border-radius: 50%;
-    background: rgba(56, 32, 13, 0.16);
+    background: rgba(56, 32, 13, 0.18);
 }
 
 .office-monkey-art {
     position: relative;
     z-index: 1;
-    width: 54px;
-    height: 49px;
+    width: 76px;
+    height: 86px;
     display: grid;
-    place-items: center;
+    place-items: end center;
 }
 
-.monkey-svg {
-    width: 54px;
-    height: 49px;
+.monkey-sprite {
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
     image-rendering: pixelated;
     filter: drop-shadow(0 4px 0 rgba(44, 26, 9, 0.16));
+}
+
+.office-monkey.is-super-rare .monkey-sprite {
+    filter:
+        drop-shadow(0 0 10px rgba(255, 225, 102, 0.65))
+        drop-shadow(0 4px 0 rgba(44, 26, 9, 0.18));
+}
+
+.office-monkey.is-super-rare::before {
+    background: rgba(255, 204, 54, 0.26);
+}
+
+.monkey-rarity-star {
+    position: absolute;
+    z-index: 6;
+    top: -6px;
+    left: 4px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #ffe785, #ffc62d);
+    border: 2px solid #9b6400;
+    color: #5c3700;
+    font-size: 0.72rem;
+    font-weight: 1000;
+    box-shadow: 0 2px 0 rgba(64, 36, 7, 0.2);
 }
 
 .monkey-badge {
@@ -627,7 +658,7 @@ button {
     pointer-events: none;
 }
 
-.office-monkey.typing {
+.office-monkey.typing .office-monkey-art {
     animation: monkeyTypeBounce 480ms ease;
 }
 
@@ -636,14 +667,6 @@ button {
     transform: translateY(0) scale(1);
 }
 
-.office-monkey.typing .typewriter-paper {
-    animation: paperTick 240ms steps(2, end) 2;
-}
-
-.office-monkey.typing .typewriter-body,
-.office-monkey.typing .typewriter-keys {
-    animation: machineShake 120ms steps(2, end) 4;
-}
 
 @keyframes monkeyTypeBounce {
     0% { transform: translateY(0) scale(1); }
@@ -1014,13 +1037,15 @@ button {
     }
 
     .office-monkey {
-        width: 52px;
+        width: 66px;
+        min-height: 84px;
     }
 
     .office-monkey-art,
-    .monkey-svg {
-        width: 50px;
-        height: 45px;
+    .monkey-sprite {
+        width: 62px;
+        height: auto;
+        max-height: 74px;
     }
 
     .mb-dock {
@@ -1211,3 +1236,33 @@ button {
 .mb-office-card,
 .mb-tape-card,
 .mb-words-card { border-radius: 22px; }
+
+
+.float-reward.is-hire {
+    background: #eff8dc;
+    border-color: #8db351;
+    color: #335019;
+}
+
+.float-reward.is-super-rare {
+    background: linear-gradient(180deg, #fff7d2, #ffe37b);
+    border-color: #e0aa00;
+    color: #6a4300;
+    box-shadow: 0 0 14px rgba(255, 218, 74, 0.36), 0 8px 20px rgba(45, 27, 6, 0.18);
+}
+
+@media (max-width: 390px) {
+    .office-monkey {
+        width: 66px;
+        min-height: 84px;
+    }
+
+    .office-monkey-art {
+        width: 62px;
+        height: 74px;
+    }
+
+    .monkey-rarity-star {
+        left: 2px;
+    }
+}
