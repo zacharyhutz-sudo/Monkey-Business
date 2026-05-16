@@ -11,13 +11,15 @@ Build a ridiculous primate-powered word empire.
   - Example: a 6-letter word earns 6 bananas.
 - Spend bananas to **Hire Monkey**.
 - Each monkey automatically types one random letter every 2 seconds.
+- Every hired monkey appears in the **Monkey Office** as one randomly assigned pixel monkey from a set of 20 visual designs.
+- When letters are typed, monkeys animate at their typewriters.
 - Progress is saved in the browser with `localStorage`.
 
 ## Files
 
 - `index.html`: UI and layout
-- `styles.css`: Game design and responsive layout
-- `script.js`: Game logic, scoring, shop, autosave
+- `styles.css`: Game design, responsive layout, Monkey Office styling, and mobile tap behavior fixes
+- `script.js`: Game logic, dictionary scoring, monkey roster, shop, autosave, and animations
 - `words.js`: Bundled lowercase dictionary word list
 - `WORDS_LICENSE.md`: Attribution/license notes for the dictionary source
 
@@ -26,6 +28,10 @@ Build a ridiculous primate-powered word empire.
 The game still generates random letters only. It does not force full words to appear.
 
 When a new random letter appears, the game checks every possible word ending at that newest letter. If multiple valid words form at the same time, each word earns bananas.
+
+## Mobile Note
+
+Fast tapping on mobile should no longer trigger accidental zooming on the game controls.
 
 ## Deployment with GitHub Pages
 

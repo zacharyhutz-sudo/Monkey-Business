@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
     <title>Monkey Business</title>
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -34,6 +34,22 @@
         </section>
 
         <main>
+            <section class="monkey-office" aria-label="Monkey office">
+                <div class="section-heading compact monkey-office-heading">
+                    <div>
+                        <h2>Monkey Office</h2>
+                        <p>Every hired monkey sits at a typewriter. When letters are typed, the office springs to life.</p>
+                    </div>
+                    <span id="monkey-office-summary" class="office-summary">No monkeys hired yet.</span>
+                </div>
+                <div id="monkey-office-grid" class="monkey-office-grid">
+                    <div class="office-empty-state">
+                        <span class="office-empty-emoji" aria-hidden="true">🐒</span>
+                        <p>Hire your first monkey to fill the office.</p>
+                    </div>
+                </div>
+            </section>
+
             <div id="output-area" class="output-area" aria-live="polite">
                 <span class="placeholder">Click “Type” to begin...</span>
             </div>
@@ -52,7 +68,7 @@
                 <button id="buy-monkey-button" class="shop-card">
                     <span class="shop-info">
                         <strong>Hire Monkey</strong>
-                        <small>Each monkey types one random letter every 2 seconds.</small>
+                        <small>Get 1 random pixel monkey out of 20 designs. Each monkey types one random letter every 2 seconds.</small>
                     </span>
                     <span class="shop-price"><span id="monkey-cost">50</span> 🍌</span>
                 </button>
