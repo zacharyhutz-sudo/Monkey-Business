@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v7';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v8';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -93,6 +93,15 @@ function getDictionaryWordCount() {
     return total;
 }
 
+function getDisplayWord(word, maxLength = 10) {
+    const cleanWord = String(word);
+    if (cleanWord.length <= maxLength) {
+        return cleanWord;
+    }
+    return `${cleanWord.slice(0, maxLength - 1)}…`;
+}
+
+
 function getMonkeyType(typeId) {
     return MONKEY_TYPES.find((type) => type.id === typeId) || MONKEY_TYPES[0];
 }
@@ -146,12 +155,12 @@ function updateDisplay() {
         recentWordsList.innerHTML = '<span class="empty-state">No words yet.</span>';
     } else {
         recentWordsList.innerHTML = recentWords
-            .map((entry) => `<span class="recent-word">${entry.word} <strong>+${entry.points}</strong></span>`)
+            .map((entry) => `<span class="recent-word">${getDisplayWord(entry.word)} <strong>+${entry.points}</strong></span>`)
             .join('');
     }
 
     syncOfficeVisuals();
-    dictionaryStatus.textContent = `${formatNumber(getDictionaryWordCount())} dictionary words loaded. Random letters only — no forced words.`;
+    dictionaryStatus.textContent = `${formatNumber(getDictionaryWordCount())} words loaded`;
 }
 
 function clearPlaceholder() {
@@ -174,7 +183,7 @@ function appendOutputLetter(letter, source = 'player') {
 function appendWordReward(word, points) {
     const wordSpan = document.createElement('span');
     wordSpan.className = 'word-found';
-    wordSpan.textContent = ` ${word.toUpperCase()} +${points} 🍌 `;
+    wordSpan.textContent = ` ${getDisplayWord(word).toUpperCase()} +${points} 🍌 `;
     outputArea.appendChild(wordSpan);
 
     trimOutputArea();
@@ -216,7 +225,7 @@ function spawnFloatingReward(points, word) {
 
     const reward = document.createElement('span');
     reward.className = 'float-reward';
-    reward.textContent = `+${points} 🍌 ${String(word).toUpperCase()}`;
+    reward.textContent = `+${points} 🍌 ${getDisplayWord(word).toUpperCase()}`;
     reward.style.left = `${26 + Math.random() * 48}%`;
     reward.style.bottom = `${52 + Math.random() * 24}px`;
     floatingRewardsLayer.appendChild(reward);

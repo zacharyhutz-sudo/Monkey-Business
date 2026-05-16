@@ -1,8 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Nunito:wght@700;800;900&display=swap');
+
 * {
     box-sizing: border-box;
 }
 
+*,
+*::before,
+*::after {
+    min-width: 0;
+}
+
 :root {
+    --font-display: "Baloo 2", ui-rounded, system-ui, sans-serif;
+    --font-body: "Nunito", ui-rounded, system-ui, sans-serif;
     --brown-900: #2c1a0e;
     --brown-800: #3d2716;
     --brown-700: #604025;
@@ -24,14 +34,16 @@
 html,
 body {
     width: 100%;
+    max-width: 100%;
     height: 100%;
     margin: 0;
     overflow: hidden;
+    overscroll-behavior: none;
 }
 
 body {
     min-height: 100dvh;
-    font-family: ui-rounded, "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif;
+    font-family: var(--font-body);
     color: var(--brown-900);
     background:
         radial-gradient(circle at top left, rgba(255, 214, 80, 0.28), transparent 34%),
@@ -56,13 +68,15 @@ button {
 .mb-app {
     position: relative;
     isolation: isolate;
-    width: min(100vw, 470px);
+    width: 100%;
+    max-width: 470px;
     height: 100dvh;
     max-height: 100dvh;
     margin: 0 auto;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr) auto;
     overflow: hidden;
+    contain: layout paint;
     background:
         linear-gradient(180deg, rgba(255,255,255,0.08), transparent 19%),
         radial-gradient(circle at 50% -5%, #86cf62 0%, #225530 34%, #0f2616 100%);
@@ -185,7 +199,7 @@ button {
 
 .mb-wallet {
     display: grid;
-    grid-template-columns: 1.35fr 1fr 1fr 1fr;
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
     gap: 7px;
     margin-top: 12px;
 }
@@ -695,7 +709,7 @@ button {
     background: repeating-linear-gradient(180deg, #fff9e8 0 24px, #ecdcbf 24px 25px);
     border: 3px solid #5a3c1c;
     box-shadow: inset 0 2px 0 rgba(255,255,255,0.55);
-    font-family: "Courier New", monospace;
+    font-family: var(--font-body);
     font-size: 0.9rem;
     line-height: 1.35;
 }
@@ -764,7 +778,7 @@ button {
     background: #fff3cf;
     border: 2px solid rgba(255,255,255,0.42);
     color: #513514;
-    font-family: "Courier New", monospace;
+    font-family: var(--font-body);
     font-size: 0.86rem;
     font-weight: 900;
     box-shadow: 0 4px 0 rgba(36, 22, 6, 0.14);
@@ -776,7 +790,7 @@ button {
 
 .mb-dock {
     display: grid;
-    grid-template-columns: 1fr 1.34fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.28fr) minmax(0, 1fr);
     gap: 8px;
     padding: 10px 12px calc(env(safe-area-inset-bottom) + 18px);
     background:
@@ -1022,5 +1036,134 @@ button {
     .mb-type-icon {
         width: 31px;
         height: 31px;
+    }
+}
+
+.mb-game-title,
+.mb-office-header h1,
+.mb-type-button strong,
+.mb-dock-button strong,
+.office-empty-state strong {
+    font-family: var(--font-display);
+}
+
+.mb-app,
+.mb-status,
+.mb-wallet-pill,
+.mb-office-count,
+.mb-section-label,
+.output-area,
+.recent-word,
+.float-reward,
+.mb-dock-button,
+.mb-type-button {
+    font-family: var(--font-body);
+}
+
+/* v8 containment: words should never widen the phone viewport */
+.mb-topbar,
+.mb-title-row,
+.mb-wallet,
+.mb-gameplay,
+.mb-office-card,
+.mb-office-scene,
+.mb-tape-card,
+.mb-words-card,
+.mb-dock,
+.output-area,
+.recent-words-list {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.mb-title-row,
+.mb-wallet,
+.mb-dock {
+    overflow: hidden;
+}
+
+.mb-status {
+    max-width: 100%;
+}
+
+.output-area {
+    overflow-x: hidden;
+    overflow-y: auto;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.word-found,
+.recent-word,
+.float-reward {
+    max-width: min(150px, 100%);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recent-word {
+    max-width: 118px;
+}
+
+.float-reward {
+    max-width: 170px;
+}
+
+.typed-char {
+    flex: 0 0 auto;
+}
+
+.mb-wallet-pill strong {
+    max-width: 100%;
+}
+
+.mb-dock-button span:last-child,
+.mb-type-button span:last-child {
+    overflow: hidden;
+}
+
+.mb-dock-button small,
+.mb-type-button small,
+.mb-dock-button strong,
+.mb-type-button strong {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Less AI-looking, more branded */
+.mb-game-title {
+    font-size: 1.42rem;
+    letter-spacing: -0.02em;
+}
+
+.mb-status {
+    max-width: 95%;
+    opacity: 0.82;
+}
+
+.output-area,
+.recent-word {
+    letter-spacing: 0;
+}
+
+.word-found {
+    letter-spacing: 0.01em;
+}
+
+@media (max-width: 390px) {
+    .mb-status {
+        max-width: 86%;
+    }
+
+    .recent-word {
+        max-width: 104px;
+    }
+
+    .word-found {
+        max-width: 128px;
     }
 }
