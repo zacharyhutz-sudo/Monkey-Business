@@ -41,3 +41,11 @@ Replace the repo files with these files, then commit and push.
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=8`
+
+
+## Version 9 Background Update
+
+- Added `office-bg.png` and wired it into `.mb-office-scene` as the real pixel-art office background.
+- Hid the old CSS-built scene pieces so the pixel background is the full office scene.
+- Changed the page pills/chips/buttons to a more squared-off look.
+- Updated asset query strings to `?v=9` for cache busting.
