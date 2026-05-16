@@ -862,7 +862,8 @@ button {
     color: #442600;
 }
 
-.mb-locked-button {
+.mb-locked-button,
+.mb-upgrades-button {
     background: rgba(255,255,255,0.12);
     border: 3px solid rgba(255,255,255,0.15);
     color: rgba(255,250,232,0.68);
@@ -1297,4 +1298,199 @@ button,
 .office-monkey::before {
     height: 8px;
     opacity: 0.6;
+}
+
+
+/* v13 progression panel */
+.upgrade-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: end center;
+    padding: 14px;
+    background: rgba(4, 12, 7, 0.72);
+    backdrop-filter: blur(8px);
+}
+
+.upgrade-panel.is-hidden {
+    display: none;
+}
+
+.upgrade-sheet {
+    width: min(100%, 470px);
+    max-height: min(82dvh, 740px);
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    background:
+        linear-gradient(180deg, rgba(255, 238, 196, 0.98), rgba(246, 214, 146, 0.98));
+    border: 4px solid var(--brown-900);
+    box-shadow: 0 12px 0 rgba(21, 10, 3, 0.36), 0 0 42px rgba(0, 0, 0, 0.38);
+    color: var(--brown-900);
+}
+
+.upgrade-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 14px;
+    border-bottom: 3px solid rgba(76, 46, 18, 0.22);
+    background: linear-gradient(180deg, #fff1c6, #eecb80);
+}
+
+.upgrade-sheet-header h2 {
+    margin: 2px 0 0;
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    line-height: 1;
+}
+
+.upgrade-current-office {
+    display: grid;
+    gap: 3px;
+    margin: 10px 12px 0;
+    padding: 10px;
+    background: rgba(61, 39, 22, 0.1);
+    border: 3px solid rgba(61, 39, 22, 0.18);
+}
+
+.upgrade-current-office strong {
+    font-family: var(--font-display);
+    font-size: 1rem;
+}
+
+.upgrade-current-office span {
+    color: var(--brown-700);
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.upgrade-scroll {
+    min-height: 0;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+.progress-section + .progress-section {
+    margin-top: 12px;
+}
+
+.progress-list {
+    display: grid;
+    gap: 8px;
+}
+
+.progress-card,
+.milestone-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 10px;
+    background: #fff4d6;
+    border: 3px solid rgba(61, 39, 22, 0.26);
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.48);
+}
+
+.progress-card-copy,
+.milestone-copy {
+    min-width: 0;
+}
+
+.progress-branch {
+    display: inline-block;
+    margin-bottom: 3px;
+    color: #8b5a18;
+    font-size: 0.62rem;
+    font-weight: 1000;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.progress-card h3,
+.milestone-card h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.progress-card p,
+.milestone-card p {
+    margin: 4px 0 0;
+    color: var(--brown-700);
+    font-size: 0.74rem;
+    font-weight: 850;
+    line-height: 1.18;
+}
+
+.progress-meta,
+.milestone-card small {
+    display: block;
+    margin-top: 6px;
+    color: #8b5a18;
+    font-size: 0.68rem;
+    font-weight: 1000;
+}
+
+.progress-buy-button {
+    min-width: 76px;
+    min-height: 46px;
+    padding: 0 8px;
+    background: linear-gradient(180deg, #ffd95d, #e8920c);
+    border: 3px solid #754600;
+    color: #452800;
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 1000;
+    box-shadow: 0 4px 0 rgba(67, 37, 5, 0.32);
+}
+
+.progress-buy-button:disabled {
+    opacity: 0.52;
+    filter: grayscale(0.12);
+    cursor: not-allowed;
+}
+
+.milestone-card.is-claimed {
+    opacity: 0.72;
+}
+
+.milestone-bar {
+    height: 9px;
+    margin-top: 7px;
+    background: rgba(61, 39, 22, 0.15);
+    border: 2px solid rgba(61, 39, 22, 0.18);
+    overflow: hidden;
+}
+
+.milestone-bar span {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #84d56a, #ffd95d);
+}
+
+.mb-upgrades-button {
+    cursor: pointer;
+}
+
+@media (max-width: 390px) {
+    .upgrade-panel {
+        padding: 8px;
+    }
+
+    .upgrade-sheet {
+        max-height: 86dvh;
+    }
+
+    .progress-card,
+    .milestone-card {
+        grid-template-columns: 1fr;
+    }
+
+    .progress-buy-button {
+        width: 100%;
+    }
 }

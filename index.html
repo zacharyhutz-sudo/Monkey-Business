@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Monkey Business">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Monkey Business</title>
-    <link rel="stylesheet" href="app.css?v=12">
+    <link rel="stylesheet" href="app.css?v=13">
 </head>
 <body>
     <div class="mb-app">
@@ -49,8 +49,8 @@
             <section class="mb-office-card" aria-label="Monkey office">
                 <div class="mb-office-header">
                     <div>
-                        <span class="mb-level-label">Floor 1</span>
-                        <h1>Typing Office</h1>
+                        <span id="office-level-label" class="mb-level-label">Floor 1</span>
+                        <h1 id="office-name-title">Starter Office</h1>
                     </div>
                     <span id="monkey-office-summary" class="mb-office-count">No monkeys</span>
                 </div>
@@ -116,19 +116,61 @@
                 </span>
             </button>
 
-            <div class="mb-dock-button mb-locked-button">
+            <button id="upgrades-button" class="mb-dock-button mb-upgrades-button">
                 <span class="mb-dock-icon" aria-hidden="true">⚡</span>
                 <span>
-                    <strong>Boosts</strong>
-                    <small>Soon</small>
+                    <strong>Upgrades</strong>
+                    <small>Skills</small>
                 </span>
-            </div>
+            </button>
 
             <span id="monkey-cost-inline" class="visually-hidden">50</span>
         </footer>
     </div>
 
-    <script src="words.js?v=12"></script>
-    <script src="script.js?v=12"></script>
+
+        <section id="upgrade-panel" class="upgrade-panel is-hidden" aria-hidden="true" aria-label="Upgrades and progression">
+            <div class="upgrade-sheet" role="dialog" aria-modal="true" aria-labelledby="upgrade-panel-title">
+                <div class="upgrade-sheet-header">
+                    <div>
+                        <span class="mb-level-label">Progression</span>
+                        <h2 id="upgrade-panel-title">Office Upgrades</h2>
+                    </div>
+                    <button id="close-upgrades-button" class="mb-round-button" aria-label="Close upgrades">×</button>
+                </div>
+
+                <div class="upgrade-current-office">
+                    <strong id="current-office-name">Starter Office — Floor 1</strong>
+                    <span id="current-office-bonus">No bonus yet</span>
+                </div>
+
+                <div class="upgrade-scroll">
+                    <section class="progress-section">
+                        <div class="mb-section-label">
+                            <span>Buildings</span>
+                        </div>
+                        <div id="office-upgrade-list" class="progress-list"></div>
+                    </section>
+
+                    <section class="progress-section">
+                        <div class="mb-section-label">
+                            <span>Skills</span>
+                        </div>
+                        <div id="skills-upgrade-list" class="progress-list"></div>
+                    </section>
+
+                    <section class="progress-section">
+                        <div class="mb-section-label">
+                            <span>Goals</span>
+                        </div>
+                        <div id="milestones-list" class="progress-list"></div>
+                    </section>
+                </div>
+            </div>
+        </section>
+
+
+    <script src="words.js?v=13"></script>
+    <script src="script.js?v=13"></script>
 </body>
 </html>
