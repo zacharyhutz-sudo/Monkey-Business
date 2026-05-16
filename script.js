@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v5';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v7';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
