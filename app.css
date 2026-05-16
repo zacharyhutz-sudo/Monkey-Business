@@ -1266,3 +1266,35 @@ button {
         left: 2px;
     }
 }
+
+
+/* v11: hard square UI pass */
+*,
+*::before,
+*::after {
+    border-radius: 0 !important;
+}
+
+.mb-app::after,
+.office-monkey::before {
+    border-radius: 0 !important;
+}
+
+/* Faster-feeling mobile taps */
+button,
+.mb-type-button,
+.mb-dock-button,
+.mb-hire-button {
+    touch-action: manipulation;
+}
+
+.mb-type-button,
+.mb-dock-button {
+    cursor: pointer;
+}
+
+/* Keep sprite shadows natural even with squared UI */
+.office-monkey::before {
+    height: 8px;
+    opacity: 0.6;
+}

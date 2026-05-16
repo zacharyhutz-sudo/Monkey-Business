@@ -59,3 +59,15 @@ Test with:
 - Super rare monkeys type at 5x the normal rate.
 - Each monkey type now has a unique name.
 - Super rare monkeys get a golden star badge and glow in the office.
+
+
+## Version 11 Fast Tap + Square UI Fix
+
+- Fixed rapid tapping on the TYPE button by using pointer-first tap handling instead of relying only on delayed mobile click events.
+- Removed the global double-tap prevention listener that could swallow fast taps on iOS.
+- Squared off all boxes, buttons, cards, chips, HUD pills, and panels.
+- Updated asset query strings to `?v=11`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=11`

@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v10';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v11';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -542,23 +542,34 @@ function resetGame() {
     updateDisplay();
 }
 
-function preventDoubleTapZoom() {
-    let lastTouchEnd = 0;
+function bindFastTap(button, handler) {
+    let handledByPointer = false;
 
-    document.addEventListener('touchend', (event) => {
-        const now = Date.now();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
+    button.addEventListener('pointerdown', (event) => {
+        if (event.pointerType === 'mouse' && event.button !== 0) {
+            return;
         }
-        lastTouchEnd = now;
-    }, { passive: false });
+
+        handledByPointer = true;
+        event.preventDefault();
+        handler();
+    });
+
+    button.addEventListener('click', (event) => {
+        if (handledByPointer) {
+            handledByPointer = false;
+            event.preventDefault();
+            return;
+        }
+
+        handler();
+    });
 }
 
-typeButton.addEventListener('click', () => typeRandomLetter('player'));
-buyMonkeyButton.addEventListener('click', buyMonkey);
+bindFastTap(typeButton, () => typeRandomLetter('player'));
+bindFastTap(buyMonkeyButton, buyMonkey);
 resetButton.addEventListener('click', resetGame);
 
-preventDoubleTapZoom();
 loadGame();
 syncOfficeVisuals(true);
 updateDisplay();
