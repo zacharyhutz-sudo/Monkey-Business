@@ -7,143 +7,123 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app-shell">
-        <div class="ambient ambient-one"></div>
-        <div class="ambient ambient-two"></div>
+    <div class="phone-app">
+        <div class="app-glow app-glow-one"></div>
+        <div class="app-glow app-glow-two"></div>
 
-        <div class="game-screen">
-            <header class="top-hud" aria-label="Game header">
-                <div class="brand-block">
-                    <div class="brand-mark">MB</div>
-                    <div class="brand-copy">
-                        <p class="eyebrow">Primate-powered productivity</p>
-                        <h1>Monkey Business</h1>
-                    </div>
+        <header class="app-header" aria-label="Game header">
+            <div class="title-row">
+                <div class="app-icon" aria-hidden="true">
+                    <span>🐒</span>
                 </div>
-
-                <section class="hud-grid" aria-label="Game stats">
-                    <div class="hud-stat banana-stat">
-                        <span class="hud-icon" aria-hidden="true">🍌</span>
-                        <div>
-                            <span class="stat-label">Bananas</span>
-                            <span id="bananas" class="stat-value">0</span>
-                        </div>
-                    </div>
-                    <div class="hud-stat">
-                        <span class="hud-icon" aria-hidden="true">⌨️</span>
-                        <div>
-                            <span class="stat-label">Letters</span>
-                            <span id="letters" class="stat-value">0</span>
-                        </div>
-                    </div>
-                    <div class="hud-stat">
-                        <span class="hud-icon" aria-hidden="true">📚</span>
-                        <div>
-                            <span class="stat-label">Words</span>
-                            <span id="words" class="stat-value">0</span>
-                        </div>
-                    </div>
-                    <div class="hud-stat monkey-stat">
-                        <span class="hud-icon" aria-hidden="true">🐒</span>
-                        <div>
-                            <span class="stat-label">Monkeys</span>
-                            <span id="monkeys" class="stat-value">0</span>
-                        </div>
-                    </div>
-                </section>
-            </header>
-
-            <main class="play-area">
-                <section class="scene-panel" aria-label="Monkey office">
-                    <div class="scene-banner-row">
-                        <div class="scene-sign">Monkey Office</div>
-                        <span id="monkey-office-summary" class="office-summary">No monkeys hired yet.</span>
-                    </div>
-
-                    <div class="office-stage">
-                        <div class="stage-window stage-window-left"></div>
-                        <div class="stage-window stage-window-right"></div>
-                        <div class="wall-frame frame-left">Top Typers</div>
-                        <div class="wall-frame frame-right">Banana Co.</div>
-                        <div class="desk-plant plant-left"></div>
-                        <div class="desk-plant plant-right"></div>
-                        <div class="ceiling-lamp"></div>
-                        <div id="floating-rewards-layer" class="floating-rewards-layer" aria-hidden="true"></div>
-                        <div id="monkey-office-grid" class="monkey-office-grid">
-                            <div class="office-empty-state">
-                                <span class="office-empty-emoji" aria-hidden="true">🐒</span>
-                                <p>Hire your first monkey to fill the office.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="printer-panel" aria-label="Typewriter feed">
-                    <div class="panel-heading">
-                        <div>
-                            <h2>Typewriter Feed</h2>
-                            <p>Random letters roll out of the office one click at a time.</p>
-                        </div>
-                        <span class="printer-badge">LIVE</span>
-                    </div>
-
-                    <div class="paper-frame">
-                        <div class="paper-notch paper-notch-left"></div>
-                        <div class="paper-notch paper-notch-right"></div>
-                        <div id="output-area" class="output-area" aria-live="polite">
-                            <span class="placeholder">Tap “Type Random Letter” to begin...</span>
-                        </div>
-                    </div>
-                </section>
-
-                <div class="info-panels">
-                    <section class="info-panel hiring-panel" aria-label="Hiring desk">
-                        <div class="panel-heading compact-heading">
-                            <h2>Hiring Desk</h2>
-                            <p>Bring more monkeys into the office and automate your typing empire.</p>
-                        </div>
-
-                        <div class="hire-preview">
-                            <div class="hire-icon" aria-hidden="true">🐒</div>
-                            <div class="hire-copy">
-                                <strong>Hire Monkey</strong>
-                                <span>Each monkey types one random letter every 2 seconds and comes with 1 of 20 pixel looks.</span>
-                            </div>
-                            <div class="hire-price-pill"><span id="monkey-cost">50</span> 🍌</div>
-                        </div>
-                    </section>
-
-                    <section class="info-panel recent-words-panel" aria-label="Recent words">
-                        <div class="panel-heading compact-heading">
-                            <h2>Word Ledger</h2>
-                            <p>Any valid 3+ letter dictionary word earns bananas equal to its length.</p>
-                        </div>
-                        <div id="recent-words-list" class="recent-words-list">
-                            <span class="empty-state">No words yet.</span>
-                        </div>
-                    </section>
+                <div class="title-stack">
+                    <span class="game-title">Monkey Business</span>
+                    <span id="dictionary-status" class="dictionary-status">Loading dictionary...</span>
                 </div>
-            </main>
-
-            <div class="bottom-dock" aria-label="Controls">
-                <button id="buy-monkey-button" class="dock-btn hire-btn">
-                    <span class="dock-btn-title">Hire Monkey</span>
-                    <span class="dock-btn-sub">Cost: <span class="dock-cost-inline" id="monkey-cost-inline">50</span> 🍌</span>
-                </button>
-
-                <button id="type-button" class="type-btn">
-                    <span class="type-btn-label">Type Random Letter</span>
-                    <span class="type-btn-sub">Tap to generate</span>
-                </button>
-
-                <button id="reset-button" class="dock-btn reset-btn" title="Reset saved game">
-                    <span class="dock-btn-title">Reset</span>
-                    <span class="dock-btn-sub">Clear save</span>
+                <button id="reset-button" class="icon-button" title="Reset saved game" aria-label="Reset game">
+                    ↻
                 </button>
             </div>
 
-            <p id="dictionary-status" class="dictionary-status">Loading dictionary...</p>
-        </div>
+            <section class="resource-bar" aria-label="Game stats">
+                <div class="resource-pill banana-pill">
+                    <span class="resource-icon" aria-hidden="true">🍌</span>
+                    <span id="bananas" class="resource-value">0</span>
+                </div>
+                <div class="resource-pill">
+                    <span class="resource-icon" aria-hidden="true">⌨️</span>
+                    <span id="letters" class="resource-value">0</span>
+                </div>
+                <div class="resource-pill">
+                    <span class="resource-icon" aria-hidden="true">📖</span>
+                    <span id="words" class="resource-value">0</span>
+                </div>
+                <div class="resource-pill">
+                    <span class="resource-icon" aria-hidden="true">🐵</span>
+                    <span id="monkeys" class="resource-value">0</span>
+                </div>
+            </section>
+        </header>
+
+        <main class="play-screen">
+            <section class="office-card" aria-label="Monkey office">
+                <div class="scene-topper">
+                    <div>
+                        <span class="scene-kicker">Floor 1</span>
+                        <h1>Typing Office</h1>
+                    </div>
+                    <span id="monkey-office-summary" class="office-summary">No monkeys</span>
+                </div>
+
+                <div class="office-scene">
+                    <div class="back-wall">
+                        <div class="window window-left"></div>
+                        <div class="window window-right"></div>
+                        <div class="poster poster-one">TOP<br>MONKEY</div>
+                        <div class="poster poster-two">BANANA<br>HQ</div>
+                        <div class="shelf shelf-one"></div>
+                        <div class="shelf shelf-two"></div>
+                    </div>
+
+                    <div class="lamp"></div>
+                    <div class="plant plant-left"></div>
+                    <div class="plant plant-right"></div>
+                    <div id="floating-rewards-layer" class="floating-rewards-layer" aria-hidden="true"></div>
+
+                    <div id="monkey-office-grid" class="monkey-office-grid">
+                        <div class="office-empty-state">
+                            <div class="empty-circle" aria-hidden="true">🐒</div>
+                            <strong>Empty office</strong>
+                            <span>Hire monkeys to start the typing machine.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="letter-console" aria-label="Typewriter feed">
+                <div class="console-label">
+                    <span>LIVE LETTER TAPE</span>
+                    <span class="console-light" aria-hidden="true"></span>
+                </div>
+                <div id="output-area" class="output-area" aria-live="polite">
+                    <span class="placeholder">Tap TYPE to begin...</span>
+                </div>
+            </section>
+
+            <section class="word-strip" aria-label="Recent words">
+                <div class="word-strip-title">Recent Words</div>
+                <div id="recent-words-list" class="recent-words-list">
+                    <span class="empty-state">No words yet.</span>
+                </div>
+            </section>
+        </main>
+
+        <footer class="control-dock" aria-label="Game controls">
+            <button id="buy-monkey-button" class="hire-button">
+                <span class="button-icon" aria-hidden="true">🐒</span>
+                <span class="button-copy">
+                    <strong>Hire</strong>
+                    <small><span id="monkey-cost">50</span> 🍌</small>
+                </span>
+            </button>
+
+            <button id="type-button" class="type-button">
+                <span class="type-button-icon" aria-hidden="true">⌨️</span>
+                <span class="type-button-copy">
+                    <strong>TYPE</strong>
+                    <small>Random Letter</small>
+                </span>
+            </button>
+
+            <div class="mini-upgrade-card" aria-label="Next upgrade preview">
+                <span class="button-icon" aria-hidden="true">⚡</span>
+                <span class="button-copy">
+                    <strong>Boosts</strong>
+                    <small>Soon</small>
+                </span>
+            </div>
+            <span id="monkey-cost-inline" class="visually-hidden">50</span>
+        </footer>
     </div>
 
     <script src="words.js"></script>

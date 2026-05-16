@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v4';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v5';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -446,7 +446,7 @@ function resetGame() {
     clearPendingMonkeyTyping();
 
     [SAVE_KEY, ...LEGACY_SAVE_KEYS].forEach((key) => localStorage.removeItem(key));
-    outputArea.innerHTML = '<span class="placeholder">Tap “Type Random Letter” to begin...</span>';
+    outputArea.innerHTML = '<span class="placeholder">Tap TYPE to begin...</span>';
     if (floatingRewardsLayer) {
         floatingRewardsLayer.innerHTML = '';
     }

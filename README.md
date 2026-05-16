@@ -4,33 +4,34 @@ Build a ridiculous primate-powered word empire.
 
 ## What changed in this version
 
-This version refreshes the UI to feel more like a mobile game and less like a plain web page:
+This version pushes the game further toward a native mobile game feel:
 
-- Compact top HUD for bananas, letters, words, and monkeys
-- A more illustrated **Monkey Office** scene
-- A paper-style **Typewriter Feed** area
-- A sticky bottom control dock with the main action button
-- Floating reward popups when words score
-- Refreshed app-style panels and mobile-friendly layout
+- Full phone-app layout instead of a centered webpage card
+- Compact top resource HUD
+- Larger single-screen Monkey Office playfield
+- Letter tape console instead of a web-style output box
+- Bottom mobile control dock with a large TYPE button
+- Compact recent-word strip
+- Reduced explanatory UI copy so it feels more like a game screen
+- Existing gameplay, dictionary scoring, monkey roster, saving, and animations are preserved
 
 ## How to Play
 
-- Tap **Type Random Letter** to generate one random lowercase letter.
+- Tap **TYPE** to generate one random lowercase letter.
 - The game checks the newest letters against the bundled dictionary.
 - Any valid dictionary word of 3 or more letters earns bananas equal to the word length.
   - Example: a 3-letter word earns 3 bananas.
   - Example: a 6-letter word earns 6 bananas.
-- Spend bananas to **Hire Monkey**.
+- Spend bananas to **Hire** monkeys.
 - Each monkey automatically types one random letter every 2 seconds.
-- Every hired monkey appears in the **Monkey Office** as one randomly assigned pixel monkey from a set of 20 visual designs.
-- When letters are typed, monkeys animate at their typewriters.
+- Every hired monkey appears in the **Typing Office** as one randomly assigned pixel monkey from a set of 20 visual designs.
 - Progress is saved in the browser with `localStorage`.
 
 ## Files
 
-- `index.html`: App layout and game UI structure
-- `styles.css`: App-style theme, responsive layout, Monkey Office scene, and animation styling
-- `script.js`: Game logic, dictionary scoring, monkey roster, shop, autosave, and UI animation behavior
+- `index.html`: App-style mobile game layout
+- `styles.css`: Native-feeling mobile game theme and responsive layout
+- `script.js`: Game logic, dictionary scoring, monkey roster, shop, autosave, and animations
 - `words.js`: Bundled lowercase dictionary word list
 - `WORDS_LICENSE.md`: Attribution/license notes for the dictionary source
 
@@ -39,10 +40,6 @@ This version refreshes the UI to feel more like a mobile game and less like a pl
 The game still generates random letters only. It does not force full words to appear.
 
 When a new random letter appears, the game checks every possible word ending at that newest letter. If multiple valid words form at the same time, each word earns bananas.
-
-## Mobile Note
-
-Fast tapping on mobile should not trigger accidental zooming on the main controls.
 
 ## Deployment with GitHub Pages
 
