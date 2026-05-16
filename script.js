@@ -35,6 +35,23 @@ function handleType() {
 
     // Update letters stat
     lettersTyped++;
+
+    // World Logic: Check for words
+    const currentText = outputArea.innerText.toLowerCase().replace(/\s/g, '');
+    const dictionary = ['monkey', 'banana', 'business', 'type', 'ape', 'jungle'];
+    
+    dictionary.forEach(word => {
+        if (currentText.endsWith(word)) {
+            wordsTyped++;
+            bananas += word.length * 10;
+            
+            // Visual feedback for word completion
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'word-found';
+            wordSpan.textContent = ` [${word.toUpperCase()}! +${word.length * 10}] `;
+            outputArea.appendChild(wordSpan);
+        }
+    });
     
     // Limit visible characters to keep UI clean (scroll or clear logic can go here later)
     if (outputArea.childNodes.length > 50) {
