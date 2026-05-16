@@ -9,24 +9,70 @@
 <body>
     <div class="game-container">
         <header>
+            <p class="eyebrow">Primate-powered productivity</p>
             <h1>Monkey Business</h1>
-            <p class="subtitle">Build a ridiculous primate-powered word empire.</p>
+            <p class="subtitle">Click, hire monkeys, and let random letters become banana money.</p>
         </header>
 
-        <section class="stats">
-            <div class="stat">Bananas: <span id="bananas">0</span></div>
-            <div class="stat">Letters Typed: <span id="letters">0</span></div>
-            <div class="stat">Words Typed: <span id="words">0</span></div>
+        <section class="stats" aria-label="Game stats">
+            <div class="stat">
+                <span class="stat-label">Bananas</span>
+                <span id="bananas" class="stat-value">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Letters</span>
+                <span id="letters" class="stat-value">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Words</span>
+                <span id="words" class="stat-value">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Monkeys</span>
+                <span id="monkeys" class="stat-value">0</span>
+            </div>
         </section>
 
         <main>
-            <div id="output-area" class="output-area">
-                <span class="placeholder">Click "Type" to begin...</span>
+            <div id="output-area" class="output-area" aria-live="polite">
+                <span class="placeholder">Click “Type” to begin...</span>
             </div>
-            
-            <button id="type-button" class="type-btn">Type</button>
+
+            <div class="button-row">
+                <button id="type-button" class="type-btn">Type Random Letter</button>
+                <button id="reset-button" class="reset-btn" title="Reset saved game">Reset</button>
+            </div>
+
+            <section class="shop" aria-label="Shop">
+                <div class="section-heading">
+                    <h2>Shop</h2>
+                    <p>Spend bananas to make the monkey machine run itself.</p>
+                </div>
+
+                <button id="buy-monkey-button" class="shop-card">
+                    <span class="shop-info">
+                        <strong>Hire Monkey</strong>
+                        <small>Each monkey types one random letter every 2 seconds.</small>
+                    </span>
+                    <span class="shop-price"><span id="monkey-cost">50</span> 🍌</span>
+                </button>
+            </section>
+
+            <section class="recent-words" aria-label="Recent words">
+                <div class="section-heading compact">
+                    <h2>Recent Words</h2>
+                    <p>Any valid 3+ letter word that appears earns bananas equal to its length.</p>
+                </div>
+                <div id="recent-words-list" class="recent-words-list">
+                    <span class="empty-state">No words yet.</span>
+                </div>
+            </section>
+
+            <p id="dictionary-status" class="dictionary-status">Loading dictionary...</p>
         </main>
     </div>
+
+    <script src="words.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
