@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v13';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v14';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -729,15 +729,19 @@ function buyUpgrade(upgradeId) {
 function unlockNextOffice() {
     const nextOffice = getNextOffice();
     if (!nextOffice) {
+        spawnFloatingMessage('ALL OFFICES UNLOCKED', 'is-hire');
         return;
     }
 
     if (bananas < nextOffice.unlockCost) {
+        const needed = nextOffice.unlockCost - bananas;
+        spawnFloatingMessage(`NEED ${formatNumber(needed)} MORE 🍌`, 'is-hire');
+        updateProgressionPanel();
         return;
     }
 
     bananas -= nextOffice.unlockCost;
-    officeLevel += 1;
+    officeLevel = clamp(officeLevel + 1, 1, OFFICE_BUILDINGS.length);
     spawnFloatingMessage(`${nextOffice.name.toUpperCase()} UNLOCKED`, 'is-super-rare');
     updateDisplay();
     saveGame();
@@ -853,6 +857,39 @@ function updateProgressionPanel() {
             </article>
         `;
     }).join('');
+
+    bindProgressionButtons();
+}
+
+function canAffordOfficeUnlock() {
+    const nextOffice = getNextOffice();
+    return Boolean(nextOffice && bananas >= nextOffice.unlockCost);
+}
+
+function bindProgressionButtons() {
+    const officeButton = officeUpgradeList.querySelector('[data-office-unlock]');
+    if (officeButton && !officeButton.dataset.bound) {
+        officeButton.dataset.bound = 'true';
+        bindFastTap(officeButton, unlockNextOffice);
+    }
+
+    skillsUpgradeList.querySelectorAll('[data-upgrade-id]').forEach((button) => {
+        if (button.dataset.bound) {
+            return;
+        }
+
+        button.dataset.bound = 'true';
+        bindFastTap(button, () => buyUpgrade(button.dataset.upgradeId));
+    });
+
+    milestonesList.querySelectorAll('[data-milestone-id]').forEach((button) => {
+        if (button.dataset.bound) {
+            return;
+        }
+
+        button.dataset.bound = 'true';
+        bindFastTap(button, () => claimMilestone(button.dataset.milestoneId));
+    });
 }
 
 function openUpgradesPanel() {
@@ -997,24 +1034,6 @@ closeUpgradesButton.addEventListener('click', closeUpgradesPanel);
 upgradePanel.addEventListener('click', (event) => {
     if (event.target === upgradePanel) {
         closeUpgradesPanel();
-        return;
-    }
-
-    const upgradeButton = event.target.closest('[data-upgrade-id]');
-    if (upgradeButton) {
-        buyUpgrade(upgradeButton.dataset.upgradeId);
-        return;
-    }
-
-    const officeButton = event.target.closest('[data-office-unlock]');
-    if (officeButton) {
-        unlockNextOffice();
-        return;
-    }
-
-    const milestoneButton = event.target.closest('[data-milestone-id]');
-    if (milestoneButton) {
-        claimMilestone(milestoneButton.dataset.milestoneId);
     }
 });
 

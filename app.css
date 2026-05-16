@@ -1494,3 +1494,18 @@ button,
         width: 100%;
     }
 }
+
+
+/* v14 office purchase reliability polish */
+.progress-buy-button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.progress-buy-button:not(:disabled) {
+    cursor: pointer;
+}
+
+.office-progress-card .progress-buy-button:not(:disabled) {
+    outline: 3px solid rgba(255, 223, 92, 0.38);
+}

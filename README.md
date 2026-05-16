@@ -62,3 +62,15 @@ Replace the repo files with these files, then commit and push.
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=13`
+
+
+## Version 14 Office Unlock Fix
+
+- Fixes the office unlock button not reliably purchasing on mobile.
+- Progression panel buttons now use the same fast-tap handling as the main TYPE button.
+- Office unlock gives feedback if you do not have enough bananas.
+- Updated cache busting to `?v=14`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=14`
