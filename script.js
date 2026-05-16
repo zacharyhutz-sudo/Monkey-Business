@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v3';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v4';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -70,6 +70,7 @@ const lettersEl = document.getElementById('letters');
 const wordsEl = document.getElementById('words');
 const monkeysEl = document.getElementById('monkeys');
 const monkeyCostEl = document.getElementById('monkey-cost');
+const monkeyCostInlineEl = document.getElementById('monkey-cost-inline');
 const outputArea = document.getElementById('output-area');
 const typeButton = document.getElementById('type-button');
 const resetButton = document.getElementById('reset-button');
@@ -78,6 +79,7 @@ const recentWordsList = document.getElementById('recent-words-list');
 const dictionaryStatus = document.getElementById('dictionary-status');
 const monkeyOfficeGrid = document.getElementById('monkey-office-grid');
 const monkeyOfficeSummary = document.getElementById('monkey-office-summary');
+const floatingRewardsLayer = document.getElementById('floating-rewards-layer');
 
 function formatNumber(value) {
     return Math.floor(value).toLocaleString();
@@ -114,12 +116,28 @@ function ensureMonkeyRosterMatchesCount() {
     }
 }
 
+
+function syncOfficeVisuals(force = false) {
+    const renderedMonkeyCount = monkeyOfficeGrid.querySelectorAll('[data-monkey-slot]').length;
+    const hasEmptyState = Boolean(monkeyOfficeGrid.querySelector('.office-empty-state'));
+
+    if (force || renderedMonkeyCount !== monkeysOwned || (monkeysOwned === 0 && !hasEmptyState)) {
+        renderMonkeyOffice();
+        return;
+    }
+
+    monkeyOfficeSummary.textContent = monkeysOwned === 0
+        ? 'No monkeys hired yet.'
+        : `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in the office`;
+}
+
 function updateDisplay() {
     bananasEl.textContent = formatNumber(bananas);
     lettersEl.textContent = formatNumber(lettersTyped);
     wordsEl.textContent = formatNumber(wordsTyped);
     monkeysEl.textContent = formatNumber(monkeysOwned);
     monkeyCostEl.textContent = formatNumber(monkeyCost);
+    monkeyCostInlineEl.textContent = formatNumber(monkeyCost);
 
     buyMonkeyButton.disabled = bananas < monkeyCost;
     buyMonkeyButton.classList.toggle('can-afford', bananas >= monkeyCost);
@@ -132,7 +150,7 @@ function updateDisplay() {
             .join('');
     }
 
-    renderMonkeyOffice();
+    syncOfficeVisuals();
     dictionaryStatus.textContent = `${formatNumber(getDictionaryWordCount())} dictionary words loaded. Random letters only — no forced words.`;
 }
 
@@ -191,6 +209,23 @@ function findNewWordsAtEnd() {
     return foundWords;
 }
 
+function spawnFloatingReward(points, word) {
+    if (!floatingRewardsLayer) {
+        return;
+    }
+
+    const reward = document.createElement('span');
+    reward.className = 'float-reward';
+    reward.textContent = `+${points} 🍌 ${String(word).toUpperCase()}`;
+    reward.style.left = `${26 + Math.random() * 48}%`;
+    reward.style.bottom = `${52 + Math.random() * 24}px`;
+    floatingRewardsLayer.appendChild(reward);
+
+    setTimeout(() => {
+        reward.remove();
+    }, 1200);
+}
+
 function awardWords(words) {
     words.forEach((word) => {
         const points = word.length;
@@ -198,6 +233,7 @@ function awardWords(words) {
         wordsTyped += 1;
         recentWords.unshift({ word, points });
         appendWordReward(word, points);
+        spawnFloatingReward(points, word);
     });
 
     recentWords = recentWords.slice(0, recentWordLimit);
@@ -410,7 +446,10 @@ function resetGame() {
     clearPendingMonkeyTyping();
 
     [SAVE_KEY, ...LEGACY_SAVE_KEYS].forEach((key) => localStorage.removeItem(key));
-    outputArea.innerHTML = '<span class="placeholder">Click “Type” to begin...</span>';
+    outputArea.innerHTML = '<span class="placeholder">Tap “Type Random Letter” to begin...</span>';
+    if (floatingRewardsLayer) {
+        floatingRewardsLayer.innerHTML = '';
+    }
     updateDisplay();
 }
 
@@ -562,5 +601,6 @@ resetButton.addEventListener('click', resetGame);
 
 preventDoubleTapZoom();
 loadGame();
+syncOfficeVisuals(true);
 updateDisplay();
 setInterval(runMonkeyTyping, monkeyTypingIntervalMs);

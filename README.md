@@ -2,9 +2,20 @@
 
 Build a ridiculous primate-powered word empire.
 
+## What changed in this version
+
+This version refreshes the UI to feel more like a mobile game and less like a plain web page:
+
+- Compact top HUD for bananas, letters, words, and monkeys
+- A more illustrated **Monkey Office** scene
+- A paper-style **Typewriter Feed** area
+- A sticky bottom control dock with the main action button
+- Floating reward popups when words score
+- Refreshed app-style panels and mobile-friendly layout
+
 ## How to Play
 
-- Click **Type Random Letter** to generate one random lowercase letter.
+- Tap **Type Random Letter** to generate one random lowercase letter.
 - The game checks the newest letters against the bundled dictionary.
 - Any valid dictionary word of 3 or more letters earns bananas equal to the word length.
   - Example: a 3-letter word earns 3 bananas.
@@ -17,9 +28,9 @@ Build a ridiculous primate-powered word empire.
 
 ## Files
 
-- `index.html`: UI and layout
-- `styles.css`: Game design, responsive layout, Monkey Office styling, and mobile tap behavior fixes
-- `script.js`: Game logic, dictionary scoring, monkey roster, shop, autosave, and animations
+- `index.html`: App layout and game UI structure
+- `styles.css`: App-style theme, responsive layout, Monkey Office scene, and animation styling
+- `script.js`: Game logic, dictionary scoring, monkey roster, shop, autosave, and UI animation behavior
 - `words.js`: Bundled lowercase dictionary word list
 - `WORDS_LICENSE.md`: Attribution/license notes for the dictionary source
 
@@ -31,7 +42,7 @@ When a new random letter appears, the game checks every possible word ending at 
 
 ## Mobile Note
 
-Fast tapping on mobile should no longer trigger accidental zooming on the game controls.
+Fast tapping on mobile should not trigger accidental zooming on the main controls.
 
 ## Deployment with GitHub Pages
 
