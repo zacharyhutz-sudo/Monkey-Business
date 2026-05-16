@@ -71,3 +71,16 @@ Test with:
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=11`
+
+
+## Version 12 Embedded Monkey Sprite Fix
+
+- Fixes missing monkey art on GitHub Pages/Safari.
+- Monkey sprites are now embedded directly in `script.js` as image data.
+- The game no longer depends on the `monkeys/` folder loading correctly at runtime.
+- The `monkeys/` folder is still included for reference, but the app uses embedded sprites.
+- Updated cache busting to `?v=12`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=12`
