@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v32';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v33';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -194,6 +194,25 @@ const UPGRADE_DEFS = {
     }
 };
 
+
+const COLLECTION_BONUS_DEFS = [
+    { id: 'normal-5-speed', group: 'normal', target: 5, label: 'Own 5 normal monkey types', reward: '+5% typing speed', bonus: { speedBonus: 0.05 } },
+    { id: 'normal-10-income', group: 'normal', target: 10, label: 'Own 10 normal monkey types', reward: '+10% word income', bonus: { incomeBonus: 0.10 } },
+    { id: 'normal-all-speed', group: 'normal', target: normalMonkeyTypeIds.length, label: 'Own all normal monkey types', reward: '+20% typing speed', bonus: { speedBonus: 0.20 } },
+    { id: 'rare-1-odds', group: 'super-rare', target: 1, label: 'Own 1 super rare monkey type', reward: '+2% super rare odds', bonus: { rareBonus: 0.02 } },
+    { id: 'rare-3-income', group: 'super-rare', target: 3, label: 'Own 3 super rare monkey types', reward: '+10% banana income', bonus: { incomeBonus: 0.10 } },
+    { id: 'rare-5-speed', group: 'super-rare', target: 5, label: 'Own 5 super rare monkey types', reward: '+15% typing speed', bonus: { speedBonus: 0.15 } },
+    { id: 'rare-all-income', group: 'super-rare', target: superRareMonkeyTypeIds.length, label: 'Own all super rare monkey types', reward: '+25% word income', bonus: { incomeBonus: 0.25 } }
+];
+
+const COLLECTION_REWARDS = [
+    { id: 'collected-5', name: 'Starter Crew', description: 'Collect 5 unique monkey types.', target: 5, rewardBananas: 1000, bonus: {} },
+    { id: 'collected-10', name: 'Roster Rhythm', description: 'Collect 10 unique monkey types.', target: 10, rewardBananas: 4000, bonus: { speedBonus: 0.05 } },
+    { id: 'collected-20', name: 'Talent Bench', description: 'Collect 20 unique monkey types.', target: 20, rewardBananas: 15000, bonus: {} },
+    { id: 'collected-30', name: 'Rare Recruit Network', description: 'Collect 30 unique monkey types.', target: 30, rewardBananas: 0, bonus: { rareBonus: 0.03 } },
+    { id: 'collected-all', name: 'Complete Company', description: 'Collect every monkey type.', target: MONKEY_TYPES.length, rewardBananas: 0, bonus: { speedBonus: 0.10, incomeBonus: 0.10 } }
+];
+
 const MILESTONES = [
     // Tier 1 — Start the Business
     { id: 'letters-100', name: 'Warm Up', description: 'Type 100 letters.', metric: 'lifetimeLetters', target: 100, reward: 75, category: 'quest', tier: 1 },
@@ -290,6 +309,7 @@ let upgrades = {
     rareRecruiter: 0
 };
 let claimedMilestones = [];
+let claimedCollectionRewards = [];
 let lifetimeStats = {
     bananasEarned: 0,
     lettersTyped: 0,
@@ -436,16 +456,151 @@ function getUpgradeCost(upgradeId) {
     return Math.floor(upgrade.baseCost * Math.pow(upgrade.costMultiplier, level));
 }
 
+function getOwnedMonkeyTypeIds() {
+    return new Set(monkeyRoster);
+}
+
+function getMonkeyTypeCounts() {
+    return monkeyRoster.reduce((counts, typeId) => {
+        counts[typeId] = (counts[typeId] || 0) + 1;
+        return counts;
+    }, {});
+}
+
+function getOwnedMonkeyTypeBreakdown(ownedTypeIds = getOwnedMonkeyTypeIds()) {
+    const normalOwned = normalMonkeyTypeIds.filter((typeId) => ownedTypeIds.has(typeId)).length;
+    const superRareOwned = superRareMonkeyTypeIds.filter((typeId) => ownedTypeIds.has(typeId)).length;
+
+    return {
+        totalOwned: normalOwned + superRareOwned,
+        normalOwned,
+        superRareOwned
+    };
+}
+
+function emptyCollectionBonuses() {
+    return {
+        speedBonus: 0,
+        incomeBonus: 0,
+        rareBonus: 0,
+        flatWordBonus: 0
+    };
+}
+
+function addCollectionBonus(total, bonus = {}) {
+    total.speedBonus += Number(bonus.speedBonus) || 0;
+    total.incomeBonus += Number(bonus.incomeBonus) || 0;
+    total.rareBonus += Number(bonus.rareBonus) || 0;
+    total.flatWordBonus += Number(bonus.flatWordBonus) || 0;
+    return total;
+}
+
+function getCollectionBonusProgress(definition, breakdown = getOwnedMonkeyTypeBreakdown()) {
+    if (definition.group === 'normal') {
+        return breakdown.normalOwned;
+    }
+
+    if (definition.group === 'super-rare') {
+        return breakdown.superRareOwned;
+    }
+
+    return breakdown.totalOwned;
+}
+
+function getPassiveCollectionBonuses() {
+    const ownedTypeIds = getOwnedMonkeyTypeIds();
+    const breakdown = getOwnedMonkeyTypeBreakdown(ownedTypeIds);
+    const bonuses = emptyCollectionBonuses();
+
+    COLLECTION_BONUS_DEFS.forEach((definition) => {
+        if (getCollectionBonusProgress(definition, breakdown) >= definition.target) {
+            addCollectionBonus(bonuses, definition.bonus);
+        }
+    });
+
+    return bonuses;
+}
+
+function getClaimedCollectionRewardBonuses() {
+    const bonuses = emptyCollectionBonuses();
+
+    COLLECTION_REWARDS.forEach((reward) => {
+        if (claimedCollectionRewards.includes(reward.id)) {
+            addCollectionBonus(bonuses, reward.bonus);
+        }
+    });
+
+    return bonuses;
+}
+
+function getCollectionBonuses() {
+    const bonuses = getPassiveCollectionBonuses();
+    return addCollectionBonus(bonuses, getClaimedCollectionRewardBonuses());
+}
+
+function getCollectionRewardBonusText(bonus = {}) {
+    const parts = [];
+
+    if (bonus.speedBonus) {
+        parts.push(`+${Math.round(bonus.speedBonus * 100)}% typing speed`);
+    }
+
+    if (bonus.incomeBonus) {
+        parts.push(`+${Math.round(bonus.incomeBonus * 100)}% word income`);
+    }
+
+    if (bonus.rareBonus) {
+        parts.push(`+${Math.round(bonus.rareBonus * 100)}% super rare odds`);
+    }
+
+    if (bonus.flatWordBonus) {
+        parts.push(`+${bonus.flatWordBonus} banana${bonus.flatWordBonus === 1 ? '' : 's'} per word`);
+    }
+
+    return parts.join(' • ');
+}
+
+function getCollectionRewardText(reward) {
+    const parts = [];
+
+    if (reward.rewardBananas > 0) {
+        parts.push(`${formatNumber(reward.rewardBananas)} bananas`);
+    }
+
+    const bonusText = getCollectionRewardBonusText(reward.bonus);
+    if (bonusText) {
+        parts.push(bonusText);
+    }
+
+    return parts.length > 0 ? parts.join(' • ') : 'Permanent bonus';
+}
+
+function getUniqueMonkeyTypeCount() {
+    return getOwnedMonkeyTypeBreakdown().totalOwned;
+}
+
+function getCollectionRewardProgress(reward) {
+    return Math.min(getUniqueMonkeyTypeCount(), reward.target);
+}
+
+function getClaimableCollectionRewardCount() {
+    return COLLECTION_REWARDS.filter((reward) => {
+        return !claimedCollectionRewards.includes(reward.id) && getUniqueMonkeyTypeCount() >= reward.target;
+    }).length;
+}
+
 function getSuperRareChance() {
     const office = getCurrentOffice();
     const recruiterBonus = getUpgradeLevel('rareRecruiter') * 0.01;
-    return clamp(baseSuperRareChance + recruiterBonus + office.rareBonus, 0.1, 0.25);
+    const collectionBonus = getCollectionBonuses().rareBonus;
+    return clamp(baseSuperRareChance + recruiterBonus + office.rareBonus + collectionBonus, 0.1, 0.35);
 }
 
 function getGlobalSpeedMultiplier() {
     const office = getCurrentOffice();
     const upgradeBonus = getUpgradeLevel('fasterTypewriters') * 0.08;
-    return 1 + office.speedBonus + upgradeBonus;
+    const collectionBonus = getCollectionBonuses().speedBonus;
+    return 1 + office.speedBonus + upgradeBonus + collectionBonus;
 }
 
 function normalizeDiscoveredWords(rawWords = discoveredWords) {
@@ -536,12 +691,13 @@ function getFirstDiscoveryBonus(word) {
 function getWordIncomeMultiplier() {
     const office = getCurrentOffice();
     const payrollBonus = getUpgradeLevel('bananaPayroll') * 0.12;
-    return office.incomeMultiplier * (1 + payrollBonus);
+    const collectionBonus = getCollectionBonuses().incomeBonus;
+    return office.incomeMultiplier * (1 + payrollBonus + collectionBonus);
 }
 
 function getFlatWordBonus() {
     const office = getCurrentOffice();
-    return office.wordBonus + getUpgradeLevel('betterDictionary');
+    return office.wordBonus + getUpgradeLevel('betterDictionary') + getCollectionBonuses().flatWordBonus;
 }
 
 function calculateWordPoints(word, options = {}) {
@@ -685,6 +841,14 @@ function ensureProgressionState() {
 
     const validMilestoneIds = new Set(MILESTONES.map((milestone) => milestone.id));
     claimedMilestones = [...new Set(claimedMilestones.map(String).filter((id) => validMilestoneIds.has(id)))];
+
+    if (!Array.isArray(claimedCollectionRewards)) {
+        claimedCollectionRewards = [];
+    }
+
+    const validCollectionRewardIds = new Set(COLLECTION_REWARDS.map((reward) => reward.id));
+    claimedCollectionRewards = [...new Set(claimedCollectionRewards.map(String).filter((id) => validCollectionRewardIds.has(id)))];
+
     discoveredWords = normalizeDiscoveredWords(discoveredWords);
     lifetimeStats = normalizeLifetimeStats(lifetimeStats);
     lifetimeStats.uniqueWords = getDiscoveredWordCount();
@@ -1050,9 +1214,59 @@ function spawnFloatingReward(points, word) {
     spawnFloatingMessage(`+${points} ${getDisplayWord(word).toUpperCase()}`);
 }
 
-function spawnMonkeyHireMessage(monkeyType) {
+function spawnHireBurst(extraClass = '') {
+    if (!floatingRewardsLayer) {
+        return;
+    }
+
+    for (let index = 0; index < 10; index += 1) {
+        const burst = document.createElement('span');
+        burst.className = `hire-burst-piece ${extraClass}`.trim();
+        burst.style.left = `${28 + Math.random() * 44}%`;
+        burst.style.top = `${26 + Math.random() * 32}%`;
+        burst.style.setProperty('--burst-x', `${(Math.random() - 0.5) * 150}px`);
+        burst.style.setProperty('--burst-y', `${-36 - Math.random() * 82}px`);
+        burst.style.animationDelay = `${index * 22}ms`;
+        floatingRewardsLayer.appendChild(burst);
+
+        setTimeout(() => burst.remove(), 900);
+    }
+}
+
+function showNewHireReveal(monkeyType, isNewType = false) {
+    if (!floatingRewardsLayer) {
+        return;
+    }
+
+    const isSuperRare = monkeyType.rarity === 'super-rare';
+    const reveal = document.createElement('div');
+    reveal.className = `hire-reveal-card ${isSuperRare ? 'is-super-rare' : ''} ${isNewType ? 'is-new-type' : ''}`.trim();
+    reveal.innerHTML = `
+        <div class="hire-reveal-badges">
+            <span>New Hire!</span>
+            ${isNewType ? '<span class="is-new-badge">NEW</span>' : ''}
+            ${isSuperRare ? '<span class="is-rare-badge">Super Rare!</span>' : ''}
+        </div>
+        <div class="hire-reveal-main">
+            <div class="hire-reveal-art"><img src="${getMonkeySpriteSrc(monkeyType)}" alt="" onerror="this.onerror=null; this.src='icon-monkey.png';" /></div>
+            <div class="hire-reveal-copy">
+                <strong>${monkeyType.name}</strong>
+                <span>${getMonkeyRarityLabel(monkeyType)}</span>
+                <em>${monkeyType.speedMultiplier}x typing speed</em>
+            </div>
+        </div>
+    `;
+
+    floatingRewardsLayer.appendChild(reveal);
+    spawnHireBurst(isSuperRare ? 'is-super-rare' : '');
+
+    setTimeout(() => reveal.remove(), isSuperRare ? 2300 : 1850);
+}
+
+function spawnMonkeyHireMessage(monkeyType, isNewType = false) {
     const prefix = monkeyType.rarity === 'super-rare' ? 'SUPER RARE' : 'HIRED';
     const star = monkeyType.rarity === 'super-rare' ? ' ★' : '';
+    showNewHireReveal(monkeyType, isNewType);
     spawnFloatingMessage(`${prefix}: ${monkeyType.name.toUpperCase()}${star}`, monkeyType.rarity === 'super-rare' ? 'is-super-rare' : 'is-hire');
 }
 
@@ -1217,6 +1431,7 @@ function buyMonkey() {
     lifetimeStats.monkeysHired += 1;
 
     const hiredTypeId = getRandomMonkeyTypeId();
+    const isNewMonkeyType = !getOwnedMonkeyTypeIds().has(hiredTypeId);
     monkeyRoster.push(hiredTypeId);
     const hiredMonkeyType = getMonkeyType(hiredTypeId);
     if (hiredMonkeyType.rarity === 'super-rare') {
@@ -1229,7 +1444,7 @@ function buyMonkey() {
     forceMonkeyOfficeRender();
     updateDisplay();
     saveGame();
-    spawnMonkeyHireMessage(hiredMonkeyType);
+    spawnMonkeyHireMessage(hiredMonkeyType, isNewMonkeyType);
 
     // Prime the new hire and keep every existing monkey on its own two-second schedule.
     primeMonkeyForTyping(newMonkeyIndex, 450);
@@ -1541,6 +1756,34 @@ function claimMilestone(milestoneId) {
 }
 
 
+function claimCollectionReward(rewardId) {
+    const normalizedId = String(rewardId || '');
+    const reward = COLLECTION_REWARDS.find((entry) => entry.id === normalizedId);
+
+    if (!reward || claimedCollectionRewards.includes(normalizedId)) {
+        return;
+    }
+
+    if (getUniqueMonkeyTypeCount() < reward.target) {
+        updateProgressionPanel();
+        return;
+    }
+
+    claimedCollectionRewards.push(normalizedId);
+
+    if (reward.rewardBananas > 0) {
+        addBananas(reward.rewardBananas);
+    }
+
+    const rewardText = getCollectionRewardText(reward).toUpperCase();
+    spawnFloatingMessage(`COLLECTION: ${rewardText}`, 'is-collection');
+    spawnHireBurst('is-collection');
+    updateDisplay();
+    updateProgressionPanel();
+    saveGame();
+    startMonkeyTypingEngine(true);
+}
+
 function costButtonLabel(cost) {
     return `<span class="cost-inline"><span class="mini-banana-icon" aria-hidden="true"></span>${formatNumber(cost)}</span>`;
 }
@@ -1585,17 +1828,6 @@ function syncPanelVisibility() {
     });
 }
 
-function getOwnedMonkeyTypeIds() {
-    return new Set(monkeyRoster);
-}
-
-function getMonkeyTypeCounts() {
-    return monkeyRoster.reduce((counts, typeId) => {
-        counts[typeId] = (counts[typeId] || 0) + 1;
-        return counts;
-    }, {});
-}
-
 function renderMonkeyCollection() {
     if (!collectionList) {
         return;
@@ -1603,10 +1835,77 @@ function renderMonkeyCollection() {
 
     const ownedTypeIds = getOwnedMonkeyTypeIds();
     const typeCounts = getMonkeyTypeCounts();
-    const ownedCount = MONKEY_TYPES.filter((type) => ownedTypeIds.has(type.id)).length;
-    const normalOwned = MONKEY_TYPES.filter((type) => type.rarity === 'normal' && ownedTypeIds.has(type.id)).length;
-    const rareOwned = MONKEY_TYPES.filter((type) => type.rarity === 'super-rare' && ownedTypeIds.has(type.id)).length;
+    const breakdown = getOwnedMonkeyTypeBreakdown(ownedTypeIds);
+    const ownedCount = breakdown.totalOwned;
+    const normalOwned = breakdown.normalOwned;
+    const rareOwned = breakdown.superRareOwned;
     const recentDiscoveries = discoveredWords.slice(-12).reverse();
+    const collectionBonuses = getCollectionBonuses();
+    const claimableRewards = getClaimableCollectionRewardCount();
+
+    const renderBonusSection = () => {
+        return `
+            <section class="collection-section collection-bonus-section">
+                <div class="collection-section-header">
+                    <div>
+                        <strong>Collection Bonuses</strong>
+                        <span>Bonuses unlock automatically when you own enough unique monkey types.</span>
+                    </div>
+                </div>
+                <div class="collection-bonus-grid">
+                    ${COLLECTION_BONUS_DEFS.map((definition) => {
+                        const progress = getCollectionBonusProgress(definition, breakdown);
+                        const ratio = clamp(progress / definition.target, 0, 1);
+                        const isActive = progress >= definition.target;
+
+                        return `
+                            <article class="collection-bonus-card ${isActive ? 'is-active' : ''}">
+                                <div>
+                                    <strong>${definition.reward}</strong>
+                                    <span>${definition.label}</span>
+                                </div>
+                                <div class="milestone-bar" aria-hidden="true"><span style="width: ${Math.round(ratio * 100)}%"></span></div>
+                                <small>${formatNumber(Math.min(progress, definition.target))} / ${formatNumber(definition.target)} ${definition.group === 'super-rare' ? 'super rare' : 'normal'}</small>
+                            </article>
+                        `;
+                    }).join('')}
+                </div>
+            </section>
+        `;
+    };
+
+    const renderRewardSection = () => {
+        return `
+            <section class="collection-section collection-reward-section">
+                <div class="collection-section-header">
+                    <div>
+                        <strong>Collection Rewards</strong>
+                        <span>${claimableRewards} ready to claim • based on unique monkey types collected.</span>
+                    </div>
+                </div>
+                <div class="collection-reward-list">
+                    ${COLLECTION_REWARDS.map((reward) => {
+                        const progress = getCollectionRewardProgress(reward);
+                        const ratio = clamp(progress / reward.target, 0, 1);
+                        const isClaimed = claimedCollectionRewards.includes(reward.id);
+                        const isReady = progress >= reward.target && !isClaimed;
+
+                        return `
+                            <article class="collection-reward-card ${isClaimed ? 'is-claimed' : ''} ${isReady ? 'is-ready' : ''}">
+                                <div class="collection-reward-copy">
+                                    <strong>${reward.name}</strong>
+                                    <span>${reward.description}</span>
+                                    <div class="milestone-bar" aria-hidden="true"><span style="width: ${Math.round(ratio * 100)}%"></span></div>
+                                    <small>${formatNumber(progress)} / ${formatNumber(reward.target)} • ${getCollectionRewardText(reward)}</small>
+                                </div>
+                                <button class="progress-buy-button collection-claim-button" data-collection-reward-id="${reward.id}" ${!isReady ? 'disabled' : ''}>${isClaimed ? 'Claimed' : isReady ? 'Claim' : 'Locked'}</button>
+                            </article>
+                        `;
+                    }).join('')}
+                </div>
+            </section>
+        `;
+    };
 
     const renderSection = (title, subtitle, rarity) => {
         const sectionTypes = MONKEY_TYPES.filter((type) => type.rarity === rarity);
@@ -1672,13 +1971,20 @@ function renderMonkeyCollection() {
         <div class="collection-summary">
             <div>
                 <strong>${ownedCount} / ${MONKEY_TYPES.length} monkeys collected</strong>
-                <span>${normalOwned} normal • ${rareOwned} super rare</span>
+                <span>${normalOwned} normal • ${rareOwned} super rare • ${claimableRewards} rewards ready</span>
             </div>
             <div class="collection-summary-side">
                 <strong>${Math.round(getSuperRareChance() * 100)}%</strong>
                 <span>Super rare odds</span>
             </div>
         </div>
+        <div class="collection-active-bonuses">
+            <span>Speed +${Math.round(collectionBonuses.speedBonus * 100)}%</span>
+            <span>Income +${Math.round(collectionBonuses.incomeBonus * 100)}%</span>
+            <span>Rare odds +${Math.round(collectionBonuses.rareBonus * 100)}%</span>
+        </div>
+        ${renderRewardSection()}
+        ${renderBonusSection()}
         ${renderWordDiscoverySection()}
         ${renderSection('Normal Monkeys', 'Your everyday typing crew.', 'normal')}
         ${renderSection('Super Rare Monkeys', 'High-value hires with boosted speed.', 'super-rare')}
@@ -1909,6 +2215,11 @@ function runProgressionButtonAction(button) {
 
     if (button.dataset.milestoneId) {
         claimMilestone(button.dataset.milestoneId);
+        return;
+    }
+
+    if (button.dataset.collectionRewardId) {
+        claimCollectionReward(button.dataset.collectionRewardId);
     }
 }
 
@@ -1922,7 +2233,7 @@ function bindProgressionActionArea(container) {
 
     const findActionButton = (target) => {
         return target && target.closest
-            ? target.closest('[data-office-unlock], [data-upgrade-id], [data-milestone-id]')
+            ? target.closest('[data-office-unlock], [data-upgrade-id], [data-milestone-id], [data-collection-reward-id]')
             : null;
     };
 
@@ -1987,6 +2298,7 @@ function saveGame() {
         officeLevel,
         upgrades,
         claimedMilestones,
+        claimedCollectionRewards,
         lifetimeStats,
         discoveredWords
     };
@@ -2030,6 +2342,7 @@ function loadGame() {
         officeLevel = Number(saveData.officeLevel) || 1;
         upgrades = { ...upgrades, ...(saveData.upgrades || {}) };
         claimedMilestones = Array.isArray(saveData.claimedMilestones) ? saveData.claimedMilestones : [];
+        claimedCollectionRewards = Array.isArray(saveData.claimedCollectionRewards) ? saveData.claimedCollectionRewards : [];
         discoveredWords = normalizeDiscoveredWords(saveData.discoveredWords || recentWords.map((entry) => entry.word));
         lifetimeStats = normalizeLifetimeStats(saveData.lifetimeStats || {});
 
@@ -2065,6 +2378,7 @@ function resetGame() {
         rareRecruiter: 0
     };
     claimedMilestones = [];
+    claimedCollectionRewards = [];
     discoveredWords = [];
     lifetimeStats = getDefaultLifetimeStats();
 
@@ -2158,6 +2472,8 @@ window.MonkeyBusinessDebug = {
             officeLevel,
             upgrades: { ...upgrades },
             claimedMilestones: [...claimedMilestones],
+            claimedCollectionRewards: [...claimedCollectionRewards],
+            collectionBonuses: getCollectionBonuses(),
             recentWords: [...recentWords],
             lifetimeStats: { ...lifetimeStats },
             discoveredWords: [...discoveredWords],
@@ -2175,6 +2491,7 @@ window.MonkeyBusinessDebug = {
         if (Number.isFinite(Number(partialState.officeLevel))) officeLevel = clamp(Number(partialState.officeLevel), 1, OFFICE_BUILDINGS.length);
         if (partialState.upgrades && typeof partialState.upgrades === 'object') upgrades = { ...upgrades, ...partialState.upgrades };
         if (Array.isArray(partialState.claimedMilestones)) claimedMilestones = partialState.claimedMilestones.map(String);
+        if (Array.isArray(partialState.claimedCollectionRewards)) claimedCollectionRewards = partialState.claimedCollectionRewards.map(String);
         if (Array.isArray(partialState.discoveredWords)) discoveredWords = normalizeDiscoveredWords(partialState.discoveredWords);
         if (partialState.lifetimeStats && typeof partialState.lifetimeStats === 'object') lifetimeStats = normalizeLifetimeStats(partialState.lifetimeStats);
         ensureMonkeyRosterMatchesCount();
@@ -2185,6 +2502,8 @@ window.MonkeyBusinessDebug = {
         startMonkeyTypingEngine(true);
     },
     claimMilestone,
+    claimCollectionReward,
+    getCollectionBonuses,
     runMonkeyTyping,
     buyMonkey,
     typeRandomLetter,
