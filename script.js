@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v27';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v28';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -786,27 +786,27 @@ function primeMonkeyForTyping(monkeyIndex, delayMs = 450) {
 
 function getMonkeySeat(index, total) {
     const layouts = {
-        1: [{ x: 50, y: 7, scale: 1.08 }],
-        2: [{ x: 38, y: 9, scale: 1.02 }, { x: 62, y: 9, scale: 1.02 }],
-        3: [{ x: 50, y: 6, scale: 1.06 }, { x: 31, y: 22, scale: .95 }, { x: 69, y: 22, scale: .95 }],
-        4: [{ x: 28, y: 26, scale: .93 }, { x: 72, y: 26, scale: .93 }, { x: 39, y: 8, scale: 1 }, { x: 61, y: 8, scale: 1 }],
-        5: [{ x: 50, y: 7, scale: 1.02 }, { x: 30, y: 24, scale: .92 }, { x: 70, y: 24, scale: .92 }, { x: 24, y: 42, scale: .82 }, { x: 76, y: 42, scale: .82 }],
-        6: [{ x: 31, y: 28, scale: .88 }, { x: 50, y: 28, scale: .9 }, { x: 69, y: 28, scale: .88 }, { x: 26, y: 8, scale: .96 }, { x: 50, y: 7, scale: 1 }, { x: 74, y: 8, scale: .96 }]
+        1: [{ x: 50, y: 10, scale: 1.1 }],
+        2: [{ x: 38, y: 11, scale: 1.02 }, { x: 62, y: 11, scale: 1.02 }],
+        3: [{ x: 24, y: 12, scale: .92 }, { x: 50, y: 13, scale: 1.04 }, { x: 76, y: 12, scale: .92 }],
+        4: [{ x: 18, y: 12, scale: .88 }, { x: 40, y: 14, scale: .96 }, { x: 60, y: 14, scale: .96 }, { x: 82, y: 12, scale: .88 }],
+        5: [{ x: 24, y: 27, scale: .88 }, { x: 50, y: 29, scale: .96 }, { x: 76, y: 27, scale: .88 }, { x: 37, y: 9, scale: .96 }, { x: 63, y: 9, scale: .96 }],
+        6: [{ x: 22, y: 28, scale: .86 }, { x: 50, y: 30, scale: .94 }, { x: 78, y: 28, scale: .86 }, { x: 26, y: 9, scale: .92 }, { x: 50, y: 10, scale: .98 }, { x: 74, y: 9, scale: .92 }]
     };
 
     const defaultSeats = [
-        { x: 24, y: 31, scale: .82 },
-        { x: 42, y: 30, scale: .86 },
-        { x: 60, y: 30, scale: .86 },
-        { x: 78, y: 31, scale: .82 },
-        { x: 18, y: 14, scale: .88 },
-        { x: 36, y: 12, scale: .92 },
-        { x: 54, y: 12, scale: .92 },
-        { x: 72, y: 14, scale: .88 },
-        { x: 28, y: 48, scale: .74 },
-        { x: 50, y: 49, scale: .76 },
-        { x: 72, y: 48, scale: .74 },
-        { x: 50, y: 63, scale: .66 }
+        { x: 12, y: 26, scale: .84 },
+        { x: 37, y: 29, scale: .92 },
+        { x: 63, y: 29, scale: .92 },
+        { x: 88, y: 26, scale: .84 },
+        { x: 24, y: 8, scale: .88 },
+        { x: 50, y: 9, scale: .96 },
+        { x: 76, y: 8, scale: .88 },
+        { x: 16, y: 42, scale: .76 },
+        { x: 38, y: 44, scale: .8 },
+        { x: 62, y: 44, scale: .8 },
+        { x: 84, y: 42, scale: .76 },
+        { x: 50, y: 58, scale: .68 }
     ];
 
     const seats = layouts[Math.min(total, 6)] || defaultSeats;
@@ -971,7 +971,6 @@ function renderMonkeyOffice() {
             <div class="office-empty-state">
                 <div class="empty-circle" aria-hidden="true"></div>
                 <strong>Hire your first monkey</strong>
-                <span>Start the typing floor.</span>
             </div>
         `;
         return;
@@ -1127,34 +1126,74 @@ function getOwnedMonkeyTypeIds() {
     return new Set(monkeyRoster);
 }
 
+function getMonkeyTypeCounts() {
+    return monkeyRoster.reduce((counts, typeId) => {
+        counts[typeId] = (counts[typeId] || 0) + 1;
+        return counts;
+    }, {});
+}
+
 function renderMonkeyCollection() {
     if (!collectionList) {
         return;
     }
 
     const ownedTypeIds = getOwnedMonkeyTypeIds();
+    const typeCounts = getMonkeyTypeCounts();
     const ownedCount = MONKEY_TYPES.filter((type) => ownedTypeIds.has(type.id)).length;
+    const normalOwned = MONKEY_TYPES.filter((type) => type.rarity === 'normal' && ownedTypeIds.has(type.id)).length;
+    const rareOwned = MONKEY_TYPES.filter((type) => type.rarity === 'super-rare' && ownedTypeIds.has(type.id)).length;
+
+    const renderSection = (title, subtitle, rarity) => {
+        const sectionTypes = MONKEY_TYPES.filter((type) => type.rarity === rarity);
+
+        return `
+            <section class="collection-section">
+                <div class="collection-section-header">
+                    <div>
+                        <strong>${title}</strong>
+                        <span>${subtitle}</span>
+                    </div>
+                </div>
+                <div class="collection-grid">
+                    ${sectionTypes.map((monkeyType) => {
+                        const isOwned = ownedTypeIds.has(monkeyType.id);
+                        const ownedCopies = typeCounts[monkeyType.id] || 0;
+                        const isRare = monkeyType.rarity === 'super-rare';
+
+                        return `
+                            <article class="collection-card ${isOwned ? 'is-owned' : 'is-locked'} ${isRare ? 'is-super-rare' : ''}">
+                                <div class="collection-art">
+                                    ${isOwned ? `<img src="${getMonkeySpriteSrc(monkeyType)}" alt="" />` : '<span class="locked-silhouette">?</span>'}
+                                </div>
+                                <div class="collection-card-meta">
+                                    <strong>${isOwned ? monkeyType.name : 'Locked Monkey'}</strong>
+                                    <span class="collection-rarity">${isRare ? 'Super Rare' : 'Normal'} • ${monkeyType.speedMultiplier}x speed</span>
+                                </div>
+                                <div class="collection-card-footer">
+                                    <span class="collection-owned-badge">${isOwned ? `${ownedCopies} owned` : 'Not found'}</span>
+                                </div>
+                            </article>
+                        `;
+                    }).join('')}
+                </div>
+            </section>
+        `;
+    };
 
     collectionList.innerHTML = `
         <div class="collection-summary">
-            <strong>${ownedCount} / ${MONKEY_TYPES.length} collected</strong>
-            <span>Super rare odds ${Math.round(getSuperRareChance() * 100)}%</span>
+            <div>
+                <strong>${ownedCount} / ${MONKEY_TYPES.length} collected</strong>
+                <span>${normalOwned} normal • ${rareOwned} super rare</span>
+            </div>
+            <div class="collection-summary-side">
+                <strong>${Math.round(getSuperRareChance() * 100)}%</strong>
+                <span>Super rare odds</span>
+            </div>
         </div>
-        <div class="collection-grid">
-            ${MONKEY_TYPES.map((monkeyType) => {
-                const isOwned = ownedTypeIds.has(monkeyType.id);
-                const isRare = monkeyType.rarity === 'super-rare';
-                return `
-                    <article class="collection-card ${isOwned ? 'is-owned' : 'is-locked'} ${isRare ? 'is-super-rare' : ''}">
-                        <div class="collection-art">
-                            ${isOwned ? `<img src="${getMonkeySpriteSrc(monkeyType)}" alt="" />` : '<span class="locked-silhouette">?</span>'}
-                        </div>
-                        <strong>${isOwned ? monkeyType.name : 'Locked'}</strong>
-                        <span>${isRare ? 'Super Rare' : 'Normal'}${isOwned && isRare ? ' • 5x' : ''}</span>
-                    </article>
-                `;
-            }).join('')}
-        </div>
+        ${renderSection('Normal Monkeys', 'Your everyday typing crew.', 'normal')}
+        ${renderSection('Super Rare Monkeys', 'High-value hires with boosted speed.', 'super-rare')}
     `;
 }
 
