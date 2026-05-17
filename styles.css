@@ -2087,3 +2087,516 @@ body {
         font-size: 0.62rem;
     }
 }
+
+
+/* ================================
+   v16 portrait App Store UI repair
+   Goal: match the vertical mockup more closely
+   ================================ */
+
+:root {
+    --mb-deep: #06170c;
+    --mb-panel: #082818;
+    --mb-panel-2: #0f3a22;
+    --mb-wood: #5b351b;
+    --mb-wood-dark: #2a1609;
+    --mb-cream: #fff0c5;
+    --mb-gold: #ffbf24;
+    --mb-gold-2: #f59e0b;
+    --mb-green: #79c845;
+    --mb-border: #3b2110;
+}
+
+html,
+body {
+    overflow: hidden !important;
+    background: #06170c !important;
+}
+
+body {
+    min-height: 100dvh !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: stretch !important;
+}
+
+.mb-app {
+    width: 100% !important;
+    max-width: 470px !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-rows: auto minmax(0, 1fr) auto !important;
+    gap: 0 !important;
+    overflow: hidden !important;
+    background:
+        radial-gradient(circle at 50% -12%, rgba(143, 217, 99, 0.7), transparent 34%),
+        linear-gradient(180deg, #1f6b37 0%, #0c331d 42%, #04140a 100%) !important;
+}
+
+/* HEADER */
+.mb-topbar {
+    padding: calc(env(safe-area-inset-top) + 10px) 14px 8px !important;
+}
+
+.mb-title-row {
+    display: grid !important;
+    grid-template-columns: 58px minmax(0, 1fr) 52px !important;
+    gap: 10px !important;
+    align-items: center !important;
+    margin-bottom: 10px !important;
+}
+
+.mb-app-icon {
+    width: 58px !important;
+    height: 58px !important;
+    border: 4px solid #6b3a05 !important;
+    background: linear-gradient(180deg, #ffdc5a, #d98308) !important;
+    box-shadow: 0 5px 0 rgba(35, 17, 3, 0.45), inset 0 2px 0 rgba(255,255,255,0.45) !important;
+}
+
+.mb-game-title {
+    font-family: var(--font-display, ui-rounded, system-ui) !important;
+    font-size: clamp(1.65rem, 8.6vw, 2.25rem) !important;
+    line-height: .9 !important;
+    color: #fff3bd !important;
+    text-shadow: 0 4px 0 rgba(69, 28, 4, 0.75) !important;
+    letter-spacing: -0.03em !important;
+}
+
+.mb-status {
+    margin-top: 5px !important;
+    font-size: .86rem !important;
+    color: rgba(255, 239, 190, .72) !important;
+    font-weight: 900 !important;
+}
+
+.mb-round-button {
+    width: 52px !important;
+    height: 52px !important;
+    border: 4px solid rgba(255,255,255,.18) !important;
+    background: rgba(8, 41, 23, .82) !important;
+    color: #fff4c8 !important;
+    font-size: 1.35rem !important;
+    box-shadow: 0 5px 0 rgba(0,0,0,.28) !important;
+}
+
+/* RESOURCE HUD */
+.mb-wallet {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    margin-top: 0 !important;
+}
+
+.mb-wallet-pill {
+    height: 48px !important;
+    min-width: 0 !important;
+    padding: 0 6px !important;
+    display: grid !important;
+    grid-template-columns: 32px minmax(0, 1fr) !important;
+    align-items: center !important;
+    justify-items: center !important;
+    gap: 5px !important;
+    border: 4px solid rgba(43, 25, 12, .8) !important;
+    background: linear-gradient(180deg, #153c24, #0a2415) !important;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,.08), 0 4px 0 rgba(0,0,0,.24) !important;
+}
+
+.mb-wallet-main {
+    background: linear-gradient(180deg, #ffd85d, #f59e0b) !important;
+    color: #3a2100 !important;
+}
+
+.mb-wallet-pill span {
+    width: 30px !important;
+    height: 30px !important;
+    display: grid !important;
+    place-items: center !important;
+    font-size: 0 !important;
+    background: rgba(255,255,255,.14) !important;
+    border: 3px solid rgba(255,255,255,.12) !important;
+    overflow: hidden !important;
+}
+
+.mb-wallet-pill span::first-letter {
+    font-size: 0 !important;
+}
+
+.mb-wallet-pill strong {
+    width: 100% !important;
+    min-width: 0 !important;
+    text-align: center !important;
+    font-size: clamp(.92rem, 4vw, 1.2rem) !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Convert remaining emoji HUD into letter icons so it does not feel random */
+.mb-wallet-pill:nth-child(1) span::after { content: "B"; font-size: 1rem; font-weight: 1000; }
+.mb-wallet-pill:nth-child(2) span::after { content: "T"; font-size: 1rem; font-weight: 1000; }
+.mb-wallet-pill:nth-child(3) span::after { content: "W"; font-size: 1rem; font-weight: 1000; }
+.mb-wallet-pill:nth-child(4) span::after { content: "M"; font-size: 1rem; font-weight: 1000; }
+
+/* MAIN GAME AREA */
+.mb-gameplay {
+    min-height: 0 !important;
+    display: grid !important;
+    grid-template-rows: minmax(310px, 1fr) 112px 104px !important;
+    gap: 8px !important;
+    padding: 6px 12px 8px !important;
+    overflow: hidden !important;
+}
+
+.mb-office-card,
+.mb-tape-card,
+.mb-words-card {
+    border: 5px solid var(--mb-border) !important;
+    background: #092918 !important;
+    box-shadow: 0 5px 0 rgba(0,0,0,.28), inset 0 2px 0 rgba(255,255,255,.06) !important;
+    overflow: hidden !important;
+}
+
+/* Office card now gets more room and less crop */
+.mb-office-card {
+    display: grid !important;
+    grid-template-rows: 82px minmax(0, 1fr) !important;
+}
+
+.mb-office-header {
+    min-height: 82px !important;
+    padding: 11px 14px !important;
+    background:
+        linear-gradient(180deg, rgba(112, 63, 29, .96), rgba(74, 40, 19, .96)) !important;
+    border-bottom: 5px solid var(--mb-border) !important;
+    color: #fff0c5 !important;
+}
+
+.mb-level-label {
+    font-size: .78rem !important;
+    letter-spacing: .18em !important;
+    color: #a7e25a !important;
+    text-shadow: 0 2px 0 rgba(0,0,0,.45) !important;
+}
+
+.mb-office-header h1,
+#office-name-title {
+    margin-top: 2px !important;
+    font-size: clamp(1.45rem, 7vw, 2rem) !important;
+    color: #fff0c5 !important;
+    text-shadow: 0 3px 0 rgba(0,0,0,.55) !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.mb-office-count {
+    max-width: 48% !important;
+    padding: 10px 12px !important;
+    background: #321b0d !important;
+    border: 4px solid rgba(255, 194, 89, .28) !important;
+    color: #fff0c5 !important;
+    font-size: clamp(.78rem, 3.4vw, 1rem) !important;
+    text-align: center !important;
+}
+
+/* Office scene should show the room and monkeys without cutting top row awkwardly */
+.mb-office-scene {
+    background-position: center center !important;
+    background-size: cover !important;
+}
+
+.monkey-office-grid {
+    left: 8px !important;
+    right: 8px !important;
+    bottom: 0 !important;
+    min-height: 58% !important;
+    align-content: end !important;
+    align-items: flex-end !important;
+    gap: 0 !important;
+    padding: 0 3px 3px !important;
+}
+
+.office-monkey {
+    width: clamp(58px, 13vw, 74px) !important;
+    min-height: clamp(70px, 15vw, 92px) !important;
+}
+
+.office-monkey-art {
+    width: clamp(56px, 12.5vw, 72px) !important;
+    height: clamp(66px, 15vw, 88px) !important;
+}
+
+.monkey-sprite {
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+/* Tape + recent words */
+.mb-tape-card,
+.mb-words-card {
+    padding: 10px 12px !important;
+}
+
+.mb-section-label {
+    margin-bottom: 8px !important;
+    font-size: .83rem !important;
+    color: #edf3bc !important;
+    letter-spacing: .18em !important;
+}
+
+.output-area {
+    height: 68px !important;
+    max-height: 68px !important;
+    border: 5px solid #5b351b !important;
+    background: repeating-linear-gradient(180deg, #fff6d8 0 29px, #d9c18e 29px 31px) !important;
+    padding: 8px !important;
+    gap: 4px !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+}
+
+.typed-char,
+.word-found,
+.recent-word {
+    border: 3px solid #c8b27a !important;
+    box-shadow: 0 2px 0 rgba(65, 37, 15, .16) !important;
+}
+
+.typed-char {
+    width: 1.42em !important;
+    height: 1.42em !important;
+    background: #e4f2cf !important;
+    font-size: .98rem !important;
+}
+
+.word-found {
+    background: linear-gradient(180deg, #ffd85d, #f5a70f) !important;
+    color: #442600 !important;
+}
+
+.recent-words-list {
+    height: 54px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+}
+
+.recent-word {
+    min-width: 96px !important;
+    justify-content: center !important;
+    background: #fff1c3 !important;
+    font-size: .98rem !important;
+}
+
+/* BOTTOM DOCK: real five-link game nav, not squeezed text */
+.mb-dock {
+    display: grid !important;
+    grid-template-columns: 1fr 1.15fr 1fr 1fr 1fr !important;
+    gap: 7px !important;
+    padding: 8px 12px calc(env(safe-area-inset-bottom) + 12px) !important;
+    background: linear-gradient(180deg, rgba(4, 16, 8, 0), rgba(4, 16, 8, .98) 18%) !important;
+}
+
+.mb-dock-button,
+.mb-type-button,
+.mb-hire-button,
+.mb-upgrades-button,
+.mb-locked-button {
+    min-width: 0 !important;
+    min-height: 70px !important;
+    height: 70px !important;
+    padding: 5px 3px !important;
+    display: grid !important;
+    grid-template-rows: 32px 1fr !important;
+    grid-template-columns: 1fr !important;
+    place-items: center !important;
+    gap: 2px !important;
+    border: 5px solid rgba(42, 24, 12, .86) !important;
+    box-shadow: 0 5px 0 rgba(0,0,0,.33) !important;
+    text-align: center !important;
+}
+
+.mb-type-button {
+    min-height: 82px !important;
+    height: 82px !important;
+    margin-top: -12px !important;
+    background: linear-gradient(180deg, #ffd85d, #f59e0b) !important;
+}
+
+.mb-hire-button {
+    background: linear-gradient(180deg, #9be85b, #4f952c) !important;
+}
+
+.mb-upgrades-button {
+    background: linear-gradient(180deg, #1f4b2e, #0c2717) !important;
+    color: #fff0c5 !important;
+}
+
+.mb-dock-icon,
+.mb-type-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 0 !important;
+    background: rgba(255,255,255,.16) !important;
+    border: 3px solid rgba(255,255,255,.12) !important;
+}
+
+.mb-hire-button .mb-dock-icon::after { content: "H"; font-size: .95rem; font-weight: 1000; }
+.mb-upgrades-button .mb-dock-icon::after { content: "U"; font-size: .95rem; font-weight: 1000; }
+.mb-type-icon::after { content: "T"; font-size: .95rem; font-weight: 1000; }
+.mb-dock-button:nth-of-type(3) .mb-dock-icon::after { content: "M"; font-size: .95rem; font-weight: 1000; }
+.mb-dock-button:nth-of-type(4) .mb-dock-icon::after { content: "!"; font-size: .95rem; font-weight: 1000; }
+
+.mb-dock-button span:last-child,
+.mb-type-button span:last-child {
+    display: block !important;
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+.mb-dock-button strong,
+.mb-type-button strong {
+    display: block !important;
+    font-size: clamp(.62rem, 2.6vw, .82rem) !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+}
+
+.mb-type-button strong {
+    font-size: clamp(.95rem, 4.4vw, 1.25rem) !important;
+}
+
+.mb-dock-button small,
+.mb-type-button small {
+    display: block !important;
+    margin-top: 3px !important;
+    font-size: clamp(.48rem, 2.2vw, .66rem) !important;
+    line-height: 1.05 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Side screens / modal should feel more like game panels */
+.upgrade-sheet {
+    width: min(100%, 470px) !important;
+    max-height: 86dvh !important;
+    border: 5px solid var(--mb-border) !important;
+    background: linear-gradient(180deg, #f7dd9b, #dfb862) !important;
+}
+
+.upgrade-sheet-header {
+    background: linear-gradient(180deg, #6b3f1f, #3d2110) !important;
+    color: #fff0c5 !important;
+    border-bottom: 5px solid var(--mb-border) !important;
+}
+
+.upgrade-sheet-header h2 {
+    color: #fff0c5 !important;
+    text-shadow: 0 3px 0 rgba(0,0,0,.55) !important;
+}
+
+.progress-card,
+.milestone-card,
+.upgrade-current-office {
+    border: 4px solid #b59354 !important;
+    background: #fff0c5 !important;
+}
+
+.progress-buy-button {
+    border: 4px solid #7b4a10 !important;
+}
+
+/* All edges stay square */
+*,
+*::before,
+*::after {
+    border-radius: 0 !important;
+}
+
+/* Shorter phones */
+@media (max-height: 760px) {
+    .mb-title-row {
+        grid-template-columns: 50px minmax(0, 1fr) 46px !important;
+        margin-bottom: 8px !important;
+    }
+
+    .mb-app-icon,
+    .mb-round-button {
+        width: 46px !important;
+        height: 46px !important;
+    }
+
+    .mb-wallet-pill {
+        height: 42px !important;
+    }
+
+    .mb-gameplay {
+        grid-template-rows: minmax(270px, 1fr) 96px 88px !important;
+        gap: 7px !important;
+    }
+
+    .mb-office-card {
+        grid-template-rows: 70px minmax(0, 1fr) !important;
+    }
+
+    .output-area {
+        height: 56px !important;
+        max-height: 56px !important;
+    }
+
+    .recent-words-list {
+        height: 43px !important;
+    }
+
+    .mb-dock-button,
+    .mb-hire-button,
+    .mb-upgrades-button,
+    .mb-locked-button {
+        min-height: 62px !important;
+        height: 62px !important;
+    }
+
+    .mb-type-button {
+        min-height: 74px !important;
+        height: 74px !important;
+    }
+}
+
+/* Very narrow iPhones */
+@media (max-width: 390px) {
+    .mb-topbar {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .mb-gameplay {
+        padding-left: 9px !important;
+        padding-right: 9px !important;
+    }
+
+    .mb-wallet {
+        gap: 5px !important;
+    }
+
+    .mb-wallet-pill {
+        grid-template-columns: 26px minmax(0, 1fr) !important;
+        padding: 0 4px !important;
+    }
+
+    .mb-wallet-pill span {
+        width: 25px !important;
+        height: 25px !important;
+    }
+
+    .mb-dock {
+        gap: 5px !important;
+        padding-left: 9px !important;
+        padding-right: 9px !important;
+    }
+}

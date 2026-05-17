@@ -88,3 +88,25 @@ Test with:
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=15`
+
+
+## Version 16 Portrait UI Repair
+
+This version fixes the v15 layout not matching the portrait mockup closely enough.
+
+- Enlarged and rebalanced the title/header.
+- Rebuilt the stat HUD spacing so it reads like a game HUD, not compressed cards.
+- Gave the office scene more usable vertical space and reduced awkward monkey cropping.
+- Made Letter Tape and Recent Words fit cleanly.
+- Rebuilt the bottom dock as a five-link game navigation area:
+  - Hire
+  - TYPE
+  - Upgrades
+  - Collection
+  - Quests
+- Preserved all existing mechanics from v13/v14/v15.
+- Updated cache busting to `?v=16`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=16`
