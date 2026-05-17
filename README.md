@@ -110,3 +110,19 @@ This version fixes the v15 layout not matching the portrait mockup closely enoug
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=16`
+
+
+## Version 17 Faithful Mockup UI
+
+This version rewrites the visual layer instead of stacking more CSS on old layouts.
+
+- Rebuilt the screen structure to more closely match the portrait mockup.
+- Created a six-button bottom game dock: Hire, Upgrades, Milestones, TYPE, Collection, Quests.
+- Reworked the resource HUD, title/header, office frame, tape, recent words, and progression sheet.
+- Removed visible emoji-style banana rewards from the main text output and replaced them with branded icon blocks.
+- Preserved the existing mechanics: typing, dictionary scoring, monkeys, rare odds, 5x super rares, upgrades, buildings, quests, milestones, collection, saving, and fast tap handling.
+- Updated cache-busting to `?v=17`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=17`
