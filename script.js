@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v31';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v32';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -198,6 +198,7 @@ const MILESTONES = [
     // Tier 1 — Start the Business
     { id: 'letters-100', name: 'Warm Up', description: 'Type 100 letters.', metric: 'lifetimeLetters', target: 100, reward: 75, category: 'quest', tier: 1 },
     { id: 'words-10', name: 'First Words', description: 'Find 10 words.', metric: 'lifetimeWords', target: 10, reward: 125, category: 'quest', tier: 1 },
+    { id: 'unique-5', name: 'Word Scout', description: 'Discover 5 unique words.', metric: 'uniqueWords', target: 5, reward: 175, category: 'quest', tier: 1 },
     { id: 'monkeys-1', name: 'First Hire', description: 'Hire 1 monkey.', metric: 'totalMonkeysHired', target: 1, reward: 150, category: 'quest', tier: 1 },
     { id: 'upgrades-1', name: 'Tool Upgrade', description: 'Buy 1 upgrade.', metric: 'totalUpgradesPurchased', target: 1, reward: 225, category: 'quest', tier: 1 },
     { id: 'bananas-500', name: 'Banana Buffer', description: 'Earn 500 lifetime bananas.', metric: 'lifetimeBananas', target: 500, reward: 300, category: 'quest', tier: 1 },
@@ -205,6 +206,7 @@ const MILESTONES = [
     // Tier 2 — Build the Office
     { id: 'monkeys-3', name: 'Tiny Team', description: 'Hire 3 monkeys.', metric: 'totalMonkeysHired', target: 3, reward: 350, category: 'quest', tier: 2 },
     { id: 'words-50', name: 'Word Finder', description: 'Find 50 lifetime words.', metric: 'lifetimeWords', target: 50, reward: 500, category: 'quest', tier: 2 },
+    { id: 'unique-25', name: 'Discovery Desk', description: 'Discover 25 unique words.', metric: 'uniqueWords', target: 25, reward: 900, category: 'quest', tier: 2 },
     { id: 'monkeys-5', name: 'Small Staff', description: 'Hire 5 monkeys.', metric: 'totalMonkeysHired', target: 5, reward: 650, category: 'quest', tier: 2 },
     { id: 'upgrades-3', name: 'Better Tools', description: 'Buy 3 upgrades.', metric: 'totalUpgradesPurchased', target: 3, reward: 450, category: 'quest', tier: 2 },
     { id: 'quests-3', name: 'Checklist Champ', description: 'Claim 3 quests.', metric: 'claimedQuests', target: 3, reward: 700, category: 'quest', tier: 2 },
@@ -214,12 +216,14 @@ const MILESTONES = [
     { id: 'monkeys-8', name: 'Growing Crew', description: 'Hire 8 monkeys.', metric: 'totalMonkeysHired', target: 8, reward: 1200, category: 'quest', tier: 3 },
     { id: 'upgrades-10', name: 'Office Systems', description: 'Buy 10 upgrades.', metric: 'totalUpgradesPurchased', target: 10, reward: 1800, category: 'quest', tier: 3 },
     { id: 'words-150', name: 'Word Department', description: 'Find 150 lifetime words.', metric: 'lifetimeWords', target: 150, reward: 2200, category: 'quest', tier: 3 },
+    { id: 'longest-word-5-quest', name: 'Five-Letter Find', description: 'Find a 5-letter word.', metric: 'longestWordLength', target: 5, reward: 2500, category: 'quest', tier: 3 },
     { id: 'bananas-10000', name: 'Banana Revenue', description: 'Earn 10,000 lifetime bananas.', metric: 'lifetimeBananas', target: 10000, reward: 2500, category: 'quest', tier: 3 },
     { id: 'office-3', name: 'Banana Bureau', description: 'Unlock Floor 3.', metric: 'officeLevel', target: 3, reward: 4000, category: 'quest', tier: 3 },
 
     // Tier 4 — Banana Enterprise
     { id: 'monkeys-20', name: 'Full Shift', description: 'Hire 20 monkeys.', metric: 'totalMonkeysHired', target: 20, reward: 6000, category: 'quest', tier: 4 },
     { id: 'words-500', name: 'Dictionary Engine', description: 'Find 500 lifetime words.', metric: 'lifetimeWords', target: 500, reward: 8000, category: 'quest', tier: 4 },
+    { id: 'unique-100', name: 'Word Archive', description: 'Discover 100 unique words.', metric: 'uniqueWords', target: 100, reward: 12000, category: 'quest', tier: 4 },
     { id: 'upgrades-25', name: 'Optimized Office', description: 'Buy 25 upgrades.', metric: 'totalUpgradesPurchased', target: 25, reward: 9000, category: 'quest', tier: 4 },
     { id: 'rare-1-quest', name: 'Rare Recruit', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 10000, category: 'quest', tier: 4 },
     { id: 'office-4', name: 'Typewriter Tower', description: 'Unlock Floor 4.', metric: 'officeLevel', target: 4, reward: 15000, category: 'quest', tier: 4 },
@@ -227,6 +231,7 @@ const MILESTONES = [
     // Tier 5 — Golden Company
     { id: 'monkeys-40', name: 'Monkey Company', description: 'Hire 40 monkeys.', metric: 'totalMonkeysHired', target: 40, reward: 22000, category: 'quest', tier: 5 },
     { id: 'words-1500', name: 'Word Factory', description: 'Find 1,500 lifetime words.', metric: 'lifetimeWords', target: 1500, reward: 35000, category: 'quest', tier: 5 },
+    { id: 'unique-250', name: 'Dictionary Wing', description: 'Discover 250 unique words.', metric: 'uniqueWords', target: 250, reward: 55000, category: 'quest', tier: 5 },
     { id: 'bananas-250000', name: 'Quarter Million', description: 'Earn 250K lifetime bananas.', metric: 'lifetimeBananas', target: 250000, reward: 45000, category: 'quest', tier: 5 },
     { id: 'upgrades-50', name: 'Peak Efficiency', description: 'Buy 50 upgrades.', metric: 'totalUpgradesPurchased', target: 50, reward: 50000, category: 'quest', tier: 5 },
     { id: 'office-5', name: 'Executive Treehouse', description: 'Unlock Floor 5.', metric: 'officeLevel', target: 5, reward: 75000, category: 'quest', tier: 5 },
@@ -239,6 +244,7 @@ const MILESTONES = [
     { id: 'words-250', name: 'Dictionary Desk', description: 'Find 250 lifetime words.', metric: 'lifetimeWords', target: 250, reward: 1800, category: 'milestone' },
     { id: 'words-1000', name: 'Lexicon Legend', description: 'Find 1,000 lifetime words.', metric: 'lifetimeWords', target: 1000, reward: 9000, category: 'milestone' },
     { id: 'words-5000', name: 'Word Empire', description: 'Find 5,000 lifetime words.', metric: 'lifetimeWords', target: 5000, reward: 60000, category: 'milestone' },
+    { id: 'unique-500', name: 'Dictionary Collector', description: 'Discover 500 unique words.', metric: 'uniqueWords', target: 500, reward: 80000, category: 'milestone' },
     { id: 'monkeys-15', name: 'Full Office', description: 'Hire 15 monkeys.', metric: 'totalMonkeysHired', target: 15, reward: 4500, category: 'milestone' },
     { id: 'monkeys-75', name: 'Hiring Spree', description: 'Hire 75 monkeys.', metric: 'totalMonkeysHired', target: 75, reward: 90000, category: 'milestone' },
     { id: 'rare-1', name: 'Rare Talent', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 2500, category: 'milestone' },
@@ -295,8 +301,10 @@ let lifetimeStats = {
     bestWord: '',
     bestWordPoints: 0,
     longestWord: '',
-    superRaresHired: 0
+    superRaresHired: 0,
+    uniqueWords: 0
 };
+let discoveredWords = [];
 const monkeyAnimationTimeouts = new Map();
 let pendingMonkeyTypeTimeouts = [];
 let monkeyTypingEngineId = null;
@@ -440,6 +448,91 @@ function getGlobalSpeedMultiplier() {
     return 1 + office.speedBonus + upgradeBonus;
 }
 
+function normalizeDiscoveredWords(rawWords = discoveredWords) {
+    if (!Array.isArray(rawWords)) {
+        return [];
+    }
+
+    const validWords = new Set();
+    wordsByLength.forEach((wordSet) => {
+        wordSet.forEach((word) => validWords.add(word));
+    });
+
+    return [...new Set(
+        rawWords
+            .map((word) => String(word || '').toLowerCase().trim())
+            .filter((word) => word.length >= minWordLength && validWords.has(word))
+    )];
+}
+
+function hasDiscoveredWord(word) {
+    return discoveredWords.includes(String(word).toLowerCase());
+}
+
+function getDiscoveredWordCount() {
+    return discoveredWords.length;
+}
+
+function markDiscoveredWord(word) {
+    const normalizedWord = String(word).toLowerCase();
+    if (!hasDiscoveredWord(normalizedWord)) {
+        discoveredWords.push(normalizedWord);
+        discoveredWords = normalizeDiscoveredWords(discoveredWords);
+        lifetimeStats.uniqueWords = getDiscoveredWordCount();
+        return true;
+    }
+
+    return false;
+}
+
+function getLengthBonusMultiplier(word) {
+    const length = String(word).length;
+
+    if (length >= 7) {
+        return 3;
+    }
+
+    if (length >= 6) {
+        return 2.5;
+    }
+
+    if (length >= 5) {
+        return 1.75;
+    }
+
+    if (length >= 4) {
+        return 1.25;
+    }
+
+    return 1;
+}
+
+function getLengthBonusLabel(word) {
+    const length = String(word).length;
+
+    if (length >= 7) {
+        return 'JACKPOT';
+    }
+
+    if (length >= 6) {
+        return 'BIG WORD';
+    }
+
+    if (length >= 5) {
+        return 'LONG';
+    }
+
+    if (length >= 4) {
+        return 'BONUS';
+    }
+
+    return '';
+}
+
+function getFirstDiscoveryBonus(word) {
+    return Math.max(10, String(word).length * 3);
+}
+
 function getWordIncomeMultiplier() {
     const office = getCurrentOffice();
     const payrollBonus = getUpgradeLevel('bananaPayroll') * 0.12;
@@ -451,10 +544,14 @@ function getFlatWordBonus() {
     return office.wordBonus + getUpgradeLevel('betterDictionary');
 }
 
-function calculateWordPoints(word) {
-    const basePoints = word.length + getFlatWordBonus();
-    return Math.max(1, Math.floor(basePoints * getWordIncomeMultiplier()));
+function calculateWordPoints(word, options = {}) {
+    const normalizedWord = String(word).toLowerCase();
+    const basePoints = normalizedWord.length + getFlatWordBonus();
+    const lengthMultiplier = getLengthBonusMultiplier(normalizedWord);
+    const discoveryBonus = options.isNewDiscovery ? getFirstDiscoveryBonus(normalizedWord) : 0;
+    return Math.max(1, Math.floor((basePoints * lengthMultiplier * getWordIncomeMultiplier()) + discoveryBonus));
 }
+
 
 function getTotalSuperRaresOwned() {
     return monkeyRoster.reduce((total, typeId) => {
@@ -522,7 +619,8 @@ function getDefaultLifetimeStats() {
         bestWord: '',
         bestWordPoints: 0,
         longestWord: '',
-        superRaresHired: 0
+        superRaresHired: 0,
+        uniqueWords: 0
     };
 }
 
@@ -550,6 +648,7 @@ function normalizeLifetimeStats(rawStats = {}) {
     normalized.bestWordPoints = Math.max(Number(normalized.bestWordPoints) || 0, 0);
     normalized.longestWord = typeof normalized.longestWord === 'string' ? normalized.longestWord : '';
     normalized.superRaresHired = Math.max(Number(normalized.superRaresHired) || 0, getTotalSuperRaresOwned());
+    normalized.uniqueWords = Math.max(Number(normalized.uniqueWords) || 0, getDiscoveredWordCount());
 
     return normalized;
 }
@@ -586,7 +685,9 @@ function ensureProgressionState() {
 
     const validMilestoneIds = new Set(MILESTONES.map((milestone) => milestone.id));
     claimedMilestones = [...new Set(claimedMilestones.map(String).filter((id) => validMilestoneIds.has(id)))];
+    discoveredWords = normalizeDiscoveredWords(discoveredWords);
     lifetimeStats = normalizeLifetimeStats(lifetimeStats);
+    lifetimeStats.uniqueWords = getDiscoveredWordCount();
 }
 
 function syncOfficeVisuals(force = false) {
@@ -729,6 +830,7 @@ function getQuestIconSrc(milestone) {
             return 'icon-typewriter.png';
         case 'words':
         case 'lifetimeWords':
+        case 'uniqueWords':
         case 'longestWordLength':
         case 'bestWordPoints':
             return 'icon-book.png';
@@ -777,12 +879,18 @@ function normalizeRecentWords() {
 
     recentWords = recentWords
         .filter((entry) => entry && typeof entry.word === 'string')
-        .map((entry) => ({
-            word: entry.word.toLowerCase(),
-            points: Math.max(1, Number(entry.points) || calculateWordPoints(entry.word))
-        }))
+        .map((entry) => {
+            const normalizedWord = entry.word.toLowerCase();
+            return {
+                word: normalizedWord,
+                points: Math.max(1, Number(entry.points) || calculateWordPoints(normalizedWord)),
+                newDiscovery: Boolean(entry.newDiscovery),
+                bonusLabel: typeof entry.bonusLabel === 'string' ? entry.bonusLabel : ''
+            };
+        })
         .slice(0, recentWordLimit);
 }
+
 
 function renderRecentWords() {
     if (!recentWordsList) {
@@ -805,7 +913,7 @@ function renderRecentWords() {
 
     recentWords.slice(0, recentWordLimit).forEach((entry) => {
         const chip = document.createElement('span');
-        chip.className = 'recent-word';
+        chip.className = `recent-word ${entry.newDiscovery ? 'is-new-word' : ''} ${entry.bonusLabel ? 'has-word-bonus' : ''}`.trim();
 
         const word = document.createElement('span');
         word.className = 'recent-word-text';
@@ -815,12 +923,21 @@ function renderRecentWords() {
         points.textContent = `+${entry.points}`;
 
         chip.appendChild(word);
+        points.appendChild(document.createTextNode(''));
         chip.appendChild(points);
+
+        if (entry.newDiscovery || entry.bonusLabel) {
+            const badge = document.createElement('em');
+            badge.textContent = entry.newDiscovery ? 'NEW' : entry.bonusLabel;
+            chip.appendChild(badge);
+        }
+
         fragment.appendChild(chip);
     });
 
     recentWordsList.appendChild(fragment);
 }
+
 
 function updateDisplay() {
     const currentOffice = getCurrentOffice();
@@ -849,7 +966,7 @@ function updateDisplay() {
 
     syncOfficeVisuals();
     updateProgressionPanel();
-    dictionaryStatus.textContent = `${formatNumber(getDictionaryWordCount())} words in the dictionary`;
+    dictionaryStatus.textContent = `${formatNumber(getDiscoveredWordCount())} discovered / ${formatNumber(getDictionaryWordCount())} dictionary words`;
 }
 
 function clearPlaceholder() {
@@ -869,14 +986,19 @@ function appendOutputLetter(letter, source = 'player') {
     trimOutputArea();
 }
 
-function appendWordReward(word, points) {
+function appendWordReward(word, points, isNewDiscovery = false, bonusLabel = '') {
     const wordSpan = document.createElement('span');
-    wordSpan.className = 'word-found';
-    wordSpan.innerHTML = `<span>${getDisplayWord(word).toUpperCase()} +${points}</span><span class="mini-banana-icon" aria-hidden="true"></span>`;
+    wordSpan.className = `word-found ${isNewDiscovery ? 'is-new-word' : ''} ${bonusLabel ? 'has-word-bonus' : ''}`.trim();
+    wordSpan.innerHTML = `
+        <span>${getDisplayWord(word).toUpperCase()} +${points}</span>
+        ${isNewDiscovery ? '<em>NEW</em>' : bonusLabel ? `<em>${bonusLabel}</em>` : ''}
+        <span class="mini-banana-icon" aria-hidden="true"></span>
+    `;
     outputArea.appendChild(wordSpan);
 
     trimOutputArea();
 }
+
 
 function trimOutputArea() {
     while (outputArea.childNodes.length > maxOutputNodes) {
@@ -937,7 +1059,14 @@ function spawnMonkeyHireMessage(monkeyType) {
 function awardWords(words) {
     words.forEach((word) => {
         const normalizedWord = String(word).toLowerCase();
-        const points = calculateWordPoints(normalizedWord);
+        const isNewDiscovery = !hasDiscoveredWord(normalizedWord);
+        const bonusLabel = getLengthBonusLabel(normalizedWord);
+        const points = calculateWordPoints(normalizedWord, { isNewDiscovery });
+
+        if (isNewDiscovery) {
+            markDiscoveredWord(normalizedWord);
+        }
+
         addBananas(points);
         wordsTyped += 1;
         lifetimeStats.wordsFound += 1;
@@ -952,8 +1081,17 @@ function awardWords(words) {
         }
 
         recentWords = recentWords.filter((entry) => entry.word !== normalizedWord);
-        recentWords.unshift({ word: normalizedWord, points });
-        appendWordReward(normalizedWord, points);
+        recentWords.unshift({ word: normalizedWord, points, newDiscovery: isNewDiscovery, bonusLabel });
+        appendWordReward(normalizedWord, points, isNewDiscovery, bonusLabel);
+
+        if (isNewDiscovery) {
+            spawnFloatingMessage(`NEW WORD: ${getDisplayWord(normalizedWord).toUpperCase()}`, 'is-super-rare');
+        }
+
+        if (bonusLabel) {
+            spawnFloatingMessage(`${bonusLabel} WORD +${formatNumber(points)}`, 'is-hire');
+        }
+
         spawnFloatingReward(points, normalizedWord);
     });
 
@@ -1247,6 +1385,8 @@ function getMilestoneProgress(milestone) {
             return wordsTyped;
         case 'lifetimeWords':
             return lifetimeStats.wordsFound;
+        case 'uniqueWords':
+            return getDiscoveredWordCount();
         case 'monkeys':
             return monkeysOwned;
         case 'totalMonkeysHired':
@@ -1466,6 +1606,7 @@ function renderMonkeyCollection() {
     const ownedCount = MONKEY_TYPES.filter((type) => ownedTypeIds.has(type.id)).length;
     const normalOwned = MONKEY_TYPES.filter((type) => type.rarity === 'normal' && ownedTypeIds.has(type.id)).length;
     const rareOwned = MONKEY_TYPES.filter((type) => type.rarity === 'super-rare' && ownedTypeIds.has(type.id)).length;
+    const recentDiscoveries = discoveredWords.slice(-12).reverse();
 
     const renderSection = (title, subtitle, rarity) => {
         const sectionTypes = MONKEY_TYPES.filter((type) => type.rarity === rarity);
@@ -1504,10 +1645,33 @@ function renderMonkeyCollection() {
         `;
     };
 
+    const renderWordDiscoverySection = () => {
+        return `
+            <section class="collection-section word-discovery-section">
+                <div class="collection-section-header">
+                    <div>
+                        <strong>Word Discoveries</strong>
+                        <span>Unique words found, best payout, and longest word.</span>
+                    </div>
+                </div>
+                <div class="word-discovery-summary">
+                    <div><strong>${formatNumber(getDiscoveredWordCount())}</strong><span>Unique</span></div>
+                    <div><strong>${lifetimeStats.bestWord ? getDisplayWord(lifetimeStats.bestWord, 8).toUpperCase() : '—'}</strong><span>Best: ${formatNumber(lifetimeStats.bestWordPoints)}</span></div>
+                    <div><strong>${lifetimeStats.longestWord ? getDisplayWord(lifetimeStats.longestWord, 8).toUpperCase() : '—'}</strong><span>Longest</span></div>
+                </div>
+                <div class="word-discovery-list">
+                    ${recentDiscoveries.length > 0
+                        ? recentDiscoveries.map((word) => `<span>${getDisplayWord(word, 9).toUpperCase()}</span>`).join('')
+                        : '<em>Find words to fill the dictionary.</em>'}
+                </div>
+            </section>
+        `;
+    };
+
     collectionList.innerHTML = `
         <div class="collection-summary">
             <div>
-                <strong>${ownedCount} / ${MONKEY_TYPES.length} collected</strong>
+                <strong>${ownedCount} / ${MONKEY_TYPES.length} monkeys collected</strong>
                 <span>${normalOwned} normal • ${rareOwned} super rare</span>
             </div>
             <div class="collection-summary-side">
@@ -1515,6 +1679,7 @@ function renderMonkeyCollection() {
                 <span>Super rare odds</span>
             </div>
         </div>
+        ${renderWordDiscoverySection()}
         ${renderSection('Normal Monkeys', 'Your everyday typing crew.', 'normal')}
         ${renderSection('Super Rare Monkeys', 'High-value hires with boosted speed.', 'super-rare')}
     `;
@@ -1822,7 +1987,8 @@ function saveGame() {
         officeLevel,
         upgrades,
         claimedMilestones,
-        lifetimeStats
+        lifetimeStats,
+        discoveredWords
     };
 
     localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
@@ -1864,6 +2030,7 @@ function loadGame() {
         officeLevel = Number(saveData.officeLevel) || 1;
         upgrades = { ...upgrades, ...(saveData.upgrades || {}) };
         claimedMilestones = Array.isArray(saveData.claimedMilestones) ? saveData.claimedMilestones : [];
+        discoveredWords = normalizeDiscoveredWords(saveData.discoveredWords || recentWords.map((entry) => entry.word));
         lifetimeStats = normalizeLifetimeStats(saveData.lifetimeStats || {});
 
         ensureProgressionState();
@@ -1898,6 +2065,7 @@ function resetGame() {
         rareRecruiter: 0
     };
     claimedMilestones = [];
+    discoveredWords = [];
     lifetimeStats = getDefaultLifetimeStats();
 
     monkeyAnimationTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
@@ -1992,6 +2160,7 @@ window.MonkeyBusinessDebug = {
             claimedMilestones: [...claimedMilestones],
             recentWords: [...recentWords],
             lifetimeStats: { ...lifetimeStats },
+            discoveredWords: [...discoveredWords],
             unlockedQuestTier: getUnlockedQuestTier()
         };
     },
@@ -2006,6 +2175,7 @@ window.MonkeyBusinessDebug = {
         if (Number.isFinite(Number(partialState.officeLevel))) officeLevel = clamp(Number(partialState.officeLevel), 1, OFFICE_BUILDINGS.length);
         if (partialState.upgrades && typeof partialState.upgrades === 'object') upgrades = { ...upgrades, ...partialState.upgrades };
         if (Array.isArray(partialState.claimedMilestones)) claimedMilestones = partialState.claimedMilestones.map(String);
+        if (Array.isArray(partialState.discoveredWords)) discoveredWords = normalizeDiscoveredWords(partialState.discoveredWords);
         if (partialState.lifetimeStats && typeof partialState.lifetimeStats === 'object') lifetimeStats = normalizeLifetimeStats(partialState.lifetimeStats);
         ensureMonkeyRosterMatchesCount();
         ensureProgressionState();
@@ -2018,6 +2188,8 @@ window.MonkeyBusinessDebug = {
     runMonkeyTyping,
     buyMonkey,
     typeRandomLetter,
+    awardWords,
+    calculateWordPoints,
     updateDisplay,
     startMonkeyTypingEngine
 };

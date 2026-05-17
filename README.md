@@ -347,3 +347,30 @@ Changed-files-only patch.
 - Existing v30 saves migrate into v31.
 - Lifetime stats are backfilled from existing save data where possible.
 - Existing claimed goals are filtered safely against the expanded goal list.
+
+
+## Version 32 Word Discovery System
+
+Changed-files-only patch.
+
+### Word discovery
+- Added persistent discovered words.
+- First-time word discoveries now award a discovery bonus.
+- Repeated words still pay normally, but do not receive the discovery bonus again.
+- 4-letter, 5-letter, 6-letter, and 7+ letter words now receive escalating length bonuses.
+- Recent Words chips now mark NEW words and bonus words.
+- Word reward chips in the Letter Tape now show NEW / BONUS / LONG / BIG WORD / JACKPOT labels.
+
+### Progression hooks
+- Added unique-word quests across quest tiers.
+- Added long-word and unique-word milestone support.
+- Added `uniqueWords` metric to progression tracking.
+- Best word, longest word, and unique discoveries now help progression feel less monotonous.
+
+### Collection screen
+- Added a Word Discoveries section to the collection screen.
+- Shows unique words discovered, best word, longest word, and recent discoveries.
+
+### Save compatibility
+- Existing v31 saves migrate to v32.
+- Existing recent words seed the discovered-word list when possible.
