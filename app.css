@@ -4507,7 +4507,7 @@
     width: var(--office-stage-width, 100%) !important;
     min-width: 100% !important;
     height: 76% !important;
-    transform: translate3d(0,0,0) !important;
+    transform: translate3d(0,0,0);
     will-change: transform;
     pointer-events: none !important;
 }
@@ -4641,7 +4641,7 @@
     width: var(--office-stage-width, 100%) !important;
     min-width: 100% !important;
     height: 83% !important;
-    transform: translateX(0) !important;
+    transform: translateX(0);
     transform-origin: left bottom !important;
     will-change: transform !important;
     backface-visibility: hidden !important;
@@ -4652,8 +4652,8 @@
 }
 
 @keyframes officeCrewPanV37 {
-    0% { transform: translateX(0) !important; }
-    100% { transform: translateX(var(--office-pan-offset, -45%)) !important; }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(var(--office-pan-offset, -45%)); }
 }
 
 .monkey-office-pan > .office-monkey {
@@ -4915,5 +4915,26 @@
 @media (prefers-reduced-motion: reduce) {
     .office-monkey.is-legendary .monkey-sprite {
         animation: none;
+    }
+}
+
+
+/* v39 office horizontal pan fix
+   The office already renders a wider .monkey-office-pan for larger crews.
+   Earlier rules used !important on transform, which pinned the track at x=0
+   and prevented the keyframes from moving. Keep transform non-important so
+   the animation can pan across the wider office. */
+.monkey-office-grid.is-scrolling-office .monkey-office-pan {
+    animation: officeCrewPanV39 var(--office-pan-duration, 22s) linear infinite alternate !important;
+}
+
+@keyframes officeCrewPanV39 {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(var(--office-pan-offset, -45%), 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .monkey-office-grid.is-scrolling-office .monkey-office-pan {
+        animation: officeCrewPanV39 56s linear infinite alternate !important;
     }
 }
