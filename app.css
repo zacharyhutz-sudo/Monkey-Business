@@ -4818,3 +4818,102 @@
         animation: officeCrewPanV37 56s linear infinite alternate !important;
     }
 }
+
+
+/* v38 rarity additions: rare + legendary monkeys */
+.float-reward.is-rare {
+    background: linear-gradient(180deg, #e9fff8, #79e7bd);
+    border-color: #087a5c;
+    color: #073629;
+    box-shadow: 0 0 16px rgba(80, 232, 181, .36), 0 5px 0 rgba(0,0,0,.22);
+}
+
+.float-reward.is-legendary {
+    background: linear-gradient(135deg, #fff7c0, #ffc857 34%, #ff7bc8 67%, #8fe7ff);
+    border-color: #4b1b6b;
+    color: #2c0d3f;
+    box-shadow: 0 0 24px rgba(255, 200, 87, .5), 0 5px 0 rgba(0,0,0,.26);
+}
+
+.office-monkey.is-rare .monkey-sprite {
+    filter: drop-shadow(0 0 7px rgba(80, 232, 181, .62)) drop-shadow(0 4px 0 rgba(30,14,5,.28));
+}
+
+.office-monkey.is-legendary .monkey-sprite {
+    filter: drop-shadow(0 0 11px rgba(255, 216, 84, .82)) drop-shadow(0 0 16px rgba(255, 123, 200, .42)) drop-shadow(0 4px 0 rgba(30,14,5,.28));
+    animation: legendaryMonkeyPulse 2.8s ease-in-out infinite;
+}
+
+.office-monkey.is-rare .monkey-rarity-star {
+    background: linear-gradient(180deg, #c5ffe9, #45d69c);
+    border-color: #087a5c;
+    color: #073629;
+}
+
+.office-monkey.is-legendary .monkey-rarity-star {
+    background: linear-gradient(135deg, #fff3a0, #ffbf3f, #ff7bc8, #8fe7ff);
+    border-color: #4b1b6b;
+    color: #2c0d3f;
+    box-shadow: 0 0 14px rgba(255, 200, 87, .5), 0 3px 0 rgba(0,0,0,.23);
+}
+
+.collection-card.is-rare {
+    border-color: #0f8c68;
+    box-shadow: 0 0 12px rgba(80, 232, 181, .22), inset 0 2px 0 rgba(255,255,255,.34);
+}
+
+.collection-card.is-legendary {
+    border-color: #7c3cb0;
+    background: linear-gradient(180deg, #fff7d6, #ffe6f5 52%, #e8f7ff);
+    box-shadow: 0 0 18px rgba(255, 200, 87, .32), 0 0 22px rgba(255, 123, 200, .22), inset 0 2px 0 rgba(255,255,255,.42);
+}
+
+.hire-reveal-card.is-rare {
+    border-color: #0f8c68;
+    background: linear-gradient(180deg, #f0fff8, #a8f2d8);
+    box-shadow: 0 0 20px rgba(80, 232, 181, .34), 0 10px 0 rgba(0,0,0,.26);
+}
+
+.hire-reveal-card.is-legendary {
+    border-color: #4b1b6b;
+    background: linear-gradient(135deg, #fff7c0, #ffd56f 32%, #ffc3e5 66%, #c8f3ff);
+    color: #2c0d3f;
+    box-shadow: 0 0 30px rgba(255, 200, 87, .55), 0 0 34px rgba(255, 123, 200, .28), 0 10px 0 rgba(0,0,0,.28);
+}
+
+.hire-burst-piece.is-rare {
+    background: #55e2ad;
+    border-color: #087a5c;
+    box-shadow: 0 0 10px rgba(80, 232, 181, .45);
+}
+
+.hire-burst-piece.is-legendary {
+    background: linear-gradient(135deg, #fff3a0, #ffbf3f, #ff7bc8, #8fe7ff);
+    border-color: #4b1b6b;
+    box-shadow: 0 0 15px rgba(255, 200, 87, .55);
+}
+
+.celebration-overlay.is-rare .celebration-card {
+    background: linear-gradient(180deg, #f0fff8, #a8f2d8);
+    border-color: #0f8c68;
+    color: #073629;
+    box-shadow: 0 0 28px rgba(80, 232, 181, .38), 0 10px 0 rgba(0,0,0,.3);
+}
+
+.celebration-overlay.is-legendary .celebration-card {
+    background: linear-gradient(135deg, #fff7c0, #ffd56f 32%, #ffc3e5 66%, #c8f3ff);
+    border-color: #4b1b6b;
+    color: #2c0d3f;
+    box-shadow: 0 0 40px rgba(255, 200, 87, .62), 0 0 42px rgba(255, 123, 200, .32), 0 12px 0 rgba(0,0,0,.34);
+}
+
+@keyframes legendaryMonkeyPulse {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-2px) scale(1.025); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .office-monkey.is-legendary .monkey-sprite {
+        animation: none;
+    }
+}
