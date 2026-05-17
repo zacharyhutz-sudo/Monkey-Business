@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v22';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v23';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -442,14 +442,23 @@ function syncOfficeVisuals(force = false) {
     const renderedMonkeyCount = monkeyOfficeGrid.querySelectorAll('[data-monkey-slot]').length;
     const hasEmptyState = Boolean(monkeyOfficeGrid.querySelector('.office-empty-state'));
 
-    if (force || renderedMonkeyCount !== monkeysOwned || (monkeysOwned === 0 && !hasEmptyState)) {
+    if (force || renderedMonkeyCount !== monkeysOwned || (monkeysOwned === 0 && !hasEmptyState) || (monkeysOwned > 0 && hasEmptyState)) {
         renderMonkeyOffice();
         return;
     }
 
     monkeyOfficeSummary.textContent = monkeysOwned === 0
-        ? 'No monkeys hired yet.'
-        : `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in the office`;
+        ? 'No monkeys yet.'
+        : `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in office`;
+}
+
+function forceMonkeyOfficeRender() {
+    ensureMonkeyRosterMatchesCount();
+    renderMonkeyOffice();
+
+    if (monkeysOwned > 0 && monkeyOfficeGrid.querySelectorAll('[data-monkey-slot]').length === 0) {
+        requestAnimationFrame(() => renderMonkeyOffice());
+    }
 }
 
 function getPlayerLevel() {
@@ -720,12 +729,15 @@ function buyMonkey() {
 
     monkeyCost = Math.ceil(monkeyCost * 1.55);
 
+    forceMonkeyOfficeRender();
     updateDisplay();
     saveGame();
     spawnMonkeyHireMessage(hiredMonkeyType);
 
     requestAnimationFrame(() => {
+        forceMonkeyOfficeRender();
         animateMonkey(monkeysOwned - 1, hiredMonkeyType.rarity === 'super-rare' ? '★' : '!');
+        runMonkeyTyping();
     });
 }
 
@@ -737,6 +749,12 @@ function clearPendingMonkeyTyping() {
 function runMonkeyTyping() {
     if (monkeysOwned <= 0) {
         return;
+    }
+
+    ensureMonkeyRosterMatchesCount();
+
+    if (monkeyOfficeGrid.querySelectorAll('[data-monkey-slot]').length !== monkeysOwned) {
+        renderMonkeyOffice();
     }
 
     clearPendingMonkeyTyping();
@@ -795,7 +813,7 @@ function renderMonkeyOffice() {
                     <span class="letter-bubble" aria-hidden="true"></span>
                     ${rarityBadge}
                     <div class="office-monkey-art">
-                        <img src="${getMonkeySpriteSrc(monkeyType)}" alt="" class="monkey-sprite" loading="lazy" />
+                        <img src="${getMonkeySpriteSrc(monkeyType)}" alt="" class="monkey-sprite" loading="eager" decoding="async" onerror="this.onerror=null; this.src=\'icon-monkey.png\'; this.classList.add(\'is-fallback-sprite\');" />
                     </div>
                 </div>
             `;
@@ -1296,6 +1314,6 @@ document.addEventListener('keydown', (event) => {
 });
 
 loadGame();
-syncOfficeVisuals(true);
+forceMonkeyOfficeRender();
 updateDisplay();
 setInterval(runMonkeyTyping, monkeyTypingIntervalMs);

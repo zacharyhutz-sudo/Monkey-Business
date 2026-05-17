@@ -195,3 +195,16 @@ Test with:
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=22`
+
+
+## Version 23 Icon Detail + Monkey Render Fix
+
+Changed-files-only patch.
+
+- Replaced simple blocky UI icons with more detailed pixel-art icons.
+- Added stronger icon shadows and button bevels.
+- Added a monkey rendering guard so hiring a monkey immediately forces the office to redraw.
+- Removed lazy loading from office monkey sprites and added an image fallback.
+- After hiring, monkeys now immediately animate and begin a typing cycle instead of waiting for the next interval.
+- Added a typing guard so the monkey office redraws if the roster and rendered monkey count ever get out of sync.
+- Updated cache busting to `?v=23`.
