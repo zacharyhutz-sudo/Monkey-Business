@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v29';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v30';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -80,7 +80,7 @@ const OFFICE_BUILDINGS = [
         unlockCost: 2500,
         description: 'A bigger office with better desks and jungle energy.',
         speedBonus: 0.08,
-        wordBonus: 0,
+        wordBonus: 1,
         incomeMultiplier: 1,
         rareBonus: 0
     },
@@ -91,7 +91,7 @@ const OFFICE_BUILDINGS = [
         unlockCost: 12000,
         description: 'A polished agency floor with better word payouts.',
         speedBonus: 0.12,
-        wordBonus: 0,
+        wordBonus: 1,
         incomeMultiplier: 1.12,
         rareBonus: 0
     },
@@ -102,7 +102,7 @@ const OFFICE_BUILDINGS = [
         unlockCost: 60000,
         description: 'A high-rise typing floor with upgraded word processing.',
         speedBonus: 0.16,
-        wordBonus: 1,
+        wordBonus: 2,
         incomeMultiplier: 1.18,
         rareBonus: 0
     },
@@ -113,7 +113,7 @@ const OFFICE_BUILDINGS = [
         unlockCost: 250000,
         description: 'A premium treetop headquarters for serious monkey business.',
         speedBonus: 0.26,
-        wordBonus: 1,
+        wordBonus: 2,
         incomeMultiplier: 1.28,
         rareBonus: 0.02
     },
@@ -124,7 +124,7 @@ const OFFICE_BUILDINGS = [
         unlockCost: 1000000,
         description: 'The legendary office where rare talent tends to appear.',
         speedBonus: 0.35,
-        wordBonus: 2,
+        wordBonus: 3,
         incomeMultiplier: 1.45,
         rareBonus: 0.05
     }
@@ -136,8 +136,8 @@ const UPGRADE_DEFS = {
         name: 'Faster Typewriters',
         branch: 'Speed',
         description: 'All monkeys type 8% faster per level.',
-        baseCost: 650,
-        costMultiplier: 1.9,
+        baseCost: 350,
+        costMultiplier: 1.75,
         maxLevel: 25
     },
     betterDictionary: {
@@ -145,8 +145,8 @@ const UPGRADE_DEFS = {
         name: 'Better Dictionary',
         branch: 'Words',
         description: 'Every word earns +1 banana per level before multipliers.',
-        baseCost: 900,
-        costMultiplier: 2.0,
+        baseCost: 600,
+        costMultiplier: 1.85,
         maxLevel: 30
     },
     bananaPayroll: {
@@ -154,8 +154,8 @@ const UPGRADE_DEFS = {
         name: 'Banana Payroll',
         branch: 'Words',
         description: 'Word income increases by 12% per level.',
-        baseCost: 1800,
-        costMultiplier: 2.25,
+        baseCost: 1300,
+        costMultiplier: 2.05,
         maxLevel: 20
     },
     rareRecruiter: {
@@ -163,24 +163,32 @@ const UPGRADE_DEFS = {
         name: 'Rare Recruiter',
         branch: 'Recruiting',
         description: 'Super rare hire chance increases by 1% per level.',
-        baseCost: 5000,
-        costMultiplier: 2.35,
+        baseCost: 3500,
+        costMultiplier: 2.25,
         maxLevel: 10
     }
 };
 
 const MILESTONES = [
-    { id: 'letters-500', name: 'First Shift', description: 'Type 500 letters.', metric: 'letters', target: 500, reward: 150 },
-    { id: 'letters-2500', name: 'Long Day', description: 'Type 2,500 letters.', metric: 'letters', target: 2500, reward: 750 },
-    { id: 'letters-10000', name: 'Overtime', description: 'Type 10,000 letters.', metric: 'letters', target: 10000, reward: 3500 },
-    { id: 'words-50', name: 'Word Finder', description: 'Find 50 words.', metric: 'words', target: 50, reward: 300 },
-    { id: 'words-250', name: 'Dictionary Desk', description: 'Find 250 words.', metric: 'words', target: 250, reward: 1800 },
-    { id: 'words-1000', name: 'Lexicon Legend', description: 'Find 1,000 words.', metric: 'words', target: 1000, reward: 9000 },
-    { id: 'monkeys-5', name: 'Small Staff', description: 'Hire 5 monkeys.', metric: 'monkeys', target: 5, reward: 650 },
-    { id: 'monkeys-15', name: 'Full Office', description: 'Hire 15 monkeys.', metric: 'monkeys', target: 15, reward: 4500 },
-    { id: 'rare-1', name: 'Rare Talent', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 2500 },
-    { id: 'office-2', name: 'New Lease', description: 'Unlock Floor 2.', metric: 'officeLevel', target: 2, reward: 1000 },
-    { id: 'office-4', name: 'High-Rise Hustle', description: 'Unlock Floor 4.', metric: 'officeLevel', target: 4, reward: 15000 }
+    { id: 'letters-100', name: 'Warm Up', description: 'Type 100 letters.', metric: 'letters', target: 100, reward: 75, category: 'quest' },
+    { id: 'words-10', name: 'First Words', description: 'Find 10 words.', metric: 'words', target: 10, reward: 125, category: 'quest' },
+    { id: 'monkeys-1', name: 'First Hire', description: 'Hire 1 monkey.', metric: 'monkeys', target: 1, reward: 150, category: 'quest' },
+    { id: 'upgrades-1', name: 'Tool Upgrade', description: 'Buy 1 upgrade.', metric: 'upgrades', target: 1, reward: 225, category: 'quest' },
+    { id: 'monkeys-3', name: 'Tiny Team', description: 'Hire 3 monkeys.', metric: 'monkeys', target: 3, reward: 350, category: 'quest' },
+    { id: 'words-50', name: 'Word Finder', description: 'Find 50 words.', metric: 'words', target: 50, reward: 500, category: 'quest' },
+    { id: 'bananas-500', name: 'Banana Buffer', description: 'Hold 500 bananas at once.', metric: 'bananas', target: 500, reward: 300, category: 'quest' },
+    { id: 'monkeys-5', name: 'Small Staff', description: 'Hire 5 monkeys.', metric: 'monkeys', target: 5, reward: 650, category: 'quest' },
+    { id: 'quests-3', name: 'Checklist Champ', description: 'Claim 3 quests.', metric: 'claimedQuests', target: 3, reward: 700, category: 'quest' },
+    { id: 'office-2', name: 'New Lease', description: 'Unlock Floor 2.', metric: 'officeLevel', target: 2, reward: 1000, category: 'quest' },
+
+    { id: 'letters-500', name: 'First Shift', description: 'Type 500 letters.', metric: 'letters', target: 500, reward: 150, category: 'milestone' },
+    { id: 'letters-2500', name: 'Long Day', description: 'Type 2,500 letters.', metric: 'letters', target: 2500, reward: 750, category: 'milestone' },
+    { id: 'letters-10000', name: 'Overtime', description: 'Type 10,000 letters.', metric: 'letters', target: 10000, reward: 3500, category: 'milestone' },
+    { id: 'words-250', name: 'Dictionary Desk', description: 'Find 250 words.', metric: 'words', target: 250, reward: 1800, category: 'milestone' },
+    { id: 'words-1000', name: 'Lexicon Legend', description: 'Find 1,000 words.', metric: 'words', target: 1000, reward: 9000, category: 'milestone' },
+    { id: 'monkeys-15', name: 'Full Office', description: 'Hire 15 monkeys.', metric: 'monkeys', target: 15, reward: 4500, category: 'milestone' },
+    { id: 'rare-1', name: 'Rare Talent', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 2500, category: 'milestone' },
+    { id: 'office-4', name: 'High-Rise Hustle', description: 'Unlock Floor 4.', metric: 'officeLevel', target: 4, reward: 15000, category: 'milestone' }
 ];
 
 const wordsByLength = new Map();
@@ -236,6 +244,7 @@ const resetButton = document.getElementById('reset-button');
 const buyMonkeyButton = document.getElementById('buy-monkey-button');
 const upgradesButton = document.getElementById('nav-upgrades-button');
 const closeUpgradesButton = document.getElementById('close-upgrades-button');
+const officeInfoButton = document.getElementById('office-info-button');
 const upgradePanel = document.getElementById('upgrade-panel');
 const officeUpgradeList = document.getElementById('office-upgrade-list');
 const skillsUpgradeList = document.getElementById('skills-upgrade-list');
@@ -440,6 +449,9 @@ function ensureProgressionState() {
     if (!Array.isArray(claimedMilestones)) {
         claimedMilestones = [];
     }
+
+    const validMilestoneIds = new Set(MILESTONES.map((milestone) => milestone.id));
+    claimedMilestones = [...new Set(claimedMilestones.map(String).filter((id) => validMilestoneIds.has(id)))];
 }
 
 function syncOfficeVisuals(force = false) {
@@ -492,8 +504,56 @@ function getEstimatedBananaRate() {
     return getEstimatedWordRate() * avgPoints * getWordIncomeMultiplier();
 }
 
+function isQuestMilestone(milestone) {
+    return milestone.category === 'quest';
+}
+
+function isLongTermMilestone(milestone) {
+    return milestone.category !== 'quest';
+}
+
+function getUnclaimedMilestones(category = null) {
+    return MILESTONES.filter((milestone) => {
+        if (category === 'quest' && !isQuestMilestone(milestone)) {
+            return false;
+        }
+
+        if (category === 'milestone' && !isLongTermMilestone(milestone)) {
+            return false;
+        }
+
+        return !claimedMilestones.includes(milestone.id);
+    });
+}
+
+function isMilestoneReady(milestone) {
+    return getMilestoneProgress(milestone) >= milestone.target && !claimedMilestones.includes(milestone.id);
+}
+
+function sortProgressGoals(a, b) {
+    const aReady = isMilestoneReady(a) ? 1 : 0;
+    const bReady = isMilestoneReady(b) ? 1 : 0;
+
+    if (aReady !== bReady) {
+        return bReady - aReady;
+    }
+
+    const aRatio = clamp(getMilestoneProgress(a) / a.target, 0, 1);
+    const bRatio = clamp(getMilestoneProgress(b) / b.target, 0, 1);
+
+    if (aRatio !== bRatio) {
+        return bRatio - aRatio;
+    }
+
+    return MILESTONES.indexOf(a) - MILESTONES.indexOf(b);
+}
+
+function getClaimableQuestCount() {
+    return MILESTONES.filter((milestone) => isQuestMilestone(milestone) && isMilestoneReady(milestone)).length;
+}
+
 function getActiveQuestCount() {
-    return MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 9).length;
+    return getClaimableQuestCount();
 }
 
 function getQuestIconSrc(milestone) {
@@ -595,9 +655,9 @@ function updateDisplay() {
     if (bananasRateEl) bananasRateEl.textContent = `+${formatUiNumber(getEstimatedBananaRate())} /s`;
     if (lettersRateEl) lettersRateEl.textContent = `+${formatUiNumber(getPassiveLetterRate())} /s`;
     if (wordsRateEl) wordsRateEl.textContent = `+${formatUiNumber(getEstimatedWordRate())} /s`;
-    if (monkeysRateEl) monkeysRateEl.textContent = `+${formatUiNumber(monkeysOwned > 0 ? monkeysOwned : 0)} /s`;
+    if (monkeysRateEl) monkeysRateEl.textContent = monkeysOwned > 0 ? 'Crew' : 'None';
     if (playerLevelBadge) playerLevelBadge.textContent = `Lvl ${formatNumber(getPlayerLevel())}`;
-    if (questsBadge) questsBadge.textContent = String(getActiveQuestCount());
+    if (questsBadge) questsBadge.textContent = String(getClaimableQuestCount());
 
     officeLevelLabel.textContent = `Floor ${currentOffice.floor}`;
     officeNameTitle.textContent = currentOffice.name;
@@ -761,20 +821,6 @@ function getMonkeyTypingDelay(typeId) {
     return Math.max(250, monkeyTypingIntervalMs / totalMultiplier);
 }
 
-function syncMonkeyTypingSchedule(now = performance.now(), runSoon = false) {
-    ensureMonkeyRosterMatchesCount();
-
-    if (monkeyNextTypeAt.length > monkeysOwned) {
-        monkeyNextTypeAt = monkeyNextTypeAt.slice(0, monkeysOwned);
-    }
-
-    while (monkeyNextTypeAt.length < monkeysOwned) {
-        const typeId = monkeyRoster[monkeyNextTypeAt.length];
-        monkeyNextTypeAt.push(now + (runSoon ? 450 : getMonkeyTypingDelay(typeId)));
-    }
-}
-
-
 function getMonkeySeat(index, total) {
     const layouts = {
         1: [{ x: 50, y: 10, scale: 1.1 }],
@@ -845,7 +891,7 @@ function buyMonkey() {
     const hiredMonkeyType = getMonkeyType(hiredTypeId);
     const newMonkeyIndex = monkeysOwned - 1;
 
-    monkeyCost = Math.ceil(monkeyCost * 1.55);
+    monkeyCost = Math.ceil(monkeyCost * 1.9);
 
     forceMonkeyOfficeRender();
     updateDisplay();
@@ -1008,10 +1054,20 @@ function getMilestoneProgress(milestone) {
             return getTotalSuperRaresOwned();
         case 'officeLevel':
             return officeLevel;
+        case 'upgrades':
+            return Object.values(upgrades).reduce((total, level) => total + (Number(level) || 0), 0);
+        case 'claimedQuests':
+            return claimedMilestones.filter((id) => {
+                const entry = MILESTONES.find((milestoneEntry) => milestoneEntry.id === id);
+                return entry && isQuestMilestone(entry);
+            }).length;
+        case 'bananas':
+            return bananas;
         default:
             return 0;
     }
 }
+
 
 function buyUpgrade(upgradeId) {
     const upgrade = UPGRADE_DEFS[upgradeId];
@@ -1202,16 +1258,16 @@ function renderQuests() {
         return;
     }
 
-    const activeQuests = MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 5);
-    if (questsBadge) questsBadge.textContent = String(activeQuests.length);
+    const activeQuests = getUnclaimedMilestones('quest').sort(sortProgressGoals).slice(0, 5);
+    if (questsBadge) questsBadge.textContent = String(getClaimableQuestCount());
 
     if (activeQuests.length === 0) {
         questsList.innerHTML = `
             <article class="quest-card compact-quest-card is-complete">
                 <div class="quest-art"><img src="icon-quests.png" alt="" /></div>
                 <div class="quest-main">
-                    <h3>All quests complete</h3>
-                    <p>More quests will arrive as the office expands.</p>
+                    <h3>All starter quests complete</h3>
+                    <p>Keep pushing long-term milestones as the office grows.</p>
                 </div>
             </article>
         `;
@@ -1242,19 +1298,39 @@ function renderQuests() {
     }).join('');
 }
 
+
+function getUpgradeEffectValue(upgradeId, level) {
+    switch (upgradeId) {
+        case 'fasterTypewriters':
+            return `+${Math.round(level * 8)}% speed`;
+        case 'betterDictionary':
+            return `+${level} banana${level === 1 ? '' : 's'} per word`;
+        case 'bananaPayroll':
+            return `+${Math.round(level * 12)}% word income`;
+        case 'rareRecruiter':
+            return `+${level}% rare odds`;
+        default:
+            return `Level ${level}`;
+    }
+}
+
 function renderUpgradeCard(upgradeId) {
     const upgrade = UPGRADE_DEFS[upgradeId];
     const level = getUpgradeLevel(upgradeId);
     const isMaxed = level >= upgrade.maxLevel;
     const cost = isMaxed ? 0 : getUpgradeCost(upgradeId);
     const canAfford = !isMaxed && bananas >= cost;
+    const currentEffect = getUpgradeEffectValue(upgradeId, level);
+    const nextEffect = isMaxed ? 'Maxed' : getUpgradeEffectValue(upgradeId, level + 1);
 
     return `
-        <article class="progress-card">
+        <article class="progress-card upgrade-card-rich ${canAfford ? 'is-affordable' : ''}">
             <div class="progress-card-copy">
                 <span class="progress-branch">${upgrade.branch}</span>
                 <h3>${upgrade.name}</h3>
                 <p>${upgrade.description}</p>
+                <div class="upgrade-effect-row"><span>Current</span><strong>${currentEffect}</strong></div>
+                <div class="upgrade-effect-row is-next"><span>Next</span><strong>${nextEffect}</strong></div>
                 <span class="progress-meta">Level ${level} / ${upgrade.maxLevel}</span>
             </div>
             <button class="progress-buy-button" data-upgrade-id="${upgrade.id}" ${(!canAfford || isMaxed) ? 'disabled' : ''}>
@@ -1263,6 +1339,7 @@ function renderUpgradeCard(upgradeId) {
         </article>
     `;
 }
+
 
 function getOfficeBonusSummary(office) {
     const parts = [];
@@ -1309,15 +1386,15 @@ function updateProgressionPanel() {
     }
 
     officeUpgradeList.innerHTML = `
-        <article class="progress-card office-progress-card office-progress-rich">
+        <article class="progress-card office-progress-card office-progress-rich ${nextOffice && bananas >= nextOffice.unlockCost ? 'is-affordable' : ''}">
             <div class="progress-card-copy">
                 <span class="progress-branch">Office Building</span>
-                <h3>${nextOffice ? nextOffice.name : 'All Offices Unlocked'}</h3>
+                <h3>${nextOffice ? `${nextOffice.name} — Floor ${nextOffice.floor}` : 'All Offices Unlocked'}</h3>
                 <p>${nextOffice ? nextOffice.description : 'You have reached the top of the monkey business ladder.'}</p>
                 <div class="upgrade-perks-inline">
                     ${getOfficePerkBadges(nextOffice || currentOffice).map((perk) => `<span class="perk-chip"><img src="${perk.icon}" alt="" />${perk.text}</span>`).join('')}
                 </div>
-                <span class="progress-meta">${nextOffice ? `Unlock Floor ${nextOffice.floor}` : 'Every office has been unlocked'}</span>
+                <span class="progress-meta">${nextOffice ? `Unlock cost ${formatNumber(nextOffice.unlockCost)} bananas` : 'Every office has been unlocked'}</span>
             </div>
             <button class="progress-buy-button" data-office-unlock="true" ${(!nextOffice || bananas < nextOffice.unlockCost) ? 'disabled' : ''}>
                 ${nextOffice ? costButtonLabel(nextOffice.unlockCost) : 'Maxed'}
@@ -1327,14 +1404,18 @@ function updateProgressionPanel() {
 
     skillsUpgradeList.innerHTML = Object.keys(UPGRADE_DEFS).map(renderUpgradeCard).join('');
 
-    milestonesList.innerHTML = MILESTONES.map((milestone) => {
+    const longTermMilestones = MILESTONES
+        .filter(isLongTermMilestone)
+        .sort(sortProgressGoals);
+
+    milestonesList.innerHTML = longTermMilestones.map((milestone) => {
         const progress = getMilestoneProgress(milestone);
         const ratio = clamp(progress / milestone.target, 0, 1);
         const isClaimed = claimedMilestones.includes(milestone.id);
         const isReady = progress >= milestone.target && !isClaimed;
 
         return `
-            <article class="milestone-card ${isClaimed ? 'is-claimed' : ''}">
+            <article class="milestone-card ${isClaimed ? 'is-claimed' : ''} ${isReady ? 'is-ready' : ''}">
                 <div class="milestone-copy">
                     <h3>${milestone.name}</h3>
                     <p>${milestone.description}</p>
@@ -1574,6 +1655,7 @@ bindProgressionActionArea(questsList);
 
 bindFastTap(typeButton, () => typeRandomLetter('player'));
 bindFastTap(buyMonkeyButton, buyMonkey);
+bindFastTap(officeInfoButton, () => openUpgradesPanel('upgrades'));
 resetButton.addEventListener('click', resetGame);
 navPanelButtons.forEach((button) => {
     button.addEventListener('click', () => openUpgradesPanel(button.dataset.panelView));

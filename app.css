@@ -3341,3 +3341,149 @@
 .quest-side .milestone-claim-button {
     pointer-events: auto;
 }
+
+
+/* v30 progression rebalance + purposeful home buttons */
+
+/* Removed purposeless Letter Tape play/fast-forward buttons; title now aligns cleanly. */
+.mb-section-label {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+}
+
+.section-actions:empty {
+    display: none !important;
+}
+
+.section-title-with-icon {
+    min-width: 0 !important;
+}
+
+/* Office info button now opens the upgrades panel, so make it clearly tappable. */
+.office-info-button {
+    cursor: pointer !important;
+}
+
+.office-info-button:active {
+    transform: translateY(2px) !important;
+    filter: brightness(.95) !important;
+}
+
+/* The monkey stat is a crew count, not monkeys per second. */
+#monkeys-rate {
+    color: rgba(255, 241, 191, .75) !important;
+    letter-spacing: .04em !important;
+}
+
+/* Claimable quests use the badge; hide it when there are none. */
+.dock-badge {
+    transition: transform .16s ease, opacity .16s ease !important;
+}
+
+.dock-badge:empty,
+.dock-badge[aria-hidden="true"] {
+    opacity: 0 !important;
+}
+
+/* Progression clarity */
+.progress-card.is-affordable,
+.milestone-card.is-ready,
+.quest-card.is-ready {
+    box-shadow:
+        0 0 0 2px rgba(255, 213, 77, .25),
+        0 4px 0 rgba(83, 50, 17, .16),
+        0 0 12px rgba(255, 207, 54, .16) !important;
+}
+
+.upgrade-card-rich .progress-card-copy {
+    gap: 5px !important;
+}
+
+.upgrade-effect-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    min-height: 24px !important;
+    padding: 3px 7px !important;
+    background: rgba(47, 22, 7, .09) !important;
+    border: 2px solid rgba(99, 62, 25, .18) !important;
+    color: #5d3715 !important;
+    font-size: .66rem !important;
+    font-weight: 900 !important;
+}
+
+.upgrade-effect-row strong {
+    color: #2b1608 !important;
+    font-size: .72rem !important;
+    line-height: 1 !important;
+    text-align: right !important;
+}
+
+.upgrade-effect-row.is-next {
+    background: rgba(97, 169, 50, .13) !important;
+    border-color: rgba(88, 141, 41, .25) !important;
+}
+
+.upgrade-effect-row.is-next strong {
+    color: #2d6e22 !important;
+}
+
+/* Make ready quest buttons feel like rewards, not disabled status boxes. */
+.quest-card.is-ready .milestone-claim-button,
+.milestone-card.is-ready .milestone-claim-button {
+    border-image-source: url("ui-frame-gold.png") !important;
+    color: #2b1608 !important;
+    text-shadow: 0 1px 0 rgba(255,255,255,.28) !important;
+    animation: claimPulse 1.8s ease-in-out infinite !important;
+}
+
+@keyframes claimPulse {
+    0%, 100% { filter: brightness(1.04) drop-shadow(0 3px 0 rgba(0,0,0,.18)); }
+    50% { filter: brightness(1.16) drop-shadow(0 3px 0 rgba(0,0,0,.18)); }
+}
+
+/* Quest list now uses short-term goals only, so cards can be a touch more readable. */
+.quest-card.compact-quest-card {
+    min-height: 102px !important;
+}
+
+.quest-card.compact-quest-card .quest-main small,
+.milestone-card small {
+    color: #65401c !important;
+}
+
+/* Milestones are long-term now; give them a distinct achievement feel. */
+#panel-milestones .milestone-card {
+    background: rgba(255, 241, 191, .60) !important;
+}
+
+#panel-milestones .milestone-card.is-claimed {
+    opacity: .72 !important;
+}
+
+/* Office unlock cards should display the next floor value clearly. */
+.office-progress-rich .upgrade-perks-inline {
+    margin-top: 6px !important;
+}
+
+.office-progress-rich .progress-meta {
+    margin-top: 4px !important;
+    color: #6f451a !important;
+}
+
+/* Small screen protection */
+@media (max-width: 390px), (max-height: 760px) {
+    .upgrade-effect-row {
+        font-size: .58rem !important;
+        min-height: 22px !important;
+        padding: 2px 5px !important;
+    }
+
+    .upgrade-effect-row strong {
+        font-size: .62rem !important;
+    }
+
+    .quest-card.compact-quest-card {
+        min-height: 90px !important;
+    }
+}

@@ -285,3 +285,33 @@ Changed-files-only patch.
 ### UI support
 - Claimable buttons now show a clearer active/tappable state.
 - Disabled claim/buy buttons no longer intercept touches.
+
+
+## Version 30 Progression Rebalance + Purposeful Home Buttons
+
+Changed-files-only patch.
+
+### Progression changes
+- Rebalanced early monkey costs:
+  - Monkey 1 starts at 50 bananas.
+  - Subsequent monkeys now scale by 1.9x, making the first few hires feel reachable but still paced.
+- Lowered early upgrade costs so players encounter upgrades sooner.
+- Floor 2 now gives a clearer reward: +8% typing speed and +1 banana per word.
+- Quests are now short-term player guidance.
+- Milestones are now long-term achievement goals.
+- Quest cards sort claimable goals to the top.
+- The home Quests badge now represents claimable quests.
+
+### Home-screen purpose cleanup
+- Removed the decorative Letter Tape play and fast-forward buttons.
+- The office info button now opens Office Upgrades.
+- The monkey stat no longer shows a misleading “monkeys per second” rate.
+
+### Upgrade clarity
+- Upgrade cards now show Current and Next effects.
+- Claimable quest/milestone buttons now have clearer gold reward styling.
+
+### Logic hardening
+- Added progress metrics for upgrades, claimed quests, and banana balance.
+- Existing saves migrate from v29.
+- Invalid old milestone claim IDs are filtered safely.
