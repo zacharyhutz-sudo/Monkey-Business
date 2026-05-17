@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v19';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v20';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -268,6 +268,20 @@ function formatNumber(value) {
     return Math.floor(value).toLocaleString();
 }
 
+function formatUiNumber(value) {
+    const number = Math.floor(Number(value) || 0);
+
+    if (number >= 1000000) {
+        return `${(number / 1000000).toFixed(number >= 10000000 ? 0 : 1)}M`;
+    }
+
+    if (number >= 10000) {
+        return `${(number / 1000).toFixed(number >= 100000 ? 0 : 1)}K`;
+    }
+
+    return number.toLocaleString();
+}
+
 function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
 }
@@ -490,17 +504,17 @@ function getOfficePerkBadges(office) {
 function updateDisplay() {
     const currentOffice = getCurrentOffice();
 
-    bananasEl.textContent = formatNumber(bananas);
-    lettersEl.textContent = formatNumber(lettersTyped);
-    wordsEl.textContent = formatNumber(wordsTyped);
-    monkeysEl.textContent = formatNumber(monkeysOwned);
+    bananasEl.textContent = formatUiNumber(bananas);
+    lettersEl.textContent = formatUiNumber(lettersTyped);
+    wordsEl.textContent = formatUiNumber(wordsTyped);
+    monkeysEl.textContent = formatUiNumber(monkeysOwned);
     monkeyCostEl.textContent = formatNumber(monkeyCost);
     monkeyCostInlineEl.textContent = formatNumber(monkeyCost);
 
-    if (bananasRateEl) bananasRateEl.textContent = `+${formatNumber(getEstimatedBananaRate())} /s`;
-    if (lettersRateEl) lettersRateEl.textContent = `+${formatNumber(getPassiveLetterRate())} /s`;
-    if (wordsRateEl) wordsRateEl.textContent = `+${formatNumber(getEstimatedWordRate())} /s`;
-    if (monkeysRateEl) monkeysRateEl.textContent = `+${formatNumber(monkeysOwned > 0 ? monkeysOwned : 0)} /s`;
+    if (bananasRateEl) bananasRateEl.textContent = `+${formatUiNumber(getEstimatedBananaRate())} /s`;
+    if (lettersRateEl) lettersRateEl.textContent = `+${formatUiNumber(getPassiveLetterRate())} /s`;
+    if (wordsRateEl) wordsRateEl.textContent = `+${formatUiNumber(getEstimatedWordRate())} /s`;
+    if (monkeysRateEl) monkeysRateEl.textContent = `+${formatUiNumber(monkeysOwned > 0 ? monkeysOwned : 0)} /s`;
     if (playerLevelBadge) playerLevelBadge.textContent = `Lvl ${formatNumber(getPlayerLevel())}`;
     if (questsBadge) questsBadge.textContent = String(getActiveQuestCount());
 
@@ -745,7 +759,7 @@ function renderMonkeyOffice() {
             <div class="office-empty-state">
                 <div class="empty-circle" aria-hidden="true"></div>
                 <strong>Hire your first monkey</strong>
-                <span>Fill the office and start building your typing company.</span>
+                <span>Start the typing floor.</span>
             </div>
         `;
         return;

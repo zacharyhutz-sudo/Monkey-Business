@@ -39,3 +39,613 @@
 .collection-summary{background:#2a1708;font-size:.98rem;} .collection-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;} .collection-card{min-height:166px;grid-template-rows:98px auto auto;box-shadow:0 4px 0 rgba(120,74,20,.16), inset 0 1px 0 rgba(255,255,255,.3);} 
 @media (max-width:430px){ .mb-wallet-pill strong{font-size:1.45rem;} .mb-wallet-pill em{font-size:.72rem;} .mb-gameplay{grid-template-rows:minmax(368px,1fr) 116px 94px;} .mb-office-header h1{font-size:2.05rem;} .mb-office-count{font-size:.88rem;} .mb-dock{gap:5px;} .dock-tile{height:80px;} .dock-type{height:96px;} .dock-tile strong{font-size:.72rem;} .dock-type strong{font-size:1.46rem;} .dock-tile small,.dock-type small{font-size:.62rem;} .upgrade-tab span{font-size:.84rem;} .upgrade-current-office{grid-template-columns:96px minmax(0,1fr);} .current-office-thumb{height:74px;} .detailed-quest-card{grid-template-columns:70px minmax(0,1fr) 116px;} .quest-art{width:64px;height:64px;} .progress-card h3,.milestone-card h3{font-size:1.48rem;} }
 @media (max-height:760px){ .mb-status{font-size:.82rem;} .mb-gameplay{grid-template-rows:minmax(308px,1fr) 96px 78px;} .mb-office-header{padding:10px 12px;} .mb-office-header h1{font-size:1.7rem;} .mb-office-count{min-height:42px;} .monkey-office-grid{gap:2px;} .office-monkey{width:68px;min-height:88px;} .office-monkey-art{width:68px;height:82px;} .output-area{height:58px;max-height:58px;} .recent-word{height:36px;min-width:100px;} .dock-tile{height:66px;} .dock-type{height:80px;} .dock-tile strong{font-size:.58rem;} .dock-tile small,.dock-type small{font-size:.48rem;} .upgrade-sheet-header h2{font-size:2.45rem;} .detailed-quest-card{grid-template-columns:60px minmax(0,1fr) 104px;} }
+
+
+/* v20 fit + polish pass: keep detail, fix real iPhone layout */
+.mb-app {
+    overflow: hidden;
+}
+
+.mb-topbar {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 7px;
+}
+
+.mb-title-row {
+    grid-template-columns: 54px minmax(0, 1fr) 48px;
+    gap: 8px;
+}
+
+.mb-player-card {
+    width: 52px;
+    height: 52px;
+    border-width: 3px;
+}
+
+.mb-player-card img {
+    width: 44px;
+    height: 44px;
+}
+
+.player-level-badge {
+    min-width: 48px;
+    height: 22px;
+    font-size: 0.68rem;
+    border-width: 3px;
+}
+
+.mb-settings-button {
+    width: 48px;
+    height: 48px;
+    border-width: 3px;
+}
+
+.control-icon {
+    width: 28px;
+    height: 28px;
+}
+
+.mb-game-title {
+    font-size: clamp(1.78rem, 7.45vw, 2.35rem) !important;
+    max-width: 100%;
+    letter-spacing: -0.055em;
+}
+
+.title-leaf {
+    display: none;
+}
+
+.mb-status {
+    margin-top: 4px;
+    font-size: clamp(0.74rem, 3.05vw, 0.88rem) !important;
+}
+
+/* Compact readable stat bar */
+.mb-wallet {
+    margin-top: 7px;
+    border-width: 3px;
+}
+
+.mb-wallet-pill {
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    gap: 5px;
+    min-height: 58px;
+    padding: 6px 5px !important;
+}
+
+.wallet-icon-wrap {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+}
+
+.resource-img {
+    width: 27px;
+    height: 27px;
+}
+
+.mb-wallet-pill strong {
+    font-size: clamp(1.05rem, 4.05vw, 1.42rem) !important;
+    line-height: 0.9;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+.mb-wallet-pill small {
+    display: none;
+}
+
+.mb-wallet-pill em {
+    margin-top: 4px;
+    font-size: clamp(0.56rem, 2.3vw, 0.72rem) !important;
+    line-height: 1;
+}
+
+/* Put the content back inside the safe vertical budget */
+.mb-gameplay {
+    grid-template-rows: minmax(330px, 1fr) 104px 74px !important;
+    gap: 7px;
+    padding: 7px 8px 6px;
+}
+
+.mb-office-card {
+    grid-template-rows: 82px minmax(0, 1fr) !important;
+    border-width: 5px;
+}
+
+.mb-office-header {
+    padding: 9px 10px;
+    gap: 8px;
+}
+
+.mb-floor-ribbon {
+    height: 28px;
+    min-width: 84px;
+    padding: 0 12px 0 10px;
+    margin-bottom: 2px;
+    font-size: 0.74rem;
+    border-width: 3px;
+}
+
+.mb-office-header h1 {
+    font-size: clamp(1.58rem, 6.65vw, 2rem) !important;
+    max-width: 100%;
+}
+
+.mb-office-count-wrap {
+    max-width: 44%;
+    gap: 5px;
+}
+
+.mb-office-count {
+    min-height: 42px;
+    padding: 6px 8px;
+    font-size: clamp(0.68rem, 2.9vw, 0.84rem) !important;
+    line-height: 1.05;
+    border-width: 3px;
+}
+
+.office-info-button {
+    width: 36px;
+    height: 36px;
+    border-width: 3px;
+}
+
+.office-info-button img {
+    width: 22px;
+    height: 22px;
+}
+
+/* Empty office card should not dominate the room */
+.office-empty-state {
+    width: min(72%, 260px);
+    padding: 16px 14px;
+    gap: 7px;
+    transform: translateY(4px);
+}
+
+.empty-circle {
+    width: 50px;
+    height: 50px;
+}
+
+.office-empty-state strong {
+    font-size: clamp(1.18rem, 5.4vw, 1.65rem);
+}
+
+.office-empty-state span {
+    font-size: clamp(0.76rem, 3.1vw, 0.95rem);
+}
+
+.monkey-office-grid {
+    padding-bottom: 6px;
+    gap: 2px 2px;
+}
+
+.office-monkey {
+    width: clamp(58px, 13vw, 72px);
+    min-height: clamp(72px, 15.5vw, 90px);
+}
+
+.office-monkey-art {
+    width: clamp(56px, 12.6vw, 70px);
+    height: clamp(68px, 15vw, 86px);
+}
+
+/* Tape and recent words compactness */
+.mb-tape-card,
+.mb-words-card {
+    padding: 7px 9px;
+    border-width: 5px;
+}
+
+.mb-section-label {
+    height: 22px;
+    margin-bottom: 6px;
+    font-size: clamp(0.82rem, 3.5vw, 1rem) !important;
+    letter-spacing: 0.12em;
+}
+
+.section-mini-icon {
+    width: 17px;
+    height: 17px;
+}
+
+.mini-square-button {
+    width: 28px;
+    height: 28px;
+    border-width: 3px;
+}
+
+.output-area {
+    height: 58px !important;
+    max-height: 58px !important;
+    padding: 6px 7px;
+    border-width: 5px;
+    gap: 4px;
+}
+
+.typed-char {
+    width: 1.35em;
+    height: 1.35em;
+    font-size: 0.95rem;
+}
+
+.word-found {
+    min-width: 92px;
+    min-height: 32px;
+    padding: 0 7px;
+    border-width: 3px;
+}
+
+.recent-words-list {
+    height: 36px !important;
+    gap: 7px;
+}
+
+.recent-word {
+    height: 32px;
+    min-width: 92px;
+    padding: 0 9px;
+    border-width: 3px;
+    font-size: 0.9rem;
+}
+
+/* Dock: make labels readable rather than cropped */
+.mb-dock {
+    grid-template-columns: 1fr 1fr 1fr 1.55fr 1fr 1fr;
+    gap: 4px;
+    padding: 7px 7px calc(env(safe-area-inset-bottom) + 7px);
+}
+
+.dock-tile {
+    height: 68px !important;
+    grid-template-rows: 28px auto auto;
+    border-width: 4px;
+    padding: 5px 2px 4px;
+}
+
+.dock-type {
+    height: 82px !important;
+    margin-top: -10px;
+    grid-template-rows: 34px auto auto;
+    border-width: 4px;
+}
+
+.dock-image {
+    width: 26px;
+    height: 26px;
+}
+
+.dock-image-large {
+    width: 32px;
+    height: 32px;
+}
+
+.dock-tile strong {
+    font-size: clamp(0.48rem, 2.12vw, 0.66rem) !important;
+    line-height: 0.92;
+}
+
+.dock-type strong {
+    font-size: clamp(1.05rem, 4.45vw, 1.42rem) !important;
+}
+
+.dock-tile small,
+.dock-type small {
+    font-size: clamp(0.43rem, 1.85vw, 0.58rem) !important;
+}
+
+.dock-badge {
+    min-width: 22px;
+    height: 22px;
+    font-size: 0.72rem;
+    border-width: 3px;
+}
+
+/* Panel: less oversized; no text spilling/cropping */
+.upgrade-panel {
+    padding: 10px;
+    align-items: center;
+}
+
+.upgrade-sheet {
+    width: min(100%, 452px);
+    max-height: min(84dvh, 760px);
+    grid-template-rows: auto auto auto minmax(0, 1fr);
+    border-width: 6px;
+}
+
+.upgrade-sheet-header {
+    min-height: 78px;
+    grid-template-columns: minmax(0, 1fr) 50px;
+    padding: 11px 14px;
+    border-bottom-width: 5px;
+}
+
+.panel-kicker {
+    font-size: 0.8rem;
+}
+
+.upgrade-sheet-header h2 {
+    font-size: clamp(2rem, 9vw, 2.55rem) !important;
+}
+
+.panel-close-button {
+    width: 50px;
+    height: 50px;
+    border-width: 4px;
+    font-size: 1.55rem;
+}
+
+.upgrade-tabs {
+    gap: 6px;
+    padding: 9px 10px 7px;
+}
+
+.upgrade-tab {
+    min-height: 48px;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 4px;
+    padding: 5px;
+    border-width: 4px;
+}
+
+.upgrade-tab img {
+    width: 19px;
+    height: 19px;
+}
+
+.upgrade-tab span {
+    font-size: clamp(0.56rem, 2.65vw, 0.82rem) !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.upgrade-current-office {
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 10px;
+    margin: 0 10px 10px;
+    padding: 9px;
+    border-width: 4px;
+}
+
+.current-office-thumb {
+    height: 64px;
+}
+
+.current-office-meta strong,
+.upgrade-current-office strong {
+    font-size: clamp(1rem, 4.4vw, 1.28rem) !important;
+}
+
+.current-office-meta span,
+.upgrade-current-office span {
+    font-size: clamp(0.74rem, 3.05vw, 0.9rem) !important;
+}
+
+.current-office-perks {
+    gap: 4px;
+    margin-top: 6px;
+}
+
+.perk-chip {
+    min-height: 24px;
+    padding: 3px 6px;
+    border-width: 2px;
+    font-size: 0.66rem;
+}
+
+.perk-chip img {
+    width: 15px;
+    height: 15px;
+}
+
+.upgrade-scroll {
+    padding: 0 10px 12px;
+}
+
+.progress-section > .mb-section-label {
+    font-size: 0.82rem !important;
+    margin-bottom: 6px;
+}
+
+.progress-card,
+.milestone-card,
+.quest-card {
+    grid-template-columns: minmax(0, 1fr) 92px;
+    gap: 8px;
+    padding: 9px;
+    border-width: 4px;
+}
+
+.progress-card h3,
+.milestone-card h3 {
+    font-size: clamp(1.15rem, 5vw, 1.45rem) !important;
+}
+
+.progress-card p,
+.milestone-card p {
+    font-size: clamp(0.74rem, 3.1vw, 0.88rem) !important;
+}
+
+.progress-meta,
+.milestone-card small {
+    font-size: 0.68rem;
+}
+
+.progress-buy-button,
+.milestone-claim-button {
+    min-height: 48px;
+    font-size: 0.82rem;
+    border-width: 4px;
+}
+
+.milestone-bar {
+    height: 12px;
+    border-width: 3px;
+}
+
+/* Quest cards: fix the overlapping/cropping seen in screenshot */
+.detailed-quest-card,
+.quest-card {
+    grid-template-columns: 58px minmax(0, 1fr) 86px !important;
+    align-items: center;
+}
+
+.quest-art {
+    width: 52px;
+    height: 52px;
+    border-width: 3px;
+}
+
+.quest-art img {
+    width: 38px;
+    height: 38px;
+}
+
+.quest-reward {
+    gap: 6px;
+}
+
+.quest-reward-label {
+    min-height: 48px;
+    border-width: 3px;
+    padding: 4px;
+}
+
+.quest-reward-label b {
+    font-size: 0.62rem;
+}
+
+.quest-reward-label span {
+    font-size: 1.05rem;
+}
+
+.quest-reward-label img {
+    width: 16px;
+    height: 16px;
+}
+
+.quest-reward .progress-buy-button {
+    min-height: 46px;
+}
+
+/* Very small height safety pass */
+@media (max-height: 760px) {
+    .mb-game-title {
+        font-size: clamp(1.55rem, 6.8vw, 2.05rem) !important;
+    }
+
+    .mb-wallet-pill {
+        min-height: 50px;
+    }
+
+    .wallet-icon-wrap {
+        width: 28px;
+        height: 28px;
+    }
+
+    .resource-img {
+        width: 23px;
+        height: 23px;
+    }
+
+    .mb-wallet-pill strong {
+        font-size: 1.05rem !important;
+    }
+
+    .mb-wallet-pill em {
+        display: none;
+    }
+
+    .mb-gameplay {
+        grid-template-rows: minmax(276px, 1fr) 86px 56px !important;
+        gap: 6px;
+    }
+
+    .mb-office-card {
+        grid-template-rows: 70px minmax(0, 1fr) !important;
+    }
+
+    .output-area {
+        height: 44px !important;
+        max-height: 44px !important;
+    }
+
+    .recent-words-list {
+        height: 24px !important;
+    }
+
+    .recent-word {
+        height: 24px;
+        min-width: 82px;
+        font-size: 0.76rem;
+    }
+
+    .dock-tile {
+        height: 58px !important;
+        grid-template-rows: 22px auto auto;
+    }
+
+    .dock-type {
+        height: 70px !important;
+        grid-template-rows: 28px auto auto;
+    }
+
+    .dock-image {
+        width: 22px;
+        height: 22px;
+    }
+
+    .dock-image-large {
+        width: 28px;
+        height: 28px;
+    }
+
+    .upgrade-sheet {
+        max-height: 86dvh;
+    }
+}
+
+@media (max-width: 390px) {
+    .mb-title-row {
+        grid-template-columns: 50px minmax(0, 1fr) 44px;
+        gap: 7px;
+    }
+
+    .mb-player-card {
+        width: 48px;
+        height: 48px;
+    }
+
+    .player-level-badge {
+        min-width: 44px;
+    }
+
+    .mb-settings-button {
+        width: 44px;
+        height: 44px;
+    }
+
+    .mb-wallet-pill {
+        grid-template-columns: 30px minmax(0, 1fr) !important;
+        padding-left: 4px !important;
+        padding-right: 4px !important;
+    }
+
+    .wallet-icon-wrap {
+        width: 28px;
+        height: 28px;
+    }
+
+    .resource-img {
+        width: 23px;
+        height: 23px;
+    }
+
+    .dock-tile strong {
+        font-size: 0.48rem !important;
+    }
+}

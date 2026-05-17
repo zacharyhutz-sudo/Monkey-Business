@@ -148,3 +148,20 @@ Test with:
 - Refined the office scene, section framing, dock, and top HUD so the UI feels less blocky and closer to the concept art.
 - Upgraded the progression panel with office perk chips and more detailed quest card layout.
 - Added a clover rarity icon and updated cache busting to `?v=19`.
+
+
+## Version 20 Fit and Polish
+
+This pass keeps the v19 visual direction but fixes the actual iPhone layout issues shown in testing.
+
+- Reduced title and HUD sizing so text does not truncate as aggressively.
+- Added compact HUD number formatting for large values.
+- Tightened the office header and empty office message.
+- Rebalanced the office, letter tape, recent words, and dock so they fit in the viewport.
+- Fixed modal tab/card sizing so milestones and quests do not overlap or crop badly.
+- Kept all existing mechanics intact.
+- Updated cache busting to `?v=20`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=20`
