@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v24';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v25';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -770,7 +770,7 @@ function startMonkeyTypingEngine(runSoon = false) {
         clearInterval(monkeyTypingEngineId);
     }
 
-    monkeyTypingEngineId = startMonkeyTypingEngine(true);
+    monkeyTypingEngineId = setInterval(runMonkeyTyping, monkeyTypingIntervalMs);
 
     if (runSoon && monkeysOwned > 0) {
         window.setTimeout(runMonkeyTyping, 350);
@@ -795,6 +795,9 @@ function runMonkeyTyping() {
         const monkeyType = getMonkeyType(typeId);
         const typeMultiplier = Math.max(1, Number(monkeyType.speedMultiplier) || 1);
         const totalMultiplier = typeMultiplier * getGlobalSpeedMultiplier();
+
+        // Base behavior: one normal monkey types about one letter every 2 seconds.
+        // Higher speed multipliers add extra letters inside the same 2-second cycle.
         let lettersThisCycle = Math.floor(totalMultiplier);
         const fractionalChance = totalMultiplier - lettersThisCycle;
 
@@ -805,9 +808,12 @@ function runMonkeyTyping() {
         lettersThisCycle = clamp(lettersThisCycle, 1, 20);
 
         for (let burst = 0; burst < lettersThisCycle; burst += 1) {
-            const delay = Math.floor((monkeyTypingIntervalMs / lettersThisCycle) * burst + Math.random() * 60);
+            const delay = lettersThisCycle === 1
+                ? Math.floor(Math.random() * 90)
+                : Math.floor((monkeyTypingIntervalMs / lettersThisCycle) * burst + Math.random() * 60);
+
             const timeoutId = setTimeout(() => {
-                if (monkeysOwned > 0) {
+                if (monkeysOwned > 0 && index < monkeysOwned) {
                     typeRandomLetter('monkey', index);
                 }
             }, delay);
@@ -1018,11 +1024,19 @@ function renderQuests() {
         return;
     }
 
-    const activeQuests = MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 4);
+    const activeQuests = MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 5);
     if (questsBadge) questsBadge.textContent = String(activeQuests.length);
 
     if (activeQuests.length === 0) {
-        questsList.innerHTML = '<article class="milestone-card"><div class="milestone-copy"><h3>All quests complete</h3><p>More quests will arrive as the office expands.</p></div></article>';
+        questsList.innerHTML = `
+            <article class="quest-card compact-quest-card is-complete">
+                <div class="quest-art"><img src="icon-quests.png" alt="" /></div>
+                <div class="quest-main">
+                    <h3>All quests complete</h3>
+                    <p>More quests will arrive as the office expands.</p>
+                </div>
+            </article>
+        `;
         return;
     }
 
@@ -1030,16 +1044,18 @@ function renderQuests() {
         const progress = getMilestoneProgress(milestone);
         const ratio = clamp(progress / milestone.target, 0, 1);
         const isReady = progress >= milestone.target;
+        const percent = Math.round(ratio * 100);
+
         return `
-            <article class="quest-card detailed-quest-card">
+            <article class="quest-card compact-quest-card ${isReady ? 'is-ready' : ''}">
                 <div class="quest-art"><img src="${getQuestIconSrc(milestone)}" alt="" /></div>
-                <div class="milestone-copy quest-copy">
+                <div class="quest-main">
                     <h3>${milestone.name}</h3>
                     <p>${milestone.description}</p>
-                    <div class="milestone-bar" aria-hidden="true"><span style="width: ${Math.round(ratio * 100)}%"></span></div>
+                    <div class="milestone-bar" aria-hidden="true"><span style="width: ${percent}%"></span></div>
                     <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)}</small>
                 </div>
-                <div class="quest-reward">
+                <div class="quest-side">
                     <div class="quest-reward-label"><b>Reward</b><span><img src="icon-bananas.png" alt="" /> ${formatNumber(milestone.reward)}</span></div>
                     <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>${isReady ? 'Claim' : 'Active'}</button>
                 </div>
@@ -1047,6 +1063,7 @@ function renderQuests() {
         `;
     }).join('');
 }
+
 function renderUpgradeCard(upgradeId) {
     const upgrade = UPGRADE_DEFS[upgradeId];
     const level = getUpgradeLevel(upgradeId);

@@ -222,3 +222,17 @@ Changed-files-only patch.
 - Fixed office title clipping by reducing vine dominance and raising the title layer.
 - Reduced the empty-office overlay so the office remains the hero.
 - Updated cache busting to `?v=24`.
+
+
+## Version 25 Quest Modal Rebuild + Typing Engine Correction
+
+Changed-files-only patch.
+
+- Fixed the monkey typing engine bug so it uses `setInterval(runMonkeyTyping, 2000)` again instead of recursively calling itself.
+- Normal monkeys type about one letter every 2 seconds before upgrades.
+- Super rare monkeys and speed upgrades still increase letters per 2-second cycle.
+- Rebuilt the quest modal so the header/tabs/office summary/footer stay fixed and the content area scrolls.
+- Shortened quest cards and reduced the reward/action column size.
+- Added a modal footer helper line.
+- Fixed the “No words yet” clipping on the main screen.
+- Updated cache busting to `?v=25`.

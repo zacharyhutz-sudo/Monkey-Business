@@ -2085,3 +2085,452 @@
         height: 30px !important;
     }
 }
+
+
+/* v25 quest modal rebuild + automatic typing polish */
+
+/* Tiny main-screen cleanup from v24 testing */
+.recent-words-list {
+    align-items: center !important;
+    overflow: hidden !important;
+}
+
+.recent-words-list .empty-state {
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    line-height: 1 !important;
+    padding-bottom: 0 !important;
+}
+
+.mb-office-header {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.04), transparent 42%),
+        url("ui-wood-texture.png") center / 220px 220px repeat !important;
+}
+
+/* Modal is now a fixed frame with only the content area scrolling. */
+.upgrade-panel {
+    padding: 10px !important;
+    align-items: center !important;
+}
+
+.upgrade-sheet {
+    width: min(100%, 454px) !important;
+    max-height: min(86dvh, 790px) !important;
+    display: grid !important;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto !important;
+    overflow: hidden !important;
+    background: #d8a956 !important;
+}
+
+.upgrade-sheet-header {
+    min-height: 78px !important;
+    padding: 12px 14px !important;
+    grid-template-columns: minmax(0, 1fr) 50px !important;
+    border-bottom: 5px solid #160905 !important;
+}
+
+.panel-kicker {
+    font-size: clamp(.72rem, 2.8vw, .92rem) !important;
+    letter-spacing: .17em !important;
+}
+
+.upgrade-sheet-header h2 {
+    font-size: clamp(2rem, 8.7vw, 2.7rem) !important;
+    line-height: .82 !important;
+    margin-top: 3px !important;
+}
+
+.panel-close-button {
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 1.55rem !important;
+}
+
+/* Tabs: cleaner, more like a game tab bar. */
+.upgrade-tabs {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+    padding: 9px 10px 8px !important;
+    background: #eed08d !important;
+    border-bottom: 3px solid rgba(75, 38, 12, .22);
+}
+
+.upgrade-tab {
+    min-height: 50px !important;
+    grid-template-columns: 22px minmax(0, 1fr) !important;
+    grid-template-rows: 1fr !important;
+    align-items: center !important;
+    justify-items: start !important;
+    gap: 5px !important;
+    padding: 6px 6px !important;
+    text-align: left !important;
+}
+
+.upgrade-tab img {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.upgrade-tab span {
+    font-size: clamp(.58rem, 2.45vw, .78rem) !important;
+    line-height: .95 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Office summary card: compact and premium. */
+.upgrade-current-office {
+    grid-template-columns: 82px minmax(0, 1fr) !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 10px 12px !important;
+    border-image: none !important;
+    border: 0 !important;
+    border-bottom: 4px solid rgba(79, 45, 15, .30) !important;
+    background: #f5df9c !important;
+    filter: none !important;
+}
+
+.current-office-thumb {
+    height: 58px !important;
+    border-image: url("ui-frame-wood.png") 18 fill / 6px / 0 stretch !important;
+    border-width: 0 !important;
+}
+
+.current-office-meta strong {
+    font-size: clamp(1.02rem, 4.15vw, 1.32rem) !important;
+    line-height: .92 !important;
+}
+
+.current-office-meta span {
+    font-size: clamp(.68rem, 2.65vw, .82rem) !important;
+    line-height: 1.08 !important;
+    margin-top: 4px !important;
+}
+
+.current-office-perks {
+    margin-top: 6px !important;
+    gap: 5px !important;
+}
+
+.perk-chip {
+    min-height: 22px !important;
+    font-size: .58rem !important;
+    padding: 3px 6px !important;
+}
+
+.perk-chip img {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+/* Scroll area: no more full-sheet body scroll feeling. */
+.upgrade-scroll {
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 11px 11px 12px !important;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.08), transparent 70px),
+        #d8a956 !important;
+}
+
+.progress-section[hidden] {
+    display: none !important;
+}
+
+.progress-section > .mb-section-label {
+    height: 24px !important;
+    margin: 0 0 8px !important;
+    color: #6f451a !important;
+    text-shadow: none !important;
+    letter-spacing: .17em !important;
+    font-size: .82rem !important;
+}
+
+/* v25 quest cards: shorter, cleaner, less dominant reward column. */
+#panel-quests .progress-list {
+    gap: 9px !important;
+}
+
+.quest-card.compact-quest-card {
+    display: grid !important;
+    grid-template-columns: 58px minmax(0, 1fr) 88px !important;
+    gap: 9px !important;
+    min-height: 96px !important;
+    padding: 9px !important;
+    align-items: center !important;
+    border-image: url("ui-frame-paper.png") 18 fill / 7px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    filter: drop-shadow(0 4px 0 rgba(83, 50, 17, .16)) !important;
+}
+
+.quest-card.compact-quest-card.is-ready {
+    filter: drop-shadow(0 4px 0 rgba(83, 50, 17, .16)) drop-shadow(0 0 10px rgba(255, 209, 60, .16)) !important;
+}
+
+.quest-card.compact-quest-card .quest-art {
+    width: 52px !important;
+    height: 52px !important;
+    align-self: center !important;
+    border-image: url("ui-frame-green.png") 18 fill / 6px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    filter: none !important;
+}
+
+.quest-card.compact-quest-card .quest-art img {
+    width: 38px !important;
+    height: 38px !important;
+}
+
+.quest-main {
+    display: grid !important;
+    align-content: center !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+}
+
+.quest-main h3 {
+    margin: 0 !important;
+    color: #2b1608 !important;
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif !important;
+    font-size: clamp(1.05rem, 4.4vw, 1.32rem) !important;
+    line-height: .9 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.quest-main p {
+    margin: 0 !important;
+    color: #5f3918 !important;
+    font-size: clamp(.66rem, 2.55vw, .78rem) !important;
+    line-height: 1.05 !important;
+    font-weight: 900 !important;
+}
+
+.quest-main small {
+    color: #5f3918 !important;
+    font-size: .66rem !important;
+    font-weight: 1000 !important;
+    line-height: 1 !important;
+}
+
+.quest-main .milestone-bar {
+    width: 100% !important;
+    height: 12px !important;
+    margin: 3px 0 1px !important;
+    border-width: 3px !important;
+}
+
+.quest-side {
+    display: grid !important;
+    gap: 6px !important;
+    align-self: stretch !important;
+    grid-template-rows: 1fr 1fr !important;
+}
+
+.quest-card.compact-quest-card .quest-reward-label {
+    min-height: 0 !important;
+    padding: 4px 3px !important;
+    border-image: url("ui-frame-wood.png") 18 fill / 6px / 0 stretch !important;
+    border-width: 0 !important;
+    color: #fff1bf !important;
+}
+
+.quest-card.compact-quest-card .quest-reward-label b {
+    font-size: .54rem !important;
+    letter-spacing: .08em !important;
+}
+
+.quest-card.compact-quest-card .quest-reward-label span {
+    font-size: .92rem !important;
+    line-height: .9 !important;
+}
+
+.quest-card.compact-quest-card .quest-reward-label img {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+.quest-card.compact-quest-card .progress-buy-button {
+    min-height: 0 !important;
+    height: 100% !important;
+    padding: 4px !important;
+    font-size: .78rem !important;
+    line-height: .9 !important;
+}
+
+/* Footer line from the mockup direction. */
+.upgrade-sheet-footer {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-height: 36px !important;
+    padding: 7px 13px calc(env(safe-area-inset-bottom) + 7px) !important;
+    background: #173816 !important;
+    border-top: 4px solid rgba(20, 8, 4, .55) !important;
+    color: #fff1bf !important;
+    font-size: .74rem !important;
+    font-weight: 900 !important;
+    line-height: 1.1 !important;
+}
+
+.upgrade-sheet-footer img {
+    width: 22px !important;
+    height: 22px !important;
+    image-rendering: pixelated !important;
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,.35)) !important;
+}
+
+/* Keep other panel cards from being oversized. */
+.progress-card,
+.milestone-card {
+    min-height: 92px !important;
+    padding: 10px !important;
+}
+
+.collection-grid {
+    gap: 8px !important;
+}
+
+.collection-card {
+    min-height: 138px !important;
+    grid-template-rows: 78px auto auto !important;
+    padding: 6px !important;
+}
+
+.collection-art img {
+    max-height: 72px !important;
+}
+
+/* Small screen modal layout */
+@media (max-width: 390px), (max-height: 760px) {
+    .upgrade-panel {
+        padding: 8px !important;
+    }
+
+    .upgrade-sheet {
+        max-height: 86dvh !important;
+    }
+
+    .upgrade-sheet-header {
+        min-height: 70px !important;
+        padding: 10px 12px !important;
+        grid-template-columns: minmax(0, 1fr) 44px !important;
+    }
+
+    .upgrade-sheet-header h2 {
+        font-size: 1.92rem !important;
+    }
+
+    .panel-close-button {
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    .upgrade-tabs {
+        gap: 5px !important;
+        padding: 7px 8px 6px !important;
+    }
+
+    .upgrade-tab {
+        min-height: 44px !important;
+        grid-template-columns: 18px minmax(0, 1fr) !important;
+        gap: 4px !important;
+        padding: 5px !important;
+    }
+
+    .upgrade-tab img {
+        width: 17px !important;
+        height: 17px !important;
+    }
+
+    .upgrade-tab span {
+        font-size: .61rem !important;
+    }
+
+    .upgrade-current-office {
+        grid-template-columns: 66px minmax(0, 1fr) !important;
+        gap: 8px !important;
+        padding: 8px 9px !important;
+    }
+
+    .current-office-thumb {
+        height: 50px !important;
+    }
+
+    .current-office-meta strong {
+        font-size: .96rem !important;
+    }
+
+    .current-office-meta span {
+        font-size: .65rem !important;
+    }
+
+    .current-office-perks {
+        display: none !important;
+    }
+
+    .upgrade-scroll {
+        padding: 9px !important;
+    }
+
+    .quest-card.compact-quest-card {
+        grid-template-columns: 46px minmax(0, 1fr) 74px !important;
+        gap: 7px !important;
+        min-height: 84px !important;
+        padding: 7px !important;
+    }
+
+    .quest-card.compact-quest-card .quest-art {
+        width: 42px !important;
+        height: 42px !important;
+    }
+
+    .quest-card.compact-quest-card .quest-art img {
+        width: 31px !important;
+        height: 31px !important;
+    }
+
+    .quest-main h3 {
+        font-size: .98rem !important;
+    }
+
+    .quest-main p {
+        font-size: .62rem !important;
+    }
+
+    .quest-main small {
+        font-size: .58rem !important;
+    }
+
+    .quest-main .milestone-bar {
+        height: 10px !important;
+    }
+
+    .quest-card.compact-quest-card .quest-reward-label span {
+        font-size: .74rem !important;
+    }
+
+    .quest-card.compact-quest-card .progress-buy-button {
+        font-size: .66rem !important;
+    }
+
+    .upgrade-sheet-footer {
+        min-height: 32px !important;
+        font-size: .64rem !important;
+        padding: 6px 10px calc(env(safe-area-inset-bottom) + 6px) !important;
+    }
+
+    .upgrade-sheet-footer img {
+        width: 19px !important;
+        height: 19px !important;
+    }
+}
