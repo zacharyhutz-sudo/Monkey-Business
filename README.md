@@ -165,3 +165,19 @@ This pass keeps the v19 visual direction but fixes the actual iPhone layout issu
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=20`
+
+## Version 21 Main Screen Rebuild
+
+Focused code pass after v20.
+
+- Added a small generated pixel UI kit: green/gold/parchment/wood frames, textures, and vine corner art.
+- Rebuilt the main gameplay screen around reusable art assets instead of plain CSS rectangles.
+- Improved title/HUD fit and compact dock cost formatting.
+- Kept all four main links on the home screen: Upgrades, Goals/Milestones, Monkeys/Collection, and Quests.
+- Shortened cramped dock labels while preserving functionality.
+- Reduced the empty-office overlay so more office art shows.
+- Preserved all existing game mechanics and save data.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=21`

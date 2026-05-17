@@ -649,3 +649,476 @@
         font-size: 0.48rem !important;
     }
 }
+
+
+/* v21 main screen rebuild: generated UI kit + anti-cutoff pass */
+:root {
+    --ui-border-dark: #130704;
+    --ui-cream: #fff1bf;
+}
+
+.mb-app {
+    background:
+        radial-gradient(circle at 50% -10%, rgba(145, 214, 94, .46), transparent 31%),
+        radial-gradient(circle at 12% 22%, rgba(238, 174, 49, .13), transparent 16%),
+        radial-gradient(circle at 88% 82%, rgba(238, 174, 49, .08), transparent 18%),
+        linear-gradient(180deg, #175d30 0%, #0a2b18 40%, #031008 100%) !important;
+}
+
+.mb-topbar {
+    padding: calc(env(safe-area-inset-top) + 8px) 10px 7px !important;
+}
+
+.mb-title-row {
+    grid-template-columns: 54px minmax(0, 1fr) 46px !important;
+    gap: 8px !important;
+}
+
+.mb-player-card {
+    width: 52px !important;
+    height: 52px !important;
+    border-image: url("ui-frame-gold.png") 18 fill / 7px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.mb-player-card img {
+    width: 43px !important;
+    height: 43px !important;
+}
+
+.player-level-badge {
+    min-width: 48px !important;
+    height: 22px !important;
+    border-image: url("ui-frame-green.png") 18 fill / 6px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+    font-size: .68rem !important;
+}
+
+.mb-settings-button {
+    width: 46px !important;
+    height: 46px !important;
+    border-image: url("ui-frame-green.png") 18 fill / 8px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.mb-game-title {
+    font-size: clamp(1.72rem, 7.15vw, 2.25rem) !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    white-space: nowrap !important;
+    letter-spacing: -.045em !important;
+}
+
+.mb-status {
+    font-size: clamp(.72rem, 2.9vw, .86rem) !important;
+}
+
+/* cohesive framed stat bar */
+.mb-wallet {
+    margin-top: 7px !important;
+    min-height: 64px !important;
+    border-image: url("ui-frame-green.png") 18 fill / 8px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.mb-wallet::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    background: linear-gradient(180deg, rgba(0,0,0,.16), rgba(0,0,0,.26));
+    pointer-events: none;
+}
+
+.mb-wallet-pill {
+    grid-template-columns: 34px minmax(0, 1fr) !important;
+    min-height: 64px !important;
+    padding: 9px 7px !important;
+    border-right: 2px solid rgba(151, 191, 82, .22) !important;
+}
+
+.mb-wallet-pill:last-child {
+    border-right: 0 !important;
+}
+
+.wallet-icon-wrap {
+    width: 32px !important;
+    height: 32px !important;
+    border-image: url("ui-frame-green.png") 18 fill / 5px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.resource-img {
+    width: 25px !important;
+    height: 25px !important;
+}
+
+.mb-wallet-pill strong {
+    font-size: clamp(1.08rem, 4vw, 1.38rem) !important;
+    line-height: .9 !important;
+}
+
+.mb-wallet-pill em {
+    display: block !important;
+    font-size: clamp(.54rem, 2vw, .66rem) !important;
+    margin-top: 3px !important;
+}
+
+.mb-wallet-pill small {
+    display: block !important;
+    font-size: clamp(.45rem, 1.75vw, .56rem) !important;
+    letter-spacing: .03em !important;
+    margin-top: 2px !important;
+}
+
+/* main gameplay */
+.mb-gameplay {
+    grid-template-rows: minmax(342px, 1fr) 104px 70px !important;
+    gap: 7px !important;
+    padding: 7px 8px 5px !important;
+}
+
+.mb-office-card,
+.mb-tape-card,
+.mb-words-card {
+    border-image: url("ui-frame-green.png") 18 fill / 9px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.mb-office-card {
+    grid-template-rows: 78px minmax(0, 1fr) !important;
+    overflow: hidden !important;
+}
+
+.mb-office-header {
+    padding: 8px 10px !important;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.04), transparent 42%),
+        url("ui-wood-texture.png") center / 96px 96px repeat !important;
+    border-bottom: 5px solid #160905 !important;
+}
+
+.vine-corner {
+    position: absolute;
+    z-index: 8;
+    width: 64px;
+    height: 64px;
+    background: url("ui-vine-corner.png") center / contain no-repeat;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+.vine-top-left { top: -4px; left: -5px; }
+.vine-top-right { top: -4px; right: -5px; transform: scaleX(-1); }
+
+.mb-floor-ribbon {
+    height: 27px !important;
+    min-width: 82px !important;
+    font-size: .7rem !important;
+    margin-bottom: 1px !important;
+    border-image: url("ui-frame-green.png") 18 fill / 5px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+}
+
+.mb-office-header h1 {
+    font-size: clamp(1.44rem, 6.1vw, 1.92rem) !important;
+}
+
+.mb-office-count-wrap {
+    max-width: 46% !important;
+}
+
+.mb-office-count {
+    min-height: 39px !important;
+    padding: 5px 7px !important;
+    font-size: clamp(.62rem, 2.75vw, .78rem) !important;
+    border-image: url("ui-frame-wood.png") 18 fill / 7px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+}
+
+.office-info-button {
+    width: 34px !important;
+    height: 34px !important;
+    border-image: url("ui-frame-wood.png") 18 fill / 6px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+}
+
+.office-info-button img {
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.mb-office-scene {
+    background-position: center center !important;
+}
+
+.office-empty-state {
+    width: min(62%, 230px) !important;
+    padding: 12px !important;
+    gap: 5px !important;
+    border-image: url("ui-frame-paper.png") 18 fill / 9px / 0 stretch !important;
+    border-width: 0 !important;
+    background: url("ui-paper-texture.png") center / 128px 128px repeat !important;
+    opacity: .88;
+}
+
+.empty-circle {
+    width: 42px !important;
+    height: 42px !important;
+}
+
+.office-empty-state strong {
+    font-size: clamp(1rem, 4.7vw, 1.38rem) !important;
+}
+
+.office-empty-state span {
+    font-size: clamp(.66rem, 2.7vw, .82rem) !important;
+}
+
+.office-monkey {
+    width: clamp(56px, 12.4vw, 70px) !important;
+    min-height: clamp(68px, 14.2vw, 86px) !important;
+}
+
+.office-monkey-art {
+    width: clamp(54px, 12vw, 68px) !important;
+    height: clamp(64px, 13.8vw, 82px) !important;
+}
+
+/* tape + recent words */
+.mb-tape-card,
+.mb-words-card {
+    padding: 7px 9px !important;
+}
+
+.mb-section-label {
+    height: 22px !important;
+    margin-bottom: 6px !important;
+    font-size: clamp(.78rem, 3.25vw, .95rem) !important;
+}
+
+.output-area {
+    height: 58px !important;
+    max-height: 58px !important;
+    padding: 6px 7px !important;
+    border-image: url("ui-frame-paper.png") 18 fill / 8px / 0 stretch !important;
+    border-width: 0 !important;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.2), transparent),
+        repeating-linear-gradient(180deg, #fff6da 0 27px, #d7c188 27px 30px) !important;
+}
+
+.word-found {
+    min-width: 84px !important;
+    min-height: 30px !important;
+    padding: 0 7px !important;
+    border-image: url("ui-frame-gold.png") 18 fill / 6px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+}
+
+.recent-words-list {
+    height: 34px !important;
+    overflow: hidden !important;
+}
+
+.recent-word {
+    height: 30px !important;
+    min-width: 84px !important;
+    padding: 0 8px !important;
+    font-size: .82rem !important;
+    border-image: url("ui-frame-paper.png") 18 fill / 6px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+}
+
+/* dock */
+.mb-dock {
+    grid-template-columns: .92fr .96fr .96fr 1.42fr .96fr .92fr !important;
+    gap: 4px !important;
+    padding: 7px 7px calc(env(safe-area-inset-bottom) + 7px) !important;
+}
+
+.dock-tile,
+.dock-type {
+    border-image: url("ui-frame-green.png") 18 fill / 8px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+    box-shadow: none !important;
+}
+
+.dock-type {
+    border-image-source: url("ui-frame-gold.png") !important;
+}
+
+.dock-tile {
+    height: 66px !important;
+    grid-template-rows: 26px auto auto !important;
+    padding: 5px 2px 4px !important;
+}
+
+.dock-type {
+    height: 78px !important;
+    margin-top: -8px !important;
+    grid-template-rows: 30px auto auto !important;
+    padding: 6px 3px 5px !important;
+}
+
+.dock-image {
+    width: 24px !important;
+    height: 24px !important;
+}
+
+.dock-image-large {
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.dock-tile strong {
+    font-size: clamp(.45rem, 2vw, .62rem) !important;
+    line-height: .92 !important;
+}
+
+.dock-type strong {
+    font-size: clamp(.98rem, 4.3vw, 1.28rem) !important;
+    line-height: .86 !important;
+}
+
+.dock-tile small,
+.dock-type small {
+    font-size: clamp(.4rem, 1.72vw, .54rem) !important;
+}
+
+/* panel also uses generated frames, but main-screen is the priority */
+.upgrade-sheet {
+    border-image: url("ui-frame-wood.png") 18 fill / 10px / 0 stretch !important;
+    border-width: 0 !important;
+    background: #e1b866 !important;
+    box-shadow: 0 14px 30px rgba(0,0,0,.42) !important;
+}
+
+.upgrade-sheet-header {
+    background: url("ui-wood-texture.png") center / 96px 96px repeat !important;
+}
+
+.upgrade-tab,
+.progress-card,
+.milestone-card,
+.quest-card,
+.upgrade-current-office {
+    border-image: url("ui-frame-paper.png") 18 fill / 8px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+}
+
+.upgrade-tab.is-active,
+.progress-buy-button:not(:disabled),
+.milestone-claim-button:not(:disabled),
+.progress-buy-button,
+.milestone-claim-button {
+    border-image: url("ui-frame-green.png") 18 fill / 8px / 0 stretch !important;
+    border-width: 0 !important;
+    background: none !important;
+}
+
+/* constrained viewports */
+@media (max-width: 390px), (max-height: 760px) {
+    .mb-game-title {
+        font-size: clamp(1.48rem, 6.5vw, 1.95rem) !important;
+    }
+
+    .mb-status {
+        font-size: .7rem !important;
+    }
+
+    .mb-wallet-pill small,
+    .mb-wallet-pill em {
+        display: none !important;
+    }
+
+    .mb-wallet,
+    .mb-wallet-pill {
+        min-height: 48px !important;
+    }
+
+    .mb-gameplay {
+        grid-template-rows: minmax(286px, 1fr) 84px 54px !important;
+        gap: 6px !important;
+    }
+
+    .mb-office-card {
+        grid-template-rows: 68px minmax(0, 1fr) !important;
+    }
+
+    .mb-floor-ribbon {
+        height: 23px !important;
+        font-size: .62rem !important;
+    }
+
+    .mb-office-header h1 {
+        font-size: 1.42rem !important;
+    }
+
+    .mb-office-count {
+        min-height: 34px !important;
+        font-size: .61rem !important;
+    }
+
+    .office-info-button {
+        width: 30px !important;
+        height: 30px !important;
+    }
+
+    .output-area {
+        height: 42px !important;
+        max-height: 42px !important;
+    }
+
+    .recent-words-list {
+        height: 22px !important;
+    }
+
+    .recent-word {
+        height: 22px !important;
+        min-width: 74px !important;
+        font-size: .68rem !important;
+    }
+
+    .dock-tile {
+        height: 56px !important;
+        grid-template-rows: 21px auto auto !important;
+    }
+
+    .dock-type {
+        height: 66px !important;
+        grid-template-rows: 25px auto auto !important;
+    }
+
+    .dock-image {
+        width: 21px !important;
+        height: 21px !important;
+    }
+
+    .dock-image-large {
+        width: 25px !important;
+        height: 25px !important;
+    }
+
+    .dock-tile strong {
+        font-size: .43rem !important;
+    }
+}

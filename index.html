@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Monkey Business">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Monkey Business</title>
-  <link rel="stylesheet" href="app.css?v=20">
+  <link rel="stylesheet" href="app.css?v=21">
 </head>
 <body>
 <div class="mb-app">
@@ -32,7 +32,7 @@
     </section>
   </header>
   <main class="mb-gameplay">
-    <section class="mb-office-card" aria-label="Monkey office">
+    <section class="mb-office-card game-panel game-panel-office" aria-label="Monkey office"><span class="vine-corner vine-top-left" aria-hidden="true"></span><span class="vine-corner vine-top-right" aria-hidden="true"></span>
       <div class="mb-office-header">
         <div class="mb-office-title-block"><span id="office-level-label" class="mb-floor-ribbon">Floor 1</span><h1 id="office-name-title">Starter Office</h1></div>
         <div class="mb-office-count-wrap"><span id="monkey-office-summary" class="mb-office-count">No monkeys</span><button type="button" class="office-info-button" aria-label="Office info"><img src="icon-info.png" alt=""></button></div>
@@ -42,11 +42,11 @@
         <div id="monkey-office-grid" class="monkey-office-grid"><div class="office-empty-state"><div class="empty-circle"></div><strong>Empty office</strong><span>Hire monkeys to start typing.</span></div></div>
       </div>
     </section>
-    <section class="mb-tape-card" aria-label="Letter tape">
+    <section class="mb-tape-card game-panel game-panel-tape" aria-label="Letter tape">
       <div class="mb-section-label"><div class="section-title-with-icon"><span>Letter Tape</span><img src="icon-question.png" class="section-mini-icon" alt=""></div><div class="section-actions"><button type="button" class="mini-square-button"><span>▶</span></button><button type="button" class="mini-square-button"><span>⏭</span></button></div></div>
       <div id="output-area" class="output-area" aria-live="polite"><span class="placeholder">Tap TYPE to begin...</span></div>
     </section>
-    <section class="mb-words-card" aria-label="Recent words">
+    <section class="mb-words-card game-panel game-panel-words" aria-label="Recent words">
       <div class="mb-section-label"><div class="section-title-with-icon"><span>Recent Words</span><img src="icon-leaf.png" class="section-mini-icon" alt=""></div></div>
       <div id="recent-words-list" class="recent-words-list"><span class="empty-state">No words yet.</span></div>
     </section>
@@ -54,9 +54,9 @@
   <footer class="mb-dock" aria-label="Main controls">
     <button id="buy-monkey-button" class="dock-tile dock-hire"><img src="icon-monkey.png" class="dock-image" alt=""><strong>Hire</strong><small><span id="monkey-cost">50</span></small></button>
     <button id="nav-upgrades-button" class="dock-tile" data-panel-view="upgrades"><img src="icon-upgrades.png" class="dock-image" alt=""><strong>Upgrades</strong></button>
-    <button id="nav-milestones-button" class="dock-tile" data-panel-view="milestones"><img src="icon-milestones.png" class="dock-image" alt=""><strong>Milestones</strong></button>
+    <button id="nav-milestones-button" class="dock-tile" data-panel-view="milestones"><img src="icon-milestones.png" class="dock-image" alt=""><strong>Goals</strong></button>
     <button id="type-button" class="dock-type"><img src="icon-typewriter.png" class="dock-image dock-image-large" alt=""><strong>TYPE</strong><small>Random Letter</small></button>
-    <button id="nav-collection-button" class="dock-tile" data-panel-view="collection"><img src="icon-collection.png" class="dock-image" alt=""><strong>Collection</strong></button>
+    <button id="nav-collection-button" class="dock-tile" data-panel-view="collection"><img src="icon-collection.png" class="dock-image" alt=""><strong>Monkeys</strong></button>
     <button id="nav-quests-button" class="dock-tile dock-quests" data-panel-view="quests"><span id="quests-badge" class="dock-badge">0</span><img src="icon-quests.png" class="dock-image" alt=""><strong>Quests</strong></button>
     <span id="monkey-cost-inline" class="visually-hidden">50</span>
   </footer>
@@ -80,6 +80,6 @@
     </div>
   </div>
 </section>
-<script src="words.js?v=20"></script>
-<script src="script.js?v=20"></script>
+<script src="words.js?v=21"></script>
+<script src="script.js?v=21"></script>
 </body></html>
