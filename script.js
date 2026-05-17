@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v38';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v37', 'monkey-business-save-v36', 'monkey-business-save-v35', 'monkey-business-save-v34', 'monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v40';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v38', 'monkey-business-save-v37', 'monkey-business-save-v36', 'monkey-business-save-v35', 'monkey-business-save-v34', 'monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -10,6 +10,7 @@ const monkeyAnimationDurationMs = 480;
 const baseSuperRareChance = 0.10;
 const HIRE_COST_START = 13;
 const HIRE_COST_REDUCTION_MULTIPLIER = 0.25;
+const MONKEY_COST_GROWTH_MULTIPLIER = 1.4;
 const RARITY_CONFIG = {
     normal: { label: 'Normal', baseChance: 0.73, speedMultiplier: 1, badge: '' },
     rare: { label: 'Rare', baseChance: 0.15, speedMultiplier: 2, badge: '◆' },
@@ -313,78 +314,78 @@ const COLLECTION_BONUS_DEFS = [
 ];
 
 const COLLECTION_REWARDS = [
-    { id: 'collected-5', name: 'Starter Crew', description: 'Hire 5 total monkeys.', target: 5, rewardBananas: 1000, bonus: {} },
-    { id: 'collected-10', name: 'Roster Rhythm', description: 'Hire 10 total monkeys.', target: 10, rewardBananas: 4000, bonus: { speedBonus: 0.05 } },
-    { id: 'collected-20', name: 'Talent Bench', description: 'Hire 20 total monkeys.', target: 20, rewardBananas: 15000, bonus: {} },
+    { id: 'collected-5', name: 'Starter Crew', description: 'Hire 5 total monkeys.', target: 5, rewardBananas: 100, bonus: {} },
+    { id: 'collected-10', name: 'Roster Rhythm', description: 'Hire 10 total monkeys.', target: 10, rewardBananas: 400, bonus: { speedBonus: 0.05 } },
+    { id: 'collected-20', name: 'Talent Bench', description: 'Hire 20 total monkeys.', target: 20, rewardBananas: 1500, bonus: {} },
     { id: 'collected-30', name: 'Rare Recruit Network', description: 'Hire 30 total monkeys.', target: 30, rewardBananas: 0, bonus: { rareBonus: 0.03 } },
     { id: 'collected-all', name: 'Complete Company', description: 'Collect every monkey type.', target: MONKEY_TYPES.length, rewardBananas: 0, bonus: { speedBonus: 0.10, incomeBonus: 0.10 } }
 ];
 
 const MILESTONES = [
     // Tier 1 — Start the Business
-    { id: 'letters-100', name: 'Warm Up', description: 'Type 100 letters.', metric: 'lifetimeLetters', target: 100, reward: 75, category: 'quest', tier: 1 },
-    { id: 'words-10', name: 'First Words', description: 'Find 10 words.', metric: 'lifetimeWords', target: 10, reward: 125, category: 'quest', tier: 1 },
-    { id: 'unique-5', name: 'Word Scout', description: 'Discover 5 unique words.', metric: 'uniqueWords', target: 5, reward: 175, category: 'quest', tier: 1 },
-    { id: 'monkeys-1', name: 'First Hire', description: 'Hire 1 monkey.', metric: 'totalMonkeysHired', target: 1, reward: 150, category: 'quest', tier: 1 },
-    { id: 'upgrades-1', name: 'Tool Upgrade', description: 'Buy 1 upgrade.', metric: 'totalUpgradesPurchased', target: 1, reward: 225, category: 'quest', tier: 1 },
-    { id: 'bananas-500', name: 'Banana Buffer', description: 'Earn 500 lifetime bananas.', metric: 'lifetimeBananas', target: 500, reward: 300, category: 'quest', tier: 1 },
+    { id: 'letters-100', name: 'Warm Up', description: 'Type 100 letters.', metric: 'lifetimeLetters', target: 100, reward: 10, category: 'quest', tier: 1 },
+    { id: 'words-10', name: 'First Words', description: 'Find 10 words.', metric: 'lifetimeWords', target: 10, reward: 15, category: 'quest', tier: 1 },
+    { id: 'unique-5', name: 'Word Scout', description: 'Discover 5 unique words.', metric: 'uniqueWords', target: 5, reward: 20, category: 'quest', tier: 1 },
+    { id: 'monkeys-1', name: 'First Hire', description: 'Hire 1 monkey.', metric: 'totalMonkeysHired', target: 1, reward: 15, category: 'quest', tier: 1 },
+    { id: 'upgrades-1', name: 'Tool Upgrade', description: 'Buy 1 upgrade.', metric: 'totalUpgradesPurchased', target: 1, reward: 25, category: 'quest', tier: 1 },
+    { id: 'bananas-500', name: 'Banana Buffer', description: 'Earn 500 lifetime bananas.', metric: 'lifetimeBananas', target: 500, reward: 30, category: 'quest', tier: 1 },
 
     // Tier 2 — Build the Office
-    { id: 'monkeys-3', name: 'Tiny Team', description: 'Hire 3 monkeys.', metric: 'totalMonkeysHired', target: 3, reward: 350, category: 'quest', tier: 2 },
-    { id: 'words-50', name: 'Word Finder', description: 'Find 50 lifetime words.', metric: 'lifetimeWords', target: 50, reward: 500, category: 'quest', tier: 2 },
-    { id: 'unique-25', name: 'Discovery Desk', description: 'Discover 25 unique words.', metric: 'uniqueWords', target: 25, reward: 900, category: 'quest', tier: 2 },
-    { id: 'monkeys-5', name: 'Small Staff', description: 'Hire 5 monkeys.', metric: 'totalMonkeysHired', target: 5, reward: 650, category: 'quest', tier: 2 },
-    { id: 'upgrades-3', name: 'Better Tools', description: 'Buy 3 upgrades.', metric: 'totalUpgradesPurchased', target: 3, reward: 450, category: 'quest', tier: 2 },
-    { id: 'quests-3', name: 'Checklist Champ', description: 'Claim 3 quests.', metric: 'claimedQuests', target: 3, reward: 700, category: 'quest', tier: 2 },
-    { id: 'office-2', name: 'New Lease', description: 'Unlock Floor 2.', metric: 'officeLevel', target: 2, reward: 1000, category: 'quest', tier: 2 },
+    { id: 'monkeys-3', name: 'Tiny Team', description: 'Hire 3 monkeys.', metric: 'totalMonkeysHired', target: 3, reward: 35, category: 'quest', tier: 2 },
+    { id: 'words-50', name: 'Word Finder', description: 'Find 50 lifetime words.', metric: 'lifetimeWords', target: 50, reward: 50, category: 'quest', tier: 2 },
+    { id: 'unique-25', name: 'Discovery Desk', description: 'Discover 25 unique words.', metric: 'uniqueWords', target: 25, reward: 90, category: 'quest', tier: 2 },
+    { id: 'monkeys-5', name: 'Small Staff', description: 'Hire 5 monkeys.', metric: 'totalMonkeysHired', target: 5, reward: 65, category: 'quest', tier: 2 },
+    { id: 'upgrades-3', name: 'Better Tools', description: 'Buy 3 upgrades.', metric: 'totalUpgradesPurchased', target: 3, reward: 45, category: 'quest', tier: 2 },
+    { id: 'quests-3', name: 'Checklist Champ', description: 'Claim 3 quests.', metric: 'claimedQuests', target: 3, reward: 70, category: 'quest', tier: 2 },
+    { id: 'office-2', name: 'New Lease', description: 'Unlock Floor 2.', metric: 'officeLevel', target: 2, reward: 100, category: 'quest', tier: 2 },
 
     // Tier 3 — Scale the Company
-    { id: 'monkeys-8', name: 'Growing Crew', description: 'Hire 8 monkeys.', metric: 'totalMonkeysHired', target: 8, reward: 1200, category: 'quest', tier: 3 },
-    { id: 'upgrades-10', name: 'Office Systems', description: 'Buy 10 upgrades.', metric: 'totalUpgradesPurchased', target: 10, reward: 1800, category: 'quest', tier: 3 },
-    { id: 'words-150', name: 'Word Department', description: 'Find 150 lifetime words.', metric: 'lifetimeWords', target: 150, reward: 2200, category: 'quest', tier: 3 },
-    { id: 'longest-word-5-quest', name: 'Five-Letter Find', description: 'Find a 5-letter word.', metric: 'longestWordLength', target: 5, reward: 2500, category: 'quest', tier: 3 },
-    { id: 'bananas-10000', name: 'Banana Revenue', description: 'Earn 10,000 lifetime bananas.', metric: 'lifetimeBananas', target: 10000, reward: 2500, category: 'quest', tier: 3 },
-    { id: 'office-3', name: 'Banana Bureau', description: 'Unlock Floor 3.', metric: 'officeLevel', target: 3, reward: 4000, category: 'quest', tier: 3 },
-    { id: 'rare-hire-1-quest', name: 'Rare Recruit', description: 'Hire 1 rare monkey.', metric: 'rares', target: 1, reward: 2500, category: 'quest', tier: 3 },
+    { id: 'monkeys-8', name: 'Growing Crew', description: 'Hire 8 monkeys.', metric: 'totalMonkeysHired', target: 8, reward: 120, category: 'quest', tier: 3 },
+    { id: 'upgrades-10', name: 'Office Systems', description: 'Buy 10 upgrades.', metric: 'totalUpgradesPurchased', target: 10, reward: 180, category: 'quest', tier: 3 },
+    { id: 'words-150', name: 'Word Department', description: 'Find 150 lifetime words.', metric: 'lifetimeWords', target: 150, reward: 220, category: 'quest', tier: 3 },
+    { id: 'longest-word-5-quest', name: 'Five-Letter Find', description: 'Find a 5-letter word.', metric: 'longestWordLength', target: 5, reward: 250, category: 'quest', tier: 3 },
+    { id: 'bananas-10000', name: 'Banana Revenue', description: 'Earn 10,000 lifetime bananas.', metric: 'lifetimeBananas', target: 10000, reward: 250, category: 'quest', tier: 3 },
+    { id: 'office-3', name: 'Banana Bureau', description: 'Unlock Floor 3.', metric: 'officeLevel', target: 3, reward: 400, category: 'quest', tier: 3 },
+    { id: 'rare-hire-1-quest', name: 'Rare Recruit', description: 'Hire 1 rare monkey.', metric: 'rares', target: 1, reward: 250, category: 'quest', tier: 3 },
 
     // Tier 4 — Banana Enterprise
-    { id: 'monkeys-20', name: 'Full Shift', description: 'Hire 20 monkeys.', metric: 'totalMonkeysHired', target: 20, reward: 6000, category: 'quest', tier: 4 },
-    { id: 'words-500', name: 'Dictionary Engine', description: 'Find 500 lifetime words.', metric: 'lifetimeWords', target: 500, reward: 8000, category: 'quest', tier: 4 },
-    { id: 'unique-100', name: 'Word Archive', description: 'Discover 100 unique words.', metric: 'uniqueWords', target: 100, reward: 12000, category: 'quest', tier: 4 },
-    { id: 'upgrades-25', name: 'Optimized Office', description: 'Buy 25 upgrades.', metric: 'totalUpgradesPurchased', target: 25, reward: 9000, category: 'quest', tier: 4 },
-    { id: 'rare-hire-5-quest', name: 'Rare Department', description: 'Hire 5 rare monkeys.', metric: 'rares', target: 5, reward: 12000, category: 'quest', tier: 4 },
-    { id: 'rare-1-quest', name: 'Super Rare Recruit', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 10000, category: 'quest', tier: 4 },
-    { id: 'office-4', name: 'Typewriter Tower', description: 'Unlock Floor 4.', metric: 'officeLevel', target: 4, reward: 15000, category: 'quest', tier: 4 },
+    { id: 'monkeys-20', name: 'Full Shift', description: 'Hire 20 monkeys.', metric: 'totalMonkeysHired', target: 20, reward: 600, category: 'quest', tier: 4 },
+    { id: 'words-500', name: 'Dictionary Engine', description: 'Find 500 lifetime words.', metric: 'lifetimeWords', target: 500, reward: 800, category: 'quest', tier: 4 },
+    { id: 'unique-100', name: 'Word Archive', description: 'Discover 100 unique words.', metric: 'uniqueWords', target: 100, reward: 1200, category: 'quest', tier: 4 },
+    { id: 'upgrades-25', name: 'Optimized Office', description: 'Buy 25 upgrades.', metric: 'totalUpgradesPurchased', target: 25, reward: 900, category: 'quest', tier: 4 },
+    { id: 'rare-hire-5-quest', name: 'Rare Department', description: 'Hire 5 rare monkeys.', metric: 'rares', target: 5, reward: 1200, category: 'quest', tier: 4 },
+    { id: 'rare-1-quest', name: 'Super Rare Recruit', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 1000, category: 'quest', tier: 4 },
+    { id: 'office-4', name: 'Typewriter Tower', description: 'Unlock Floor 4.', metric: 'officeLevel', target: 4, reward: 1500, category: 'quest', tier: 4 },
 
     // Tier 5 — Golden Company
-    { id: 'monkeys-40', name: 'Monkey Company', description: 'Hire 40 monkeys.', metric: 'totalMonkeysHired', target: 40, reward: 22000, category: 'quest', tier: 5 },
-    { id: 'words-1500', name: 'Word Factory', description: 'Find 1,500 lifetime words.', metric: 'lifetimeWords', target: 1500, reward: 35000, category: 'quest', tier: 5 },
-    { id: 'unique-250', name: 'Dictionary Wing', description: 'Discover 250 unique words.', metric: 'uniqueWords', target: 250, reward: 55000, category: 'quest', tier: 5 },
-    { id: 'bananas-250000', name: 'Quarter Million', description: 'Earn 250K lifetime bananas.', metric: 'lifetimeBananas', target: 250000, reward: 45000, category: 'quest', tier: 5 },
-    { id: 'upgrades-50', name: 'Peak Efficiency', description: 'Buy 50 upgrades.', metric: 'totalUpgradesPurchased', target: 50, reward: 50000, category: 'quest', tier: 5 },
-    { id: 'office-5', name: 'Executive Treehouse', description: 'Unlock Floor 5.', metric: 'officeLevel', target: 5, reward: 75000, category: 'quest', tier: 5 },
-    { id: 'legendary-1-quest', name: 'Office Legend', description: 'Hire 1 legendary monkey.', metric: 'legendaries', target: 1, reward: 75000, category: 'quest', tier: 5 },
+    { id: 'monkeys-40', name: 'Monkey Company', description: 'Hire 40 monkeys.', metric: 'totalMonkeysHired', target: 40, reward: 2200, category: 'quest', tier: 5 },
+    { id: 'words-1500', name: 'Word Factory', description: 'Find 1,500 lifetime words.', metric: 'lifetimeWords', target: 1500, reward: 3500, category: 'quest', tier: 5 },
+    { id: 'unique-250', name: 'Dictionary Wing', description: 'Discover 250 unique words.', metric: 'uniqueWords', target: 250, reward: 5500, category: 'quest', tier: 5 },
+    { id: 'bananas-250000', name: 'Quarter Million', description: 'Earn 250K lifetime bananas.', metric: 'lifetimeBananas', target: 250000, reward: 4500, category: 'quest', tier: 5 },
+    { id: 'upgrades-50', name: 'Peak Efficiency', description: 'Buy 50 upgrades.', metric: 'totalUpgradesPurchased', target: 50, reward: 5000, category: 'quest', tier: 5 },
+    { id: 'office-5', name: 'Executive Treehouse', description: 'Unlock Floor 5.', metric: 'officeLevel', target: 5, reward: 7500, category: 'quest', tier: 5 },
+    { id: 'legendary-1-quest', name: 'Office Legend', description: 'Hire 1 legendary monkey.', metric: 'legendaries', target: 1, reward: 7500, category: 'quest', tier: 5 },
 
     // Long-term milestones
-    { id: 'letters-500', name: 'First Shift', description: 'Type 500 lifetime letters.', metric: 'lifetimeLetters', target: 500, reward: 150, category: 'milestone' },
-    { id: 'letters-2500', name: 'Long Day', description: 'Type 2,500 lifetime letters.', metric: 'lifetimeLetters', target: 2500, reward: 750, category: 'milestone' },
-    { id: 'letters-10000', name: 'Overtime', description: 'Type 10,000 lifetime letters.', metric: 'lifetimeLetters', target: 10000, reward: 3500, category: 'milestone' },
-    { id: 'letters-50000', name: 'Keyboard Jungle', description: 'Type 50,000 lifetime letters.', metric: 'lifetimeLetters', target: 50000, reward: 22000, category: 'milestone' },
-    { id: 'words-250', name: 'Dictionary Desk', description: 'Find 250 lifetime words.', metric: 'lifetimeWords', target: 250, reward: 1800, category: 'milestone' },
-    { id: 'words-1000', name: 'Lexicon Legend', description: 'Find 1,000 lifetime words.', metric: 'lifetimeWords', target: 1000, reward: 9000, category: 'milestone' },
-    { id: 'words-5000', name: 'Word Empire', description: 'Find 5,000 lifetime words.', metric: 'lifetimeWords', target: 5000, reward: 60000, category: 'milestone' },
-    { id: 'unique-500', name: 'Dictionary Collector', description: 'Discover 500 unique words.', metric: 'uniqueWords', target: 500, reward: 80000, category: 'milestone' },
-    { id: 'monkeys-15', name: 'Full Office', description: 'Hire 15 monkeys.', metric: 'totalMonkeysHired', target: 15, reward: 4500, category: 'milestone' },
-    { id: 'monkeys-75', name: 'Hiring Spree', description: 'Hire 75 monkeys.', metric: 'totalMonkeysHired', target: 75, reward: 90000, category: 'milestone' },
-    { id: 'rare-1', name: 'Super Rare Talent', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 2500, category: 'milestone' },
-    { id: 'rare-5', name: 'Golden Bench', description: 'Hire 5 super rare monkeys.', metric: 'superRares', target: 5, reward: 60000, category: 'milestone' },
-    { id: 'rare-10', name: 'Rare Roster', description: 'Hire 10 rare monkeys.', metric: 'rares', target: 10, reward: 30000, category: 'milestone' },
-    { id: 'legendary-1', name: 'Legendary Desk', description: 'Hire 1 legendary monkey.', metric: 'legendaries', target: 1, reward: 125000, category: 'milestone' },
-    { id: 'best-word-20', name: 'Premium Word', description: 'Find a word worth 20 bananas.', metric: 'bestWordPoints', target: 20, reward: 6000, category: 'milestone' },
-    { id: 'longest-word-6', name: 'Six-Letter Shift', description: 'Find a 6-letter word.', metric: 'longestWordLength', target: 6, reward: 5000, category: 'milestone' },
-    { id: 'upgrades-75', name: 'Systems Master', description: 'Buy 75 upgrades.', metric: 'totalUpgradesPurchased', target: 75, reward: 120000, category: 'milestone' },
-    { id: 'office-6', name: 'Golden HQ', description: 'Unlock Floor 6.', metric: 'officeLevel', target: 6, reward: 200000, category: 'milestone' },
-    { id: 'bananas-1000000', name: 'Million Banana Business', description: 'Earn 1,000,000 lifetime bananas.', metric: 'lifetimeBananas', target: 1000000, reward: 250000, category: 'milestone' }
+    { id: 'letters-500', name: 'First Shift', description: 'Type 500 lifetime letters.', metric: 'lifetimeLetters', target: 500, reward: 15, category: 'milestone' },
+    { id: 'letters-2500', name: 'Long Day', description: 'Type 2,500 lifetime letters.', metric: 'lifetimeLetters', target: 2500, reward: 75, category: 'milestone' },
+    { id: 'letters-10000', name: 'Overtime', description: 'Type 10,000 lifetime letters.', metric: 'lifetimeLetters', target: 10000, reward: 350, category: 'milestone' },
+    { id: 'letters-50000', name: 'Keyboard Jungle', description: 'Type 50,000 lifetime letters.', metric: 'lifetimeLetters', target: 50000, reward: 2200, category: 'milestone' },
+    { id: 'words-250', name: 'Dictionary Desk', description: 'Find 250 lifetime words.', metric: 'lifetimeWords', target: 250, reward: 180, category: 'milestone' },
+    { id: 'words-1000', name: 'Lexicon Legend', description: 'Find 1,000 lifetime words.', metric: 'lifetimeWords', target: 1000, reward: 900, category: 'milestone' },
+    { id: 'words-5000', name: 'Word Empire', description: 'Find 5,000 lifetime words.', metric: 'lifetimeWords', target: 5000, reward: 6000, category: 'milestone' },
+    { id: 'unique-500', name: 'Dictionary Collector', description: 'Discover 500 unique words.', metric: 'uniqueWords', target: 500, reward: 8000, category: 'milestone' },
+    { id: 'monkeys-15', name: 'Full Office', description: 'Hire 15 monkeys.', metric: 'totalMonkeysHired', target: 15, reward: 450, category: 'milestone' },
+    { id: 'monkeys-75', name: 'Hiring Spree', description: 'Hire 75 monkeys.', metric: 'totalMonkeysHired', target: 75, reward: 9000, category: 'milestone' },
+    { id: 'rare-1', name: 'Super Rare Talent', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 250, category: 'milestone' },
+    { id: 'rare-5', name: 'Golden Bench', description: 'Hire 5 super rare monkeys.', metric: 'superRares', target: 5, reward: 6000, category: 'milestone' },
+    { id: 'rare-10', name: 'Rare Roster', description: 'Hire 10 rare monkeys.', metric: 'rares', target: 10, reward: 3000, category: 'milestone' },
+    { id: 'legendary-1', name: 'Legendary Desk', description: 'Hire 1 legendary monkey.', metric: 'legendaries', target: 1, reward: 12500, category: 'milestone' },
+    { id: 'best-word-20', name: 'Premium Word', description: 'Find a word worth 20 bananas.', metric: 'bestWordPoints', target: 20, reward: 600, category: 'milestone' },
+    { id: 'longest-word-6', name: 'Six-Letter Shift', description: 'Find a 6-letter word.', metric: 'longestWordLength', target: 6, reward: 500, category: 'milestone' },
+    { id: 'upgrades-75', name: 'Systems Master', description: 'Buy 75 upgrades.', metric: 'totalUpgradesPurchased', target: 75, reward: 12000, category: 'milestone' },
+    { id: 'office-6', name: 'Golden HQ', description: 'Unlock Floor 6.', metric: 'officeLevel', target: 6, reward: 20000, category: 'milestone' },
+    { id: 'bananas-1000000', name: 'Million Banana Business', description: 'Earn 1,000,000 lifetime bananas.', metric: 'lifetimeBananas', target: 1000000, reward: 25000, category: 'milestone' }
 ];
 
 const wordsByLength = new Map();
@@ -1938,7 +1939,7 @@ function buyMonkey() {
     }
     const newMonkeyIndex = monkeysOwned - 1;
 
-    monkeyCost = Math.ceil(monkeyCost * 1.9);
+    monkeyCost = Math.ceil(monkeyCost * MONKEY_COST_GROWTH_MULTIPLIER);
 
     forceMonkeyOfficeRender();
     updateDisplay();
@@ -3081,7 +3082,8 @@ function loadGame() {
         wordsTyped = Number(saveData.wordsTyped) || 0;
         monkeysOwned = Number(saveData.monkeysOwned) || 0;
         monkeyCost = Number(saveData.monkeyCost) || HIRE_COST_START;
-        if (loadedSaveKey !== SAVE_KEY) {
+        const needsV38HireCostReduction = loadedSaveKey && ![SAVE_KEY, 'monkey-business-save-v38'].includes(loadedSaveKey);
+        if (needsV38HireCostReduction) {
             monkeyCost = Math.max(1, Math.ceil(monkeyCost * HIRE_COST_REDUCTION_MULTIPLIER));
         }
         typedStream = typeof saveData.typedStream === 'string' ? saveData.typedStream.slice(-maxSavedStreamLength) : '';
