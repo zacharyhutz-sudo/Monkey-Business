@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-title" content="Monkey Business">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Monkey Business</title>
-    <link rel="stylesheet" href="app.css?v=14">
+    <link rel="stylesheet" href="app.css?v=15">
 </head>
 <body>
     <div class="mb-app">
@@ -17,7 +17,7 @@
 
         <header class="mb-topbar">
             <div class="mb-title-row">
-                <div class="mb-app-icon" aria-hidden="true">🐒</div>
+                <div class="mb-app-icon" aria-hidden="true"><img src="bongo-banks.png" alt="" /></div>
                 <div class="mb-title-copy">
                     <div class="mb-game-title">Monkey Business</div>
                     <div id="dictionary-status" class="mb-status">Dictionary ready</div>
@@ -27,19 +27,19 @@
 
             <section class="mb-wallet" aria-label="Game stats">
                 <div class="mb-wallet-pill mb-wallet-main">
-                    <span aria-hidden="true">🍌</span>
+                    <span class="resource-icon icon-bananas" aria-hidden="true"></span>
                     <strong id="bananas">0</strong>
                 </div>
                 <div class="mb-wallet-pill">
-                    <span aria-hidden="true">⌨️</span>
+                    <span class="resource-icon icon-typewriter" aria-hidden="true"></span>
                     <strong id="letters">0</strong>
                 </div>
                 <div class="mb-wallet-pill">
-                    <span aria-hidden="true">📖</span>
+                    <span class="resource-icon icon-book" aria-hidden="true"></span>
                     <strong id="words">0</strong>
                 </div>
                 <div class="mb-wallet-pill">
-                    <span aria-hidden="true">🐵</span>
+                    <span class="resource-icon icon-monkey" aria-hidden="true"></span>
                     <strong id="monkeys">0</strong>
                 </div>
             </section>
@@ -71,7 +71,7 @@
 
                     <div id="monkey-office-grid" class="monkey-office-grid">
                         <div class="office-empty-state">
-                            <div class="empty-circle" aria-hidden="true">🐒</div>
+                            <div class="empty-circle" aria-hidden="true"></div>
                             <strong>Empty office</strong>
                             <span>Hire monkeys to start typing.</span>
                         </div>
@@ -100,43 +100,61 @@
         </main>
 
         <footer class="mb-dock" aria-label="Controls">
-            <button id="buy-monkey-button" class="mb-dock-button mb-hire-button">
-                <span class="mb-dock-icon" aria-hidden="true">🐒</span>
-                <span>
-                    <strong>Hire</strong>
-                    <small><span id="monkey-cost">50</span> 🍌</small>
-                </span>
-            </button>
+            <div class="mb-action-row">
+                <button id="buy-monkey-button" class="mb-dock-button mb-hire-button">
+                    <span class="mb-dock-icon icon-monkey" aria-hidden="true"></span>
+                    <span>
+                        <strong>Hire</strong>
+                        <small><span id="monkey-cost">50</span> bananas</small>
+                    </span>
+                </button>
 
-            <button id="type-button" class="mb-type-button">
-                <span class="mb-type-icon" aria-hidden="true">⌨️</span>
-                <span>
-                    <strong>TYPE</strong>
-                    <small>Random Letter</small>
-                </span>
-            </button>
+                <button id="type-button" class="mb-type-button">
+                    <span class="mb-type-icon icon-typewriter" aria-hidden="true"></span>
+                    <span>
+                        <strong>TYPE</strong>
+                        <small>Random Letter</small>
+                    </span>
+                </button>
+            </div>
 
-            <button id="upgrades-button" class="mb-dock-button mb-upgrades-button">
-                <span class="mb-dock-icon" aria-hidden="true">⚡</span>
-                <span>
+            <nav class="mb-main-nav" aria-label="Game screens">
+                <button id="nav-upgrades-button" class="mb-nav-button is-active" data-panel-view="upgrades">
+                    <span class="nav-icon icon-upgrades" aria-hidden="true"></span>
                     <strong>Upgrades</strong>
-                    <small>Skills</small>
-                </span>
-            </button>
+                </button>
+                <button id="nav-milestones-button" class="mb-nav-button" data-panel-view="milestones">
+                    <span class="nav-icon icon-milestones" aria-hidden="true"></span>
+                    <strong>Milestones</strong>
+                </button>
+                <button id="nav-collection-button" class="mb-nav-button" data-panel-view="collection">
+                    <span class="nav-icon icon-collection" aria-hidden="true"></span>
+                    <strong>Collection</strong>
+                </button>
+                <button id="nav-quests-button" class="mb-nav-button" data-panel-view="quests">
+                    <span class="nav-icon icon-quests" aria-hidden="true"></span>
+                    <strong>Quests</strong>
+                </button>
+            </nav>
 
             <span id="monkey-cost-inline" class="visually-hidden">50</span>
         </footer>
     </div>
-
-
-        <section id="upgrade-panel" class="upgrade-panel is-hidden" aria-hidden="true" aria-label="Upgrades and progression">
+        <section id="upgrade-panel" class="upgrade-panel is-hidden" aria-hidden="true" aria-label="Progression screens">
             <div class="upgrade-sheet" role="dialog" aria-modal="true" aria-labelledby="upgrade-panel-title">
                 <div class="upgrade-sheet-header">
                     <div>
                         <span class="mb-level-label">Progression</span>
                         <h2 id="upgrade-panel-title">Office Upgrades</h2>
                     </div>
-                    <button id="close-upgrades-button" class="mb-round-button" aria-label="Close upgrades">×</button>
+                    <button id="close-upgrades-button" class="mb-round-button" aria-label="Close panel">×</button>
+                </div>
+
+                <div class="upgrade-tabs" aria-label="Progression tabs">
+                    <button class="upgrade-tab" data-panel-tab="upgrades">Upgrades</button>
+                    <button class="upgrade-tab" data-panel-tab="milestones">Milestones</button>
+                    <button class="upgrade-tab" data-panel-tab="collection">Collection</button>
+                    <button class="upgrade-tab" data-panel-tab="quests">Quests</button>
                 </div>
 
                 <div class="upgrade-current-office">
@@ -145,32 +163,36 @@
                 </div>
 
                 <div class="upgrade-scroll">
-                    <section class="progress-section">
-                        <div class="mb-section-label">
-                            <span>Buildings</span>
-                        </div>
+                    <section id="panel-buildings" class="progress-section">
+                        <div class="mb-section-label"><span>Office Buildings</span></div>
                         <div id="office-upgrade-list" class="progress-list"></div>
                     </section>
 
-                    <section class="progress-section">
-                        <div class="mb-section-label">
-                            <span>Skills</span>
-                        </div>
-                        <div id="skills-upgrade-list" class="progress-list"></div>
+                    <section id="panel-skills" class="progress-section">
+                        <div class="mb-section-label"><span>Skills</span></div>
+                        <div id="skills-upgrade-list" class="progress-list skills-grid"></div>
                     </section>
 
-                    <section class="progress-section">
-                        <div class="mb-section-label">
-                            <span>Goals</span>
-                        </div>
+                    <section id="panel-milestones" class="progress-section">
+                        <div class="mb-section-label"><span>Milestones</span></div>
                         <div id="milestones-list" class="progress-list"></div>
+                    </section>
+
+                    <section id="panel-quests" class="progress-section">
+                        <div class="mb-section-label"><span>Active Quests</span></div>
+                        <div id="quests-list" class="progress-list"></div>
+                    </section>
+
+                    <section id="panel-collection" class="progress-section">
+                        <div class="mb-section-label"><span>Monkey Collection</span></div>
+                        <div id="collection-list" class="collection-list"></div>
                     </section>
                 </div>
             </div>
         </section>
 
 
-    <script src="words.js?v=14"></script>
-    <script src="script.js?v=14"></script>
+    <script src="words.js?v=15"></script>
+    <script src="script.js?v=15"></script>
 </body>
 </html>

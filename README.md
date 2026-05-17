@@ -74,3 +74,17 @@ Test with:
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=14`
+
+## Version 15 App Store UI Direction
+
+- Reworked the interface toward the darker wood-and-jungle pixel UI from the portrait mockups.
+- Replaced most visible emoji-style UI icons with custom square icon blocks and embedded art.
+- Preserved all existing mechanics: typing, dictionary scoring, monkey hiring, super rare odds, 5x super rare speed, office buildings, skills, milestones, saves, and fast mobile tapping.
+- Added main-page links for **Upgrades**, **Milestones**, **Collection**, and **Quests**.
+- Added a Monkey Collection view showing owned/locked monkeys and rarity.
+- Added a Quests view that surfaces active, unclaimed milestone goals.
+- Updated cache busting to `?v=15`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=15`

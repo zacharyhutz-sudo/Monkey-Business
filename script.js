@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v14';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v15';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -219,6 +219,7 @@ let upgrades = {
 let claimedMilestones = [];
 const monkeyAnimationTimeouts = new Map();
 let pendingMonkeyTypeTimeouts = [];
+let activePanelView = 'upgrades';
 
 const bananasEl = document.getElementById('bananas');
 const lettersEl = document.getElementById('letters');
@@ -230,12 +231,22 @@ const outputArea = document.getElementById('output-area');
 const typeButton = document.getElementById('type-button');
 const resetButton = document.getElementById('reset-button');
 const buyMonkeyButton = document.getElementById('buy-monkey-button');
-const upgradesButton = document.getElementById('upgrades-button');
+const upgradesButton = document.getElementById('nav-upgrades-button');
 const closeUpgradesButton = document.getElementById('close-upgrades-button');
 const upgradePanel = document.getElementById('upgrade-panel');
 const officeUpgradeList = document.getElementById('office-upgrade-list');
 const skillsUpgradeList = document.getElementById('skills-upgrade-list');
 const milestonesList = document.getElementById('milestones-list');
+const questsList = document.getElementById('quests-list');
+const collectionList = document.getElementById('collection-list');
+const panelBuildings = document.getElementById('panel-buildings');
+const panelSkills = document.getElementById('panel-skills');
+const panelMilestones = document.getElementById('panel-milestones');
+const panelQuests = document.getElementById('panel-quests');
+const panelCollection = document.getElementById('panel-collection');
+const upgradePanelTitle = document.getElementById('upgrade-panel-title');
+const navPanelButtons = document.querySelectorAll('[data-panel-view]');
+const upgradeTabs = document.querySelectorAll('[data-panel-tab]');
 const currentOfficeNameEl = document.getElementById('current-office-name');
 const currentOfficeBonusEl = document.getElementById('current-office-bonus');
 const recentWordsList = document.getElementById('recent-words-list');
@@ -454,7 +465,7 @@ function appendOutputLetter(letter, source = 'player') {
 function appendWordReward(word, points) {
     const wordSpan = document.createElement('span');
     wordSpan.className = 'word-found';
-    wordSpan.textContent = ` ${getDisplayWord(word).toUpperCase()} +${points} 🍌 `;
+    wordSpan.textContent = ` ${getDisplayWord(word).toUpperCase()} +${points} `;
     outputArea.appendChild(wordSpan);
 
     trimOutputArea();
@@ -507,7 +518,7 @@ function spawnFloatingMessage(message, extraClass = '') {
 }
 
 function spawnFloatingReward(points, word) {
-    spawnFloatingMessage(`+${points} 🍌 ${getDisplayWord(word).toUpperCase()}`);
+    spawnFloatingMessage(`+${points} ${getDisplayWord(word).toUpperCase()}`);
 }
 
 function spawnMonkeyHireMessage(monkeyType) {
@@ -656,7 +667,7 @@ function renderMonkeyOffice() {
         monkeyOfficeSummary.textContent = 'No monkeys hired yet.';
         monkeyOfficeGrid.innerHTML = `
             <div class="office-empty-state">
-                <span class="office-empty-emoji" aria-hidden="true">🐒</span>
+                <span class="office-empty-emoji" aria-hidden="true"></span>
                 <p>Hire your first monkey to fill the office.</p>
             </div>
         `;
@@ -735,7 +746,7 @@ function unlockNextOffice() {
 
     if (bananas < nextOffice.unlockCost) {
         const needed = nextOffice.unlockCost - bananas;
-        spawnFloatingMessage(`NEED ${formatNumber(needed)} MORE 🍌`, 'is-hire');
+        spawnFloatingMessage(`NEED ${formatNumber(needed)} MORE BANANAS`, 'is-hire');
         updateProgressionPanel();
         return;
     }
@@ -759,9 +770,124 @@ function claimMilestone(milestoneId) {
 
     claimedMilestones.push(milestoneId);
     bananas += milestone.reward;
-    spawnFloatingMessage(`GOAL +${formatNumber(milestone.reward)} 🍌`, 'is-hire');
+    spawnFloatingMessage(`GOAL +${formatNumber(milestone.reward)} BANANAS`, 'is-hire');
     updateDisplay();
     saveGame();
+}
+
+
+function costButtonLabel(cost) {
+    return `<span class="cost-inline"><span class="mini-banana-icon" aria-hidden="true"></span>${formatNumber(cost)}</span>`;
+}
+
+function getPanelTitle(view) {
+    switch (view) {
+        case 'milestones':
+            return 'Milestones';
+        case 'collection':
+            return 'Monkey Collection';
+        case 'quests':
+            return 'Quests';
+        default:
+            return 'Office Upgrades';
+    }
+}
+
+function setActivePanelView(view) {
+    activePanelView = ['upgrades', 'milestones', 'collection', 'quests'].includes(view) ? view : 'upgrades';
+}
+
+function syncPanelVisibility() {
+    const isUpgrades = activePanelView === 'upgrades';
+    const isMilestones = activePanelView === 'milestones';
+    const isCollection = activePanelView === 'collection';
+    const isQuests = activePanelView === 'quests';
+
+    panelBuildings.hidden = !isUpgrades;
+    panelSkills.hidden = !isUpgrades;
+    panelMilestones.hidden = !isMilestones;
+    panelCollection.hidden = !isCollection;
+    panelQuests.hidden = !isQuests;
+
+    upgradePanelTitle.textContent = getPanelTitle(activePanelView);
+
+    navPanelButtons.forEach((button) => {
+        button.classList.toggle('is-active', button.dataset.panelView === activePanelView);
+    });
+
+    upgradeTabs.forEach((button) => {
+        button.classList.toggle('is-active', button.dataset.panelTab === activePanelView);
+    });
+}
+
+function getOwnedMonkeyTypeIds() {
+    return new Set(monkeyRoster);
+}
+
+function renderMonkeyCollection() {
+    if (!collectionList) {
+        return;
+    }
+
+    const ownedTypeIds = getOwnedMonkeyTypeIds();
+    const ownedCount = MONKEY_TYPES.filter((type) => ownedTypeIds.has(type.id)).length;
+
+    collectionList.innerHTML = `
+        <div class="collection-summary">
+            <strong>${ownedCount} / ${MONKEY_TYPES.length} collected</strong>
+            <span>Super rare odds ${Math.round(getSuperRareChance() * 100)}%</span>
+        </div>
+        <div class="collection-grid">
+            ${MONKEY_TYPES.map((monkeyType) => {
+                const isOwned = ownedTypeIds.has(monkeyType.id);
+                const isRare = monkeyType.rarity === 'super-rare';
+                return `
+                    <article class="collection-card ${isOwned ? 'is-owned' : 'is-locked'} ${isRare ? 'is-super-rare' : ''}">
+                        <div class="collection-art">
+                            ${isOwned ? `<img src="${getMonkeySpriteSrc(monkeyType)}" alt="" />` : '<span class="locked-silhouette">?</span>'}
+                        </div>
+                        <strong>${isOwned ? monkeyType.name : 'Locked'}</strong>
+                        <span>${isRare ? 'Super Rare' : 'Normal'}${isOwned && isRare ? ' • 5x' : ''}</span>
+                    </article>
+                `;
+            }).join('')}
+        </div>
+    `;
+}
+
+function renderQuests() {
+    if (!questsList) {
+        return;
+    }
+
+    const activeQuests = MILESTONES
+        .filter((milestone) => !claimedMilestones.includes(milestone.id))
+        .slice(0, 5);
+
+    if (activeQuests.length === 0) {
+        questsList.innerHTML = '<article class="milestone-card"><div class="milestone-copy"><h3>All quests complete</h3><p>More quests will arrive as the office expands.</p></div></article>';
+        return;
+    }
+
+    questsList.innerHTML = activeQuests.map((milestone) => {
+        const progress = getMilestoneProgress(milestone);
+        const ratio = clamp(progress / milestone.target, 0, 1);
+        const isReady = progress >= milestone.target;
+
+        return `
+            <article class="milestone-card quest-card">
+                <div class="milestone-copy">
+                    <h3>${milestone.name}</h3>
+                    <p>${milestone.description}</p>
+                    <div class="milestone-bar" aria-hidden="true"><span style="width: ${Math.round(ratio * 100)}%"></span></div>
+                    <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)} • Reward ${formatNumber(milestone.reward)} bananas</small>
+                </div>
+                <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>
+                    ${isReady ? 'Claim' : 'Active'}
+                </button>
+            </article>
+        `;
+    }).join('');
 }
 
 function renderUpgradeCard(upgradeId) {
@@ -780,7 +906,7 @@ function renderUpgradeCard(upgradeId) {
                 <span class="progress-meta">Level ${level} / ${upgrade.maxLevel}</span>
             </div>
             <button class="progress-buy-button" data-upgrade-id="${upgrade.id}" ${(!canAfford || isMaxed) ? 'disabled' : ''}>
-                ${isMaxed ? 'Maxed' : `${formatNumber(cost)} 🍌`}
+                ${isMaxed ? 'Maxed' : costButtonLabel(cost)}
             </button>
         </article>
     `;
@@ -828,7 +954,7 @@ function updateProgressionPanel() {
                 <span class="progress-meta">${nextOffice ? getOfficeBonusSummary(nextOffice) : getOfficeBonusSummary(currentOffice)}</span>
             </div>
             <button class="progress-buy-button" data-office-unlock="true" ${(!nextOffice || bananas < nextOffice.unlockCost) ? 'disabled' : ''}>
-                ${nextOffice ? `${formatNumber(nextOffice.unlockCost)} 🍌` : 'Maxed'}
+                ${nextOffice ? costButtonLabel(nextOffice.unlockCost) : 'Maxed'}
             </button>
         </article>
     `;
@@ -849,7 +975,7 @@ function updateProgressionPanel() {
                     <div class="milestone-bar" aria-hidden="true">
                         <span style="width: ${Math.round(ratio * 100)}%"></span>
                     </div>
-                    <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)} • Reward ${formatNumber(milestone.reward)} 🍌</small>
+                    <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)} • Reward ${formatNumber(milestone.reward)} bananas</small>
                 </div>
                 <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>
                     ${isClaimed ? 'Claimed' : 'Claim'}
@@ -858,6 +984,9 @@ function updateProgressionPanel() {
         `;
     }).join('');
 
+    renderMonkeyCollection();
+    renderQuests();
+    syncPanelVisibility();
     bindProgressionButtons();
 }
 
@@ -882,7 +1011,7 @@ function bindProgressionButtons() {
         bindFastTap(button, () => buyUpgrade(button.dataset.upgradeId));
     });
 
-    milestonesList.querySelectorAll('[data-milestone-id]').forEach((button) => {
+    [...milestonesList.querySelectorAll('[data-milestone-id]'), ...questsList.querySelectorAll('[data-milestone-id]')].forEach((button) => {
         if (button.dataset.bound) {
             return;
         }
@@ -892,7 +1021,8 @@ function bindProgressionButtons() {
     });
 }
 
-function openUpgradesPanel() {
+function openUpgradesPanel(view = 'upgrades') {
+    setActivePanelView(view);
     updateProgressionPanel();
     upgradePanel.classList.remove('is-hidden');
     upgradePanel.setAttribute('aria-hidden', 'false');
@@ -1029,7 +1159,16 @@ function bindFastTap(button, handler) {
 bindFastTap(typeButton, () => typeRandomLetter('player'));
 bindFastTap(buyMonkeyButton, buyMonkey);
 resetButton.addEventListener('click', resetGame);
-upgradesButton.addEventListener('click', openUpgradesPanel);
+navPanelButtons.forEach((button) => {
+    button.addEventListener('click', () => openUpgradesPanel(button.dataset.panelView));
+});
+
+upgradeTabs.forEach((button) => {
+    button.addEventListener('click', () => {
+        setActivePanelView(button.dataset.panelTab);
+        updateProgressionPanel();
+    });
+});
 closeUpgradesButton.addEventListener('click', closeUpgradesPanel);
 upgradePanel.addEventListener('click', (event) => {
     if (event.target === upgradePanel) {
