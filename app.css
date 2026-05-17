@@ -4938,3 +4938,309 @@
         animation: officeCrewPanV39 56s linear infinite alternate !important;
     }
 }
+
+/* v41 legibility + mobile polish
+   Focus: readable collection cards, safer office staging, clearer panel helper copy. */
+.mb-office-count-wrap {
+    max-width: none !important;
+    flex-shrink: 0 !important;
+    gap: 7px !important;
+}
+
+.mb-office-count {
+    min-width: 118px !important;
+    min-height: 48px !important;
+    padding: 7px 12px !important;
+    font-size: clamp(.78rem, 3vw, .96rem) !important;
+    line-height: .95 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.office-info-button {
+    width: 38px !important;
+    height: 38px !important;
+    flex: 0 0 38px !important;
+}
+
+/* Keep large crews from looking accidentally cut off at the left/right edges. */
+.monkey-office-grid {
+    inset: 0 12px 4px 12px !important;
+}
+
+.monkey-office-grid.is-scrolling-office::before,
+.monkey-office-grid.is-scrolling-office::after {
+    width: 34px !important;
+    opacity: .85 !important;
+}
+
+.monkey-office-grid.is-scrolling-office .monkey-office-pan > .office-monkey {
+    width: clamp(56px, 11.8vw, 70px) !important;
+    min-height: clamp(68px, 14vw, 86px) !important;
+}
+
+.monkey-office-grid.is-scrolling-office .monkey-office-pan > .office-monkey .office-monkey-art {
+    width: clamp(56px, 11.8vw, 70px) !important;
+    height: clamp(68px, 14vw, 86px) !important;
+}
+
+.monkey-office-grid.is-scrolling-office .monkey-rarity-star,
+.monkey-office-grid.is-scrolling-office .letter-bubble {
+    min-width: 24px !important;
+    height: 24px !important;
+    font-size: .72rem !important;
+    border-width: 3px !important;
+}
+
+/* Make the progress helper accurate for each tab and less visually dominant. */
+.upgrade-sheet-footer {
+    min-height: 48px !important;
+    padding: 8px 13px calc(env(safe-area-inset-bottom) + 8px) !important;
+    gap: 9px !important;
+    font-size: clamp(.82rem, 3vw, .98rem) !important;
+    line-height: 1.08 !important;
+}
+
+.upgrade-sheet-footer img {
+    width: 24px !important;
+    height: 24px !important;
+    flex: 0 0 24px !important;
+}
+
+/* Collection cards: name/rarity now live on a clean paper label, never on art. */
+.collection-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+}
+
+.collection-card {
+    min-height: 218px !important;
+    grid-template-rows: 124px auto auto !important;
+    gap: 7px !important;
+    padding: 8px !important;
+    text-align: left !important;
+    opacity: 1 !important;
+    filter: none !important;
+    overflow: hidden !important;
+}
+
+.collection-art {
+    position: relative !important;
+    min-height: 0 !important;
+    display: grid !important;
+    place-items: end center !important;
+    padding: 8px 6px 4px !important;
+    background: linear-gradient(180deg, #104022, #082513) !important;
+    border: 4px solid rgba(60, 31, 9, .55) !important;
+    overflow: hidden !important;
+}
+
+.collection-art::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 12% !important;
+    right: 12% !important;
+    bottom: 7px !important;
+    height: 9px !important;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,.32), rgba(0,0,0,0) 70%) !important;
+    pointer-events: none !important;
+}
+
+.collection-art img {
+    position: relative !important;
+    z-index: 1 !important;
+    max-width: 100% !important;
+    max-height: 108px !important;
+    object-fit: contain !important;
+}
+
+.collection-card-meta {
+    display: grid !important;
+    gap: 2px !important;
+    min-height: 50px !important;
+    padding: 7px 8px 6px !important;
+    background: #fff1bf !important;
+    border: 3px solid rgba(107, 68, 32, .55) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.38) !important;
+}
+
+.collection-card strong,
+.collection-monkey-name {
+    display: block !important;
+    color: #2b180a !important;
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif !important;
+    font-size: clamp(1rem, 3.6vw, 1.18rem) !important;
+    line-height: .95 !important;
+    letter-spacing: -.01em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    text-shadow: none !important;
+}
+
+.collection-rarity {
+    display: block !important;
+    color: #65401c !important;
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif !important;
+    font-size: clamp(.72rem, 2.7vw, .84rem) !important;
+    font-weight: 1000 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.collection-card-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    min-height: 30px !important;
+    margin-top: 0 !important;
+}
+
+.collection-owned-badge {
+    min-height: 28px !important;
+    padding: 4px 9px !important;
+    font-size: .78rem !important;
+    white-space: nowrap !important;
+}
+
+.collection-card.is-locked {
+    background: #e3cc86 !important;
+}
+
+.collection-card.is-locked .collection-art img {
+    opacity: .16 !important;
+    filter: grayscale(1) contrast(.8) brightness(.75) !important;
+}
+
+.collection-card.is-locked .locked-silhouette {
+    position: absolute !important;
+    z-index: 2 !important;
+    inset: 0 !important;
+    display: grid !important;
+    place-items: center !important;
+    color: #fff1bf !important;
+    font-size: 3rem !important;
+    text-shadow: 0 3px 0 rgba(0,0,0,.45) !important;
+}
+
+.collection-card.is-locked .collection-card-meta {
+    background: #e9d89f !important;
+}
+
+.collection-card.is-locked .collection-monkey-name,
+.collection-card.is-locked .collection-rarity {
+    color: #73552a !important;
+}
+
+.collection-card.is-rare .collection-card-meta {
+    border-color: rgba(15, 140, 104, .62) !important;
+}
+
+.collection-card.is-super-rare .collection-card-meta {
+    border-color: rgba(201, 144, 16, .7) !important;
+}
+
+.collection-card.is-legendary .collection-card-meta {
+    border-color: rgba(124, 60, 176, .62) !important;
+}
+
+.collection-section-header strong,
+.progress-section > .mb-section-label,
+.mb-section-label {
+    text-wrap: balance;
+}
+
+/* Slightly tighten the modal chrome on phones so content gets more room. */
+@media (max-width: 430px), (max-height: 760px) {
+    .upgrade-sheet-header {
+        min-height: 82px !important;
+        padding: 11px 14px !important;
+        grid-template-columns: minmax(0,1fr) 52px !important;
+    }
+
+    .upgrade-sheet-header h2 {
+        font-size: clamp(2.25rem, 8.5vw, 2.65rem) !important;
+    }
+
+    .panel-close-button {
+        width: 52px !important;
+        height: 52px !important;
+    }
+
+    .upgrade-tabs {
+        gap: 7px !important;
+        padding: 10px 12px !important;
+    }
+
+    .upgrade-tab {
+        min-height: 56px !important;
+        padding: 6px 7px !important;
+    }
+
+    .upgrade-current-office {
+        grid-template-columns: 88px minmax(0,1fr) !important;
+        gap: 10px !important;
+        margin: 0 12px 10px !important;
+        padding: 10px !important;
+    }
+
+    .current-office-thumb {
+        height: 68px !important;
+    }
+
+    .upgrade-scroll {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    .mb-office-count {
+        min-width: 104px !important;
+        padding-left: 9px !important;
+        padding-right: 9px !important;
+    }
+
+    .collection-grid {
+        gap: 10px !important;
+    }
+
+    .collection-card {
+        min-height: 204px !important;
+        grid-template-rows: 112px auto auto !important;
+        padding: 7px !important;
+    }
+
+    .collection-art img {
+        max-height: 98px !important;
+    }
+
+    .collection-card-meta {
+        min-height: 48px !important;
+        padding: 6px 7px !important;
+    }
+
+    .collection-monkey-name {
+        font-size: .96rem !important;
+    }
+
+    .collection-rarity {
+        font-size: .68rem !important;
+    }
+}
+
+@media (max-width: 374px) {
+    .collection-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .collection-card {
+        min-height: 212px !important;
+        grid-template-rows: 126px auto auto !important;
+    }
+
+    .collection-art img {
+        max-height: 112px !important;
+    }
+}

@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v40';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v38', 'monkey-business-save-v37', 'monkey-business-save-v36', 'monkey-business-save-v35', 'monkey-business-save-v34', 'monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v41';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v40', 'monkey-business-save-v38', 'monkey-business-save-v37', 'monkey-business-save-v36', 'monkey-business-save-v35', 'monkey-business-save-v34', 'monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -476,6 +476,7 @@ const panelMilestones = document.getElementById('panel-milestones');
 const panelQuests = document.getElementById('panel-quests');
 const panelCollection = document.getElementById('panel-collection');
 const upgradePanelTitle = document.getElementById('upgrade-panel-title');
+const upgradePanelFooterText = document.getElementById('upgrade-sheet-footer-text');
 const navPanelButtons = document.querySelectorAll('[data-panel-view]');
 const upgradeTabs = document.querySelectorAll('[data-panel-tab]');
 const currentOfficeNameEl = document.getElementById('current-office-name');
@@ -1089,7 +1090,7 @@ function syncOfficeVisuals(force = false) {
 
     monkeyOfficeSummary.textContent = monkeysOwned === 0
         ? 'No monkeys yet.'
-        : `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in office`;
+        : `${formatNumber(monkeysOwned)} in office`;
 }
 
 function forceMonkeyOfficeRender() {
@@ -1861,7 +1862,9 @@ function getMonkeySeat(index, total) {
     const layout = getOfficeStageLayout(total);
     const row = index % layout.rows;
     const col = Math.floor(index / layout.rows);
-    const x = ((col + 0.5) / layout.columns) * 100;
+    const sidePadding = layout.isScrolling ? 7.5 : 0;
+    const usableWidth = Math.max(1, 100 - sidePadding * 2);
+    const x = sidePadding + (((col + 0.5) / layout.columns) * usableWidth);
     const rowProfiles = layout.rows === 3
         ? [
             { y: 10, scale: .82 },
@@ -2093,7 +2096,7 @@ function renderMonkeyOffice() {
     monkeyOfficeGrid.style.setProperty('--office-pan-duration', `${layout.duration}s`);
 
     lastOfficeRenderSignature = getOfficeRenderSignature();
-    monkeyOfficeSummary.textContent = `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in office`;
+    monkeyOfficeSummary.textContent = `${formatNumber(monkeysOwned)} in office`;
     monkeyOfficeGrid.innerHTML = `
         <div class="monkey-office-pan" data-office-pan-columns="${layout.columns}" style="--office-stage-width:${layout.stageWidth}%; --office-pan-offset:${layout.panOffset.toFixed(3)}%; --office-pan-duration:${layout.duration}s;">
             ${monkeyRoster
@@ -2491,6 +2494,20 @@ function getPanelTitle(view) {
     }
 }
 
+function getPanelHelperText(view) {
+    switch (view) {
+        case 'milestones':
+            return 'Claim small milestone bonuses, then get back to building words.';
+        case 'collection':
+            return 'Collect rarer monkeys for faster typing and a stronger office.';
+        case 'quests':
+            return 'Quests give small bonus rewards. Words should still be your main banana maker.';
+        default:
+            return 'Upgrade your office to make every word worth more.';
+    }
+}
+
+
 function setActivePanelView(view) {
     activePanelView = ['upgrades', 'milestones', 'collection', 'quests'].includes(view) ? view : 'upgrades';
 }
@@ -2508,6 +2525,9 @@ function syncPanelVisibility() {
     panelQuests.hidden = !isQuests;
 
     upgradePanelTitle.textContent = getPanelTitle(activePanelView);
+    if (upgradePanelFooterText) {
+        upgradePanelFooterText.textContent = getPanelHelperText(activePanelView);
+    }
 
     navPanelButtons.forEach((button) => {
         button.classList.toggle('is-active', button.dataset.panelView === activePanelView);
@@ -2619,10 +2639,11 @@ function renderMonkeyCollection() {
                         return `
                             <article class="collection-card ${isOwned ? 'is-owned' : 'is-locked'} ${rarityClass}">
                                 <div class="collection-art">
-                                    ${isOwned ? `<img src="${getMonkeySpriteSrc(monkeyType)}" alt="" />` : '<span class="locked-silhouette">?</span>'}
+                                    ${isOwned ? `<img src="${getMonkeySpriteSrc(monkeyType)}" alt="" />` : `<img src="${getMonkeySpriteSrc(monkeyType)}" alt="" aria-hidden="true" />`}
+                                    ${!isOwned ? '<span class="locked-silhouette">?</span>' : ''}
                                 </div>
                                 <div class="collection-card-meta">
-                                    <strong>${isOwned ? monkeyType.name : 'Locked Monkey'}</strong>
+                                    <strong class="collection-monkey-name">${isOwned ? monkeyType.name : 'Locked Monkey'}</strong>
                                     <span class="collection-rarity">${getMonkeyRarityLabel(monkeyType)} • ${monkeyType.speedMultiplier}x speed</span>
                                 </div>
                                 <div class="collection-card-footer">
