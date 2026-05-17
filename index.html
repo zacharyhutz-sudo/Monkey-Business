@@ -1,213 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#07190d">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Monkey Business">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Monkey Business</title>
-    <link rel="stylesheet" href="app.css?v=17">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#07190d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Monkey Business">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Monkey Business</title>
+  <link rel="stylesheet" href="app.css?v=18">
 </head>
 <body>
-    <div class="mb-app">
-        <header class="mb-topbar">
-            <div class="mb-title-row">
-                <div class="mb-player-card" aria-hidden="true">
-                    <img src="bongo-banks.png" alt="">
-                    <span>Lvl 1</span>
-                </div>
-
-                <div class="mb-title-copy">
-                    <div class="mb-game-title">Monkey Business</div>
-                    <div id="dictionary-status" class="mb-status">70,877 words in the dictionary</div>
-                </div>
-
-                <button id="reset-button" class="mb-settings-button" title="Reset saved game" aria-label="Reset game">
-                    <span class="ui-icon ui-icon-reset" aria-hidden="true"></span>
-                </button>
-            </div>
-
-            <section class="mb-wallet" aria-label="Game stats">
-                <div class="mb-wallet-pill mb-wallet-main">
-                    <span class="resource-icon icon-bananas" aria-hidden="true"></span>
-                    <div>
-                        <strong id="bananas">0</strong>
-                        <small>Bananas</small>
-                    </div>
-                </div>
-                <div class="mb-wallet-pill">
-                    <span class="resource-icon icon-typewriter" aria-hidden="true"></span>
-                    <div>
-                        <strong id="letters">0</strong>
-                        <small>Letters</small>
-                    </div>
-                </div>
-                <div class="mb-wallet-pill">
-                    <span class="resource-icon icon-book" aria-hidden="true"></span>
-                    <div>
-                        <strong id="words">0</strong>
-                        <small>Words</small>
-                    </div>
-                </div>
-                <div class="mb-wallet-pill">
-                    <span class="resource-icon icon-monkey" aria-hidden="true"></span>
-                    <div>
-                        <strong id="monkeys">0</strong>
-                        <small>Monkeys</small>
-                    </div>
-                </div>
-            </section>
-        </header>
-
-        <main class="mb-gameplay">
-            <section class="mb-office-card" aria-label="Monkey office">
-                <div class="mb-office-header">
-                    <div class="mb-office-title-block">
-                        <span id="office-level-label" class="mb-level-label">Floor 1</span>
-                        <h1 id="office-name-title">Starter Office</h1>
-                    </div>
-                    <span id="monkey-office-summary" class="mb-office-count">No monkeys</span>
-                </div>
-
-                <div class="mb-office-scene">
-                    <div id="floating-rewards-layer" class="floating-rewards-layer" aria-hidden="true"></div>
-                    <div id="monkey-office-grid" class="monkey-office-grid">
-                        <div class="office-empty-state">
-                            <div class="empty-circle" aria-hidden="true"></div>
-                            <strong>Empty office</strong>
-                            <span>Hire monkeys to start typing.</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="mb-tape-card" aria-label="Letter tape">
-                <div class="mb-section-label">
-                    <span>Letter Tape</span>
-                    <button type="button" class="tiny-control" aria-label="Letter tape information">?</button>
-                </div>
-                <div id="output-area" class="output-area" aria-live="polite">
-                    <span class="placeholder">Tap TYPE to begin...</span>
-                </div>
-            </section>
-
-            <section class="mb-words-card" aria-label="Recent words">
-                <div class="mb-section-label">
-                    <span>Recent Words</span>
-                </div>
-                <div id="recent-words-list" class="recent-words-list">
-                    <span class="empty-state">No words yet.</span>
-                </div>
-            </section>
-        </main>
-
-        <footer class="mb-dock" aria-label="Main controls">
-            <button id="buy-monkey-button" class="dock-tile dock-hire">
-                <span class="dock-icon icon-monkey" aria-hidden="true"></span>
-                <strong>Hire</strong>
-                <small><span id="monkey-cost">50</span></small>
-            </button>
-
-            <button id="nav-upgrades-button" class="dock-tile" data-panel-view="upgrades">
-                <span class="dock-icon icon-upgrades" aria-hidden="true"></span>
-                <strong>Upgrades</strong>
-            </button>
-
-            <button id="nav-milestones-button" class="dock-tile" data-panel-view="milestones">
-                <span class="dock-icon icon-milestones" aria-hidden="true"></span>
-                <strong>Milestones</strong>
-            </button>
-
-            <button id="type-button" class="dock-type">
-                <span class="dock-type-icon icon-typewriter" aria-hidden="true"></span>
-                <strong>TYPE</strong>
-                <small>Random Letter</small>
-            </button>
-
-            <button id="nav-collection-button" class="dock-tile" data-panel-view="collection">
-                <span class="dock-icon icon-collection" aria-hidden="true"></span>
-                <strong>Collection</strong>
-            </button>
-
-            <button id="nav-quests-button" class="dock-tile dock-quests" data-panel-view="quests">
-                <span class="dock-badge" aria-hidden="true">3</span>
-                <span class="dock-icon icon-quests" aria-hidden="true"></span>
-                <strong>Quests</strong>
-            </button>
-
-            <span id="monkey-cost-inline" class="visually-hidden">50</span>
-        </footer>
+<div class="mb-app">
+  <header class="mb-topbar">
+    <div class="mb-title-row">
+      <div class="mb-player-stack">
+        <div class="mb-player-card" aria-hidden="true"><img src="bongo-banks.png" alt=""></div>
+        <div id="player-level-badge" class="player-level-badge">Lvl 1</div>
+      </div>
+      <div class="mb-title-copy">
+        <div class="mb-game-title-wrap"><span class="title-leaf title-leaf-left"></span><div class="mb-game-title">Monkey Business</div><span class="title-leaf title-leaf-right"></span></div>
+        <div id="dictionary-status" class="mb-status">70,877 words in the dictionary</div>
+      </div>
+      <button id="reset-button" class="mb-settings-button" title="Reset saved game" aria-label="Reset game"><img src="icon-gear.png" alt="" class="control-icon"></button>
     </div>
-
-    <section id="upgrade-panel" class="upgrade-panel is-hidden" aria-hidden="true" aria-label="Progression screens">
-        <div class="upgrade-sheet" role="dialog" aria-modal="true" aria-labelledby="upgrade-panel-title">
-            <div class="upgrade-sheet-header">
-                <div>
-                    <span class="mb-level-label">Progression</span>
-                    <h2 id="upgrade-panel-title">Office Upgrades</h2>
-                </div>
-                <button id="close-upgrades-button" class="panel-close-button" aria-label="Close panel">×</button>
-            </div>
-
-            <div class="upgrade-tabs" aria-label="Progression tabs">
-                <button class="upgrade-tab" data-panel-tab="upgrades">
-                    <span class="ui-icon icon-upgrades" aria-hidden="true"></span>
-                    Upgrades
-                </button>
-                <button class="upgrade-tab" data-panel-tab="milestones">
-                    <span class="ui-icon icon-milestones" aria-hidden="true"></span>
-                    Milestones
-                </button>
-                <button class="upgrade-tab" data-panel-tab="collection">
-                    <span class="ui-icon icon-collection" aria-hidden="true"></span>
-                    Collection
-                </button>
-                <button class="upgrade-tab" data-panel-tab="quests">
-                    <span class="ui-icon icon-quests" aria-hidden="true"></span>
-                    Quests
-                </button>
-            </div>
-
-            <div class="upgrade-current-office">
-                <div class="current-office-thumb" aria-hidden="true"></div>
-                <div>
-                    <strong id="current-office-name">Starter Office — Floor 1</strong>
-                    <span id="current-office-bonus">No bonus yet</span>
-                </div>
-            </div>
-
-            <div class="upgrade-scroll">
-                <section id="panel-buildings" class="progress-section">
-                    <div class="mb-section-label"><span>Office Buildings</span></div>
-                    <div id="office-upgrade-list" class="progress-list"></div>
-                </section>
-
-                <section id="panel-skills" class="progress-section">
-                    <div class="mb-section-label"><span>Skills</span></div>
-                    <div id="skills-upgrade-list" class="progress-list skills-grid"></div>
-                </section>
-
-                <section id="panel-milestones" class="progress-section">
-                    <div class="mb-section-label"><span>Milestones</span></div>
-                    <div id="milestones-list" class="progress-list"></div>
-                </section>
-
-                <section id="panel-quests" class="progress-section">
-                    <div class="mb-section-label"><span>Active Quests</span></div>
-                    <div id="quests-list" class="progress-list"></div>
-                </section>
-
-                <section id="panel-collection" class="progress-section">
-                    <div class="mb-section-label"><span>Monkey Collection</span></div>
-                    <div id="collection-list" class="collection-list"></div>
-                </section>
-            </div>
-        </div>
+    <section class="mb-wallet" aria-label="Game stats">
+      <div class="mb-wallet-pill"><div class="wallet-icon-wrap"><img src="icon-bananas.png" class="resource-img" alt=""></div><div><strong id="bananas">0</strong><small>Bananas</small><em id="bananas-rate">+0 /s</em></div></div>
+      <div class="mb-wallet-pill"><div class="wallet-icon-wrap"><img src="icon-typewriter.png" class="resource-img" alt=""></div><div><strong id="letters">0</strong><small>Letters</small><em id="letters-rate">+0 /s</em></div></div>
+      <div class="mb-wallet-pill"><div class="wallet-icon-wrap"><img src="icon-book.png" class="resource-img" alt=""></div><div><strong id="words">0</strong><small>Words</small><em id="words-rate">+0 /s</em></div></div>
+      <div class="mb-wallet-pill"><div class="wallet-icon-wrap"><img src="icon-monkey.png" class="resource-img" alt=""></div><div><strong id="monkeys">0</strong><small>Monkeys</small><em id="monkeys-rate">+0 /s</em></div></div>
     </section>
-
-    <script src="words.js?v=17"></script>
-    <script src="script.js?v=17"></script>
-</body>
-</html>
+  </header>
+  <main class="mb-gameplay">
+    <section class="mb-office-card" aria-label="Monkey office">
+      <div class="mb-office-header">
+        <div class="mb-office-title-block"><span id="office-level-label" class="mb-floor-ribbon">Floor 1</span><h1 id="office-name-title">Starter Office</h1></div>
+        <div class="mb-office-count-wrap"><span id="monkey-office-summary" class="mb-office-count">No monkeys</span><button type="button" class="office-info-button" aria-label="Office info"><img src="icon-info.png" alt=""></button></div>
+      </div>
+      <div class="mb-office-scene">
+        <div id="floating-rewards-layer" class="floating-rewards-layer" aria-hidden="true"></div>
+        <div id="monkey-office-grid" class="monkey-office-grid"><div class="office-empty-state"><div class="empty-circle"></div><strong>Empty office</strong><span>Hire monkeys to start typing.</span></div></div>
+      </div>
+    </section>
+    <section class="mb-tape-card" aria-label="Letter tape">
+      <div class="mb-section-label"><div class="section-title-with-icon"><span>Letter Tape</span><img src="icon-question.png" class="section-mini-icon" alt=""></div><div class="section-actions"><button type="button" class="mini-square-button"><span>▶</span></button><button type="button" class="mini-square-button"><span>⏭</span></button></div></div>
+      <div id="output-area" class="output-area" aria-live="polite"><span class="placeholder">Tap TYPE to begin...</span></div>
+    </section>
+    <section class="mb-words-card" aria-label="Recent words">
+      <div class="mb-section-label"><div class="section-title-with-icon"><span>Recent Words</span><img src="icon-leaf.png" class="section-mini-icon" alt=""></div></div>
+      <div id="recent-words-list" class="recent-words-list"><span class="empty-state">No words yet.</span></div>
+    </section>
+  </main>
+  <footer class="mb-dock" aria-label="Main controls">
+    <button id="buy-monkey-button" class="dock-tile dock-hire"><img src="icon-monkey.png" class="dock-image" alt=""><strong>Hire</strong><small><span id="monkey-cost">50</span></small></button>
+    <button id="nav-upgrades-button" class="dock-tile" data-panel-view="upgrades"><img src="icon-upgrades.png" class="dock-image" alt=""><strong>Upgrades</strong></button>
+    <button id="nav-milestones-button" class="dock-tile" data-panel-view="milestones"><img src="icon-milestones.png" class="dock-image" alt=""><strong>Milestones</strong></button>
+    <button id="type-button" class="dock-type"><img src="icon-typewriter.png" class="dock-image dock-image-large" alt=""><strong>TYPE</strong><small>Random Letter</small></button>
+    <button id="nav-collection-button" class="dock-tile" data-panel-view="collection"><img src="icon-collection.png" class="dock-image" alt=""><strong>Collection</strong></button>
+    <button id="nav-quests-button" class="dock-tile dock-quests" data-panel-view="quests"><span id="quests-badge" class="dock-badge">0</span><img src="icon-quests.png" class="dock-image" alt=""><strong>Quests</strong></button>
+    <span id="monkey-cost-inline" class="visually-hidden">50</span>
+  </footer>
+</div>
+<section id="upgrade-panel" class="upgrade-panel is-hidden" aria-hidden="true" aria-label="Progression screens">
+  <div class="upgrade-sheet" role="dialog" aria-modal="true" aria-labelledby="upgrade-panel-title">
+    <div class="upgrade-sheet-header"><div><span class="panel-kicker">Progression</span><h2 id="upgrade-panel-title">Office Upgrades</h2></div><button id="close-upgrades-button" class="panel-close-button" aria-label="Close panel">×</button></div>
+    <div class="upgrade-tabs" aria-label="Progression tabs">
+      <button class="upgrade-tab" data-panel-tab="upgrades"><img src="icon-upgrades.png" alt=""><span>Upgrades</span></button>
+      <button class="upgrade-tab" data-panel-tab="milestones"><img src="icon-milestones.png" alt=""><span>Milestones</span></button>
+      <button class="upgrade-tab" data-panel-tab="collection"><img src="icon-collection.png" alt=""><span>Collection</span></button>
+      <button class="upgrade-tab" data-panel-tab="quests"><img src="icon-quests.png" alt=""><span>Quests</span></button>
+    </div>
+    <div class="upgrade-current-office"><div class="current-office-thumb"></div><div><strong id="current-office-name">Starter Office — Floor 1</strong><span id="current-office-bonus">No bonus yet</span></div></div>
+    <div class="upgrade-scroll">
+      <section id="panel-buildings" class="progress-section"><div class="mb-section-label"><span>Office Buildings</span></div><div id="office-upgrade-list" class="progress-list"></div></section>
+      <section id="panel-skills" class="progress-section"><div class="mb-section-label"><span>Skills</span></div><div id="skills-upgrade-list" class="progress-list skills-grid"></div></section>
+      <section id="panel-milestones" class="progress-section"><div class="mb-section-label"><span>Milestones</span></div><div id="milestones-list" class="progress-list"></div></section>
+      <section id="panel-quests" class="progress-section"><div class="mb-section-label"><span>Active Quests</span></div><div id="quests-list" class="progress-list"></div></section>
+      <section id="panel-collection" class="progress-section"><div class="mb-section-label"><span>Monkey Collection</span></div><div id="collection-list" class="collection-list"></div></section>
+    </div>
+  </div>
+</section>
+<script src="words.js?v=18"></script>
+<script src="script.js?v=18"></script>
+</body></html>

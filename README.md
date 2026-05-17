@@ -126,3 +126,17 @@ This version rewrites the visual layer instead of stacking more CSS on old layou
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=17`
+
+
+## Version 18 Mockup Fidelity Pass
+
+- Reworked the live UI to better match the portrait mockups using custom pixel icon PNGs.
+- Added pixel icons for HUD, dock, tabs, settings, info, quests, and tape decorations.
+- Added more mockup-like stat cards with per-second readouts and a player level badge.
+- Improved the office header, floor ribbon, info button, and dock.
+- Rebuilt quest cards to match the mockup more closely with icon, reward, and action areas.
+- Updated cache busting to `?v=18`.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=18`

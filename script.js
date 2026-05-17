@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v16';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v18';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -256,6 +256,12 @@ const monkeyOfficeSummary = document.getElementById('monkey-office-summary');
 const floatingRewardsLayer = document.getElementById('floating-rewards-layer');
 const officeLevelLabel = document.getElementById('office-level-label');
 const officeNameTitle = document.getElementById('office-name-title');
+const bananasRateEl = document.getElementById('bananas-rate');
+const lettersRateEl = document.getElementById('letters-rate');
+const wordsRateEl = document.getElementById('words-rate');
+const monkeysRateEl = document.getElementById('monkeys-rate');
+const playerLevelBadge = document.getElementById('player-level-badge');
+const questsBadge = document.getElementById('quests-badge');
 
 function formatNumber(value) {
     return Math.floor(value).toLocaleString();
@@ -416,6 +422,52 @@ function syncOfficeVisuals(force = false) {
         : `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in the office`;
 }
 
+function getPlayerLevel() {
+    return Math.max(1, Math.floor(wordsTyped / 60) + officeLevel);
+}
+
+function getPassiveLetterRate() {
+    if (monkeysOwned <= 0) {
+        return 0;
+    }
+    let rate = 0;
+    monkeyRoster.forEach((typeId) => {
+        const monkeyType = getMonkeyType(typeId);
+        const typeMultiplier = Math.max(1, Number(monkeyType.speedMultiplier) || 1);
+        rate += typeMultiplier * getGlobalSpeedMultiplier() * (1000 / monkeyTypingIntervalMs);
+    });
+    return rate;
+}
+
+function getEstimatedWordRate() {
+    return getPassiveLetterRate() / 5;
+}
+
+function getEstimatedBananaRate() {
+    const avgPoints = Math.max(3, 3 + getUpgradeLevel('betterDictionary') + (getCurrentOffice().wordBonus || 0));
+    return getEstimatedWordRate() * avgPoints * getOfficeIncomeMultiplier();
+}
+
+function getActiveQuestCount() {
+    return MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 9).length;
+}
+
+function getQuestIconSrc(milestone) {
+    switch (milestone.metric) {
+        case 'letters':
+            return 'icon-typewriter.png';
+        case 'words':
+            return 'icon-book.png';
+        case 'monkeys':
+        case 'superRares':
+            return 'icon-monkey.png';
+        case 'officeLevel':
+            return 'icon-upgrades.png';
+        default:
+            return 'icon-quests.png';
+    }
+}
+
 function updateDisplay() {
     const currentOffice = getCurrentOffice();
 
@@ -426,6 +478,13 @@ function updateDisplay() {
     monkeyCostEl.textContent = formatNumber(monkeyCost);
     monkeyCostInlineEl.textContent = formatNumber(monkeyCost);
 
+    if (bananasRateEl) bananasRateEl.textContent = `+${formatNumber(getEstimatedBananaRate())} /s`;
+    if (lettersRateEl) lettersRateEl.textContent = `+${formatNumber(getPassiveLetterRate())} /s`;
+    if (wordsRateEl) wordsRateEl.textContent = `+${formatNumber(getEstimatedWordRate())} /s`;
+    if (monkeysRateEl) monkeysRateEl.textContent = `+${formatNumber(monkeysOwned > 0 ? monkeysOwned : 0)} /s`;
+    if (playerLevelBadge) playerLevelBadge.textContent = `Lvl ${formatNumber(getPlayerLevel())}`;
+    if (questsBadge) questsBadge.textContent = String(getActiveQuestCount());
+
     officeLevelLabel.textContent = `Floor ${currentOffice.floor}`;
     officeNameTitle.textContent = currentOffice.name;
 
@@ -435,14 +494,12 @@ function updateDisplay() {
     if (recentWords.length === 0) {
         recentWordsList.innerHTML = '<span class="empty-state">No words yet.</span>';
     } else {
-        recentWordsList.innerHTML = recentWords
-            .map((entry) => `<span class="recent-word">${getDisplayWord(entry.word)} <strong>+${entry.points}</strong></span>`)
-            .join('');
+        recentWordsList.innerHTML = recentWords.map((entry) => `<span class="recent-word">${getDisplayWord(entry.word)} <strong>+${entry.points}</strong></span>`).join('');
     }
 
     syncOfficeVisuals();
     updateProgressionPanel();
-    dictionaryStatus.textContent = `${formatNumber(getDictionaryWordCount())} words loaded`;
+    dictionaryStatus.textContent = `${formatNumber(getDictionaryWordCount())} words in the dictionary`;
 }
 
 function clearPlaceholder() {
@@ -465,7 +522,7 @@ function appendOutputLetter(letter, source = 'player') {
 function appendWordReward(word, points) {
     const wordSpan = document.createElement('span');
     wordSpan.className = 'word-found';
-    wordSpan.textContent = ` ${getDisplayWord(word).toUpperCase()} +${points} `;
+    wordSpan.innerHTML = `<span>${getDisplayWord(word).toUpperCase()} +${points}</span><span class="mini-banana-icon" aria-hidden="true"></span>`;
     outputArea.appendChild(wordSpan);
 
     trimOutputArea();
@@ -667,7 +724,7 @@ function renderMonkeyOffice() {
         monkeyOfficeSummary.textContent = 'No monkeys hired yet.';
         monkeyOfficeGrid.innerHTML = `
             <div class="office-empty-state">
-                <span class="office-empty-emoji" aria-hidden="true"></span>
+                <div class="empty-circle" aria-hidden="true"></div>
                 <p>Hire your first monkey to fill the office.</p>
             </div>
         `;
@@ -860,9 +917,8 @@ function renderQuests() {
         return;
     }
 
-    const activeQuests = MILESTONES
-        .filter((milestone) => !claimedMilestones.includes(milestone.id))
-        .slice(0, 5);
+    const activeQuests = MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 5);
+    if (questsBadge) questsBadge.textContent = String(activeQuests.length);
 
     if (activeQuests.length === 0) {
         questsList.innerHTML = '<article class="milestone-card"><div class="milestone-copy"><h3>All quests complete</h3><p>More quests will arrive as the office expands.</p></div></article>';
@@ -873,18 +929,19 @@ function renderQuests() {
         const progress = getMilestoneProgress(milestone);
         const ratio = clamp(progress / milestone.target, 0, 1);
         const isReady = progress >= milestone.target;
-
         return `
-            <article class="milestone-card quest-card">
+            <article class="quest-card">
+                <div class="quest-art"><img src="${getQuestIconSrc(milestone)}" alt="" /></div>
                 <div class="milestone-copy">
                     <h3>${milestone.name}</h3>
                     <p>${milestone.description}</p>
                     <div class="milestone-bar" aria-hidden="true"><span style="width: ${Math.round(ratio * 100)}%"></span></div>
-                    <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)} • Reward ${formatNumber(milestone.reward)} bananas</small>
+                    <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)}</small>
                 </div>
-                <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>
-                    ${isReady ? 'Claim' : 'Active'}
-                </button>
+                <div class="quest-reward">
+                    <div class="quest-reward-label"><b>Reward</b><span><img src="icon-bananas.png" alt="" /> ${formatNumber(milestone.reward)}</span></div>
+                    <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>${isReady ? 'Claim' : 'Active'}</button>
+                </div>
             </article>
         `;
     }).join('');
