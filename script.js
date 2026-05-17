@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v34';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v35';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v34', 'monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -8,6 +8,10 @@ const recentWordLimit = 12;
 const monkeyTypingIntervalMs = 2000;
 const monkeyAnimationDurationMs = 480;
 const baseSuperRareChance = 0.10;
+const offlineMinimumMs = 90 * 1000;
+const baseOfflineCapMs = 2 * 60 * 60 * 1000;
+const officeOfflineCapStepMs = 30 * 60 * 1000;
+const maxOfflineCapMs = 6 * 60 * 60 * 1000;
 
 const fallbackWords = ['ape', 'bad', 'bag', 'ban', 'bar', 'bat', 'bee', 'big', 'bun', 'bus', 'cat', 'dog', 'fun', 'hat', 'jam', 'man', 'map', 'monkey', 'nap', 'pen', 'run', 'sun', 'tag', 'tan', 'tap', 'top', 'van', 'win', 'zoo'];
 const wordList = Array.isArray(window.MONKEY_WORDS) && window.MONKEY_WORDS.length > 0
@@ -386,6 +390,8 @@ let monkeyTypingEngineId = null;
 let monkeyTypingWatchdogId = null;
 let monkeyNextTypeAt = [];
 let activePanelView = 'upgrades';
+let lastActiveAt = Date.now();
+let activeCelebrationTimeout = null;
 
 const bananasEl = document.getElementById('bananas');
 const lettersEl = document.getElementById('letters');
@@ -431,6 +437,10 @@ const wordsRateEl = document.getElementById('words-rate');
 const monkeysRateEl = document.getElementById('monkeys-rate');
 const playerLevelBadge = document.getElementById('player-level-badge');
 const questsBadge = document.getElementById('quests-badge');
+const upgradesBadge = document.getElementById('upgrades-badge');
+const collectionBadge = document.getElementById('collection-badge');
+const celebrationOverlay = document.getElementById('celebration-overlay');
+const appRoot = document.querySelector('.mb-app');
 
 function formatNumber(value) {
     return Math.floor(value).toLocaleString();
@@ -981,6 +991,57 @@ function getEstimatedBananaRate() {
     return getEstimatedWordRate() * avgPoints * getWordIncomeMultiplier();
 }
 
+function getAverageOfflineWordValue() {
+    const averageWordLength = 4;
+    const basePoints = averageWordLength + getFlatWordBonus();
+    return Math.max(1, Math.floor(basePoints * getWordIncomeMultiplier()));
+}
+
+function getOfflineEarningsCapMs() {
+    return clamp(baseOfflineCapMs + ((officeLevel - 1) * officeOfflineCapStepMs), baseOfflineCapMs, maxOfflineCapMs);
+}
+
+function calculateOfflineEarnings(elapsedMs) {
+    const cappedElapsedMs = clamp(Number(elapsedMs) || 0, 0, getOfflineEarningsCapMs());
+    const secondsAway = cappedElapsedMs / 1000;
+    const passiveLetterRate = getPassiveLetterRate();
+    const lettersTypedOffline = Math.floor(passiveLetterRate * secondsAway);
+    const wordsFoundOffline = Math.floor(lettersTypedOffline / 32);
+    const bananasEarnedOffline = wordsFoundOffline * getAverageOfflineWordValue();
+
+    return {
+        elapsedMs: Number(elapsedMs) || 0,
+        cappedElapsedMs,
+        capMs: getOfflineEarningsCapMs(),
+        lettersTyped: lettersTypedOffline,
+        wordsFound: wordsFoundOffline,
+        bananasEarned: bananasEarnedOffline
+    };
+}
+
+function getAffordableUpgradeCount() {
+    return Object.keys(UPGRADE_DEFS).filter((upgradeId) => {
+        const upgrade = UPGRADE_DEFS[upgradeId];
+        const level = getUpgradeLevel(upgradeId);
+        return level < upgrade.maxLevel && bananas >= getUpgradeCost(upgradeId);
+    }).length;
+}
+
+function getReadyProgressionCount() {
+    return getAffordableUpgradeCount() + (canAffordOfficeUnlock() ? 1 : 0) + getClaimableOfficeRewardCount();
+}
+
+function setDockBadge(badgeEl, count) {
+    if (!badgeEl) {
+        return;
+    }
+
+    const safeCount = Math.max(0, Math.floor(Number(count) || 0));
+    badgeEl.textContent = String(safeCount);
+    badgeEl.setAttribute('aria-hidden', safeCount > 0 ? 'false' : 'true');
+    badgeEl.classList.toggle('is-pulsing', safeCount > 0);
+}
+
 function isQuestMilestone(milestone) {
     return milestone.category === 'quest';
 }
@@ -1218,7 +1279,9 @@ function updateDisplay() {
     if (wordsRateEl) wordsRateEl.textContent = `+${formatUiNumber(getEstimatedWordRate())} /s`;
     if (monkeysRateEl) monkeysRateEl.textContent = monkeysOwned > 0 ? 'Crew' : 'None';
     if (playerLevelBadge) playerLevelBadge.textContent = `Lvl ${formatNumber(getPlayerLevel())}`;
-    if (questsBadge) questsBadge.textContent = String(getClaimableQuestCount());
+    setDockBadge(questsBadge, getClaimableQuestCount());
+    setDockBadge(upgradesBadge, getReadyProgressionCount());
+    setDockBadge(collectionBadge, getClaimableCollectionRewardCount());
 
     officeLevelLabel.textContent = `Floor ${currentOffice.floor}`;
     officeNameTitle.textContent = currentOffice.name;
@@ -1333,6 +1396,130 @@ function spawnHireBurst(extraClass = '') {
     }
 }
 
+function triggerScreenShake(strength = 'normal') {
+    if (!appRoot) {
+        return;
+    }
+
+    appRoot.classList.remove('is-shaking', 'is-big-shake');
+    void appRoot.offsetWidth;
+    appRoot.classList.add(strength === 'big' ? 'is-big-shake' : 'is-shaking');
+    window.setTimeout(() => appRoot.classList.remove('is-shaking', 'is-big-shake'), 520);
+}
+
+function showCelebration(kicker, title, detail = '', type = 'reward', options = {}) {
+    if (!celebrationOverlay) {
+        return;
+    }
+
+    if (activeCelebrationTimeout) {
+        clearTimeout(activeCelebrationTimeout);
+        activeCelebrationTimeout = null;
+    }
+
+    celebrationOverlay.replaceChildren();
+    celebrationOverlay.className = `celebration-overlay is-visible is-${type}`;
+    celebrationOverlay.setAttribute('aria-hidden', 'false');
+
+    const card = document.createElement('div');
+    card.className = 'celebration-card';
+
+    const kickerEl = document.createElement('span');
+    kickerEl.className = 'celebration-kicker';
+    kickerEl.textContent = kicker;
+
+    const titleEl = document.createElement('strong');
+    titleEl.textContent = title;
+
+    card.appendChild(kickerEl);
+    card.appendChild(titleEl);
+
+    if (detail) {
+        const detailEl = document.createElement('p');
+        detailEl.textContent = detail;
+        card.appendChild(detailEl);
+    }
+
+    celebrationOverlay.appendChild(card);
+
+    if (options.burst !== false) {
+        spawnHireBurst(`is-${type}`);
+    }
+
+    if (options.shake) {
+        triggerScreenShake(options.shake === 'big' ? 'big' : 'normal');
+    }
+
+    activeCelebrationTimeout = window.setTimeout(() => {
+        celebrationOverlay.classList.remove('is-visible');
+        celebrationOverlay.setAttribute('aria-hidden', 'true');
+        activeCelebrationTimeout = window.setTimeout(() => {
+            celebrationOverlay.replaceChildren();
+            activeCelebrationTimeout = null;
+        }, 240);
+    }, options.duration || 1700);
+}
+
+function showOfflineWelcome(summary) {
+    if (!summary || summary.bananasEarned <= 0) {
+        return;
+    }
+
+    const cappedText = summary.elapsedMs > summary.cappedElapsedMs ? ' • offline cap reached' : '';
+    showCelebration(
+        'Welcome back!',
+        `+${formatNumber(summary.bananasEarned)} bananas`,
+        `Your monkeys typed ${formatNumber(summary.lettersTyped)} letters, found ${formatNumber(summary.wordsFound)} words${cappedText}.`,
+        'offline',
+        { duration: 2600, shake: false }
+    );
+}
+
+function applyOfflineEarnings(summary, options = {}) {
+    if (!summary || summary.lettersTyped <= 0) {
+        return false;
+    }
+
+    lettersTyped += summary.lettersTyped;
+    lifetimeStats.lettersTyped += summary.lettersTyped;
+    wordsTyped += summary.wordsFound;
+    lifetimeStats.wordsFound += summary.wordsFound;
+
+    if (summary.bananasEarned > 0) {
+        addBananas(summary.bananasEarned);
+    }
+
+    spawnFloatingMessage(`AWAY +${formatNumber(summary.bananasEarned)} BANANAS`, 'is-offline');
+
+    if (options.showSummary) {
+        showOfflineWelcome(summary);
+    }
+
+    return true;
+}
+
+function processOfflineEarnings(options = {}) {
+    const now = Date.now();
+    const elapsedMs = now - (Number(lastActiveAt) || now);
+    lastActiveAt = now;
+
+    if (elapsedMs < offlineMinimumMs || monkeysOwned <= 0) {
+        saveGame();
+        return null;
+    }
+
+    const summary = calculateOfflineEarnings(elapsedMs);
+    if (summary.lettersTyped <= 0 || summary.wordsFound <= 0 || summary.bananasEarned <= 0) {
+        saveGame();
+        return summary;
+    }
+
+    applyOfflineEarnings(summary, { showSummary: Boolean(options.showSummary) });
+    updateDisplay();
+    saveGame();
+    return summary;
+}
+
 function showNewHireReveal(monkeyType, isNewType = false) {
     if (!floatingRewardsLayer) {
         return;
@@ -1400,10 +1587,14 @@ function awardWords(words) {
 
         if (isNewDiscovery) {
             spawnFloatingMessage(`NEW WORD: ${getDisplayWord(normalizedWord).toUpperCase()}`, 'is-super-rare');
+            showCelebration('New Word Discovered!', normalizedWord.toUpperCase(), `+${formatNumber(points)} bananas`, 'word', { duration: 1350, burst: normalizedWord.length >= 5 });
         }
 
         if (bonusLabel) {
             spawnFloatingMessage(`${bonusLabel} WORD +${formatNumber(points)}`, 'is-hire');
+            if (normalizedWord.length >= 6) {
+                showCelebration('Long Word Jackpot!', normalizedWord.toUpperCase(), `${bonusLabel} • +${formatNumber(points)} bananas`, 'jackpot', { duration: 1750, shake: normalizedWord.length >= 7 ? 'big' : 'normal' });
+            }
         }
 
         spawnFloatingReward(points, normalizedWord);
@@ -1545,6 +1736,9 @@ function buyMonkey() {
     updateDisplay();
     saveGame();
     spawnMonkeyHireMessage(hiredMonkeyType, isNewMonkeyType);
+    if (hiredMonkeyType.rarity === 'super-rare') {
+        showCelebration('Super Rare Hire!', hiredMonkeyType.name, `${hiredMonkeyType.speedMultiplier}x typing speed`, 'super-rare', { duration: 2300, shake: 'big' });
+    }
 
     // Prime the new hire and keep every existing monkey on its own two-second schedule.
     primeMonkeyForTyping(newMonkeyIndex, 450);
@@ -1946,6 +2140,7 @@ function unlockNextOffice() {
     officeLevel = clamp(officeLevel + 1, 1, OFFICE_BUILDINGS.length);
     lifetimeStats.officesUnlocked = Math.max(lifetimeStats.officesUnlocked, officeLevel - 1);
     spawnFloatingMessage(`${nextOffice.name.toUpperCase()} UNLOCKED`, 'is-super-rare');
+    showCelebration('Office Unlocked!', nextOffice.name, `Floor ${nextOffice.floor}`, 'office', { duration: 2100, shake: 'normal' });
     updateDisplay();
     saveGame();
 }
@@ -1968,7 +2163,15 @@ function claimMilestone(milestoneId) {
         lifetimeStats.questsClaimed += 1;
     }
     addBananas(milestone.reward);
+    const isQuestReward = isQuestMilestone(milestone);
     spawnFloatingMessage(`GOAL +${formatNumber(milestone.reward)} BANANAS`, 'is-hire');
+    showCelebration(
+        isQuestReward ? 'Quest Complete!' : 'Milestone Claimed!',
+        `+${formatNumber(milestone.reward)} bananas`,
+        milestone.name,
+        isQuestReward ? 'quest' : 'milestone',
+        { duration: 1700, shake: isQuestReward ? false : 'normal' }
+    );
     updateDisplay();
     updateProgressionPanel();
     saveGame();
@@ -1997,6 +2200,7 @@ function claimCollectionReward(rewardId) {
     const rewardText = getCollectionRewardText(reward).toUpperCase();
     spawnFloatingMessage(`COLLECTION: ${rewardText}`, 'is-collection');
     spawnHireBurst('is-collection');
+    showCelebration('Collection Reward Claimed!', reward.name, getCollectionRewardText(reward), 'collection', { duration: 1900, shake: 'normal' });
     updateDisplay();
     updateProgressionPanel();
     saveGame();
@@ -2020,6 +2224,7 @@ function claimOfficeCompletionReward(officeId) {
     spawnFloatingMessage(`${office.name.toUpperCase()} COMPLETE`, 'is-super-rare');
     spawnFloatingMessage(getOfficeCompletionRewardText(office).toUpperCase(), 'is-hire');
     spawnHireBurst('is-office-complete');
+    showCelebration('Office Complete!', office.name, getOfficeCompletionRewardText(office), 'office-complete', { duration: 2100, shake: 'normal' });
     updateDisplay();
     updateProgressionPanel();
     saveGame();
@@ -2501,7 +2706,7 @@ function bindProgressionActionArea(container) {
 
     const findActionButton = (target) => {
         return target && target.closest
-            ? target.closest('[data-office-unlock], [data-upgrade-id], [data-milestone-id], [data-collection-reward-id]')
+            ? target.closest('[data-office-unlock], [data-upgrade-id], [data-milestone-id], [data-collection-reward-id], [data-office-reward-id]')
             : null;
     };
 
@@ -2554,6 +2759,8 @@ function closeUpgradesPanel() {
 }
 
 function saveGame() {
+    lastActiveAt = Date.now();
+
     const saveData = {
         bananas,
         lettersTyped,
@@ -2569,7 +2776,8 @@ function saveGame() {
         claimedCollectionRewards,
         claimedOfficeRewards,
         lifetimeStats,
-        discoveredWords
+        discoveredWords,
+        lastActiveAt
     };
 
     localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
@@ -2615,6 +2823,7 @@ function loadGame() {
         claimedOfficeRewards = Array.isArray(saveData.claimedOfficeRewards) ? saveData.claimedOfficeRewards : [];
         discoveredWords = normalizeDiscoveredWords(saveData.discoveredWords || recentWords.map((entry) => entry.word));
         lifetimeStats = normalizeLifetimeStats(saveData.lifetimeStats || {});
+        lastActiveAt = Number(saveData.lastActiveAt) || Date.now();
 
         ensureProgressionState();
         ensureMonkeyRosterMatchesCount();
@@ -2652,6 +2861,7 @@ function resetGame() {
     claimedOfficeRewards = [];
     discoveredWords = [];
     lifetimeStats = getDefaultLifetimeStats();
+    lastActiveAt = Date.now();
 
     monkeyAnimationTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
     monkeyAnimationTimeouts.clear();
@@ -2661,6 +2871,11 @@ function resetGame() {
     outputArea.innerHTML = '<span class="placeholder">Tap TYPE to begin...</span>';
     if (floatingRewardsLayer) {
         floatingRewardsLayer.innerHTML = '';
+    }
+    if (celebrationOverlay) {
+        celebrationOverlay.replaceChildren();
+        celebrationOverlay.classList.remove('is-visible');
+        celebrationOverlay.setAttribute('aria-hidden', 'true');
     }
     updateDisplay();
     startMonkeyTypingEngine(false);
@@ -2694,6 +2909,7 @@ bindProgressionActionArea(officeUpgradeList);
 bindProgressionActionArea(skillsUpgradeList);
 bindProgressionActionArea(milestonesList);
 bindProgressionActionArea(questsList);
+bindProgressionActionArea(collectionList);
 
 bindFastTap(typeButton, () => typeRandomLetter('player'));
 bindFastTap(buyMonkeyButton, buyMonkey);
@@ -2718,10 +2934,23 @@ upgradePanel.addEventListener('click', (event) => {
 
 
 document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-        forceMonkeyOfficeRender();
-        startMonkeyTypingEngine(true);
+    if (document.hidden) {
+        saveGame();
+        stopMonkeyTypingEngine();
+        return;
     }
+
+    processOfflineEarnings({ showSummary: true });
+    forceMonkeyOfficeRender();
+    startMonkeyTypingEngine(true);
+});
+
+window.addEventListener('pagehide', () => {
+    saveGame();
+});
+
+window.addEventListener('beforeunload', () => {
+    saveGame();
 });
 
 document.addEventListener('keydown', (event) => {
@@ -2750,7 +2979,9 @@ window.MonkeyBusinessDebug = {
             recentWords: [...recentWords],
             lifetimeStats: { ...lifetimeStats },
             discoveredWords: [...discoveredWords],
-            unlockedQuestTier: getUnlockedQuestTier()
+            unlockedQuestTier: getUnlockedQuestTier(),
+            lastActiveAt,
+            offlineCapMs: getOfflineEarningsCapMs()
         };
     },
     setState(partialState = {}) {
@@ -2768,6 +2999,7 @@ window.MonkeyBusinessDebug = {
         if (Array.isArray(partialState.claimedOfficeRewards)) claimedOfficeRewards = partialState.claimedOfficeRewards.map(String);
         if (Array.isArray(partialState.discoveredWords)) discoveredWords = normalizeDiscoveredWords(partialState.discoveredWords);
         if (partialState.lifetimeStats && typeof partialState.lifetimeStats === 'object') lifetimeStats = normalizeLifetimeStats(partialState.lifetimeStats);
+        if (Number.isFinite(Number(partialState.lastActiveAt))) lastActiveAt = Number(partialState.lastActiveAt);
         ensureMonkeyRosterMatchesCount();
         ensureProgressionState();
         forceMonkeyOfficeRender();
@@ -2786,10 +3018,14 @@ window.MonkeyBusinessDebug = {
     awardWords,
     calculateWordPoints,
     updateDisplay,
+    calculateOfflineEarnings,
+    processOfflineEarnings,
+    showCelebration,
     startMonkeyTypingEngine
 };
 
 loadGame();
+processOfflineEarnings({ showSummary: true });
 forceMonkeyOfficeRender();
 updateDisplay();
 startMonkeyTypingEngine(true);

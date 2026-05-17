@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-title" content="Monkey Business">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Monkey Business</title>
-  <link rel="stylesheet" href="app.css?v=34">
+  <link rel="stylesheet" href="app.css?v=35">
 </head>
 <body>
 <div class="mb-app">
@@ -53,9 +53,9 @@
   </main>
   <footer class="mb-dock" aria-label="Main controls">
     <button id="buy-monkey-button" class="dock-tile dock-hire"><img src="icon-monkey.png" class="dock-image" alt=""><strong>Hire</strong><small><span id="monkey-cost">50</span></small></button>
-    <button id="nav-upgrades-button" class="dock-tile" data-panel-view="upgrades"><img src="icon-upgrades.png" class="dock-image" alt=""><strong>Upgrades</strong></button>
+    <button id="nav-upgrades-button" class="dock-tile" data-panel-view="upgrades"><span id="upgrades-badge" class="dock-badge" aria-hidden="true">0</span><img src="icon-upgrades.png" class="dock-image" alt=""><strong>Upgrades</strong></button>
     <button id="type-button" class="dock-type"><img src="icon-typewriter.png" class="dock-image dock-image-large" alt=""><strong>TYPE</strong><small>Random Letter</small></button>
-    <button id="nav-collection-button" class="dock-tile" data-panel-view="collection"><img src="icon-collection.png" class="dock-image" alt=""><strong>Monkeys</strong></button>
+    <button id="nav-collection-button" class="dock-tile" data-panel-view="collection"><span id="collection-badge" class="dock-badge" aria-hidden="true">0</span><img src="icon-collection.png" class="dock-image" alt=""><strong>Monkeys</strong></button>
     <button id="nav-quests-button" class="dock-tile dock-quests" data-panel-view="quests"><span id="quests-badge" class="dock-badge">0</span><img src="icon-quests.png" class="dock-image" alt=""><strong>Quests</strong></button>
     <span id="monkey-cost-inline" class="visually-hidden">50</span>
   </footer>
@@ -80,6 +80,7 @@
     <div class="upgrade-sheet-footer"><img src="icon-monkey.png" alt="" /><span>Complete quests to earn bananas and grow your business.</span></div>
   </div>
 </section>
-<script src="words.js?v=34"></script>
-<script src="script.js?v=34"></script>
+<div id="celebration-overlay" class="celebration-overlay" aria-hidden="true"></div>
+<script src="words.js?v=35"></script>
+<script src="script.js?v=35"></script>
 </body></html>

@@ -4268,3 +4268,221 @@
         font-size: .74rem !important;
     }
 }
+
+/* v35 reward feel + App Store polish */
+.mb-app.is-shaking {
+    animation: mbScreenShake .38s ease both;
+}
+
+.mb-app.is-big-shake {
+    animation: mbScreenShakeBig .5s ease both;
+}
+
+@keyframes mbScreenShake {
+    0%,100% { transform: translate3d(0,0,0); }
+    18% { transform: translate3d(-2px,1px,0); }
+    36% { transform: translate3d(3px,-1px,0); }
+    54% { transform: translate3d(-2px,-1px,0); }
+    72% { transform: translate3d(2px,1px,0); }
+}
+
+@keyframes mbScreenShakeBig {
+    0%,100% { transform: translate3d(0,0,0) rotate(0); }
+    14% { transform: translate3d(-4px,2px,0) rotate(-.3deg); }
+    28% { transform: translate3d(5px,-2px,0) rotate(.3deg); }
+    42% { transform: translate3d(-4px,-2px,0) rotate(-.2deg); }
+    56% { transform: translate3d(4px,2px,0) rotate(.2deg); }
+    72% { transform: translate3d(-2px,1px,0) rotate(-.1deg); }
+}
+
+.celebration-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: max(18px, env(safe-area-inset-top)) 18px max(18px, env(safe-area-inset-bottom));
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(.98);
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.celebration-overlay.is-visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.celebration-card {
+    width: min(86vw, 340px);
+    min-height: 132px;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+    gap: 7px;
+    padding: 18px 16px 16px;
+    background: linear-gradient(180deg, #fff7d5, #e7bd62);
+    border: 6px solid #7a470f;
+    box-shadow: 0 10px 0 rgba(0,0,0,.32), 0 0 28px rgba(255,214,75,.24), inset 0 2px 0 rgba(255,255,255,.58);
+    color: #321b07;
+    text-align: center;
+    font-family: "Baloo 2", ui-rounded, system-ui, sans-serif;
+    animation: celebrationPop 1.45s ease both;
+}
+
+.celebration-card::before,
+.celebration-card::after {
+    content: '';
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    background: url('icon-bananas.png') center/contain no-repeat;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 3px 0 rgba(0,0,0,.18));
+}
+
+.celebration-card::before { left: 12px; top: 12px; }
+.celebration-card::after { right: 12px; bottom: 12px; }
+
+.celebration-kicker {
+    display: inline-grid;
+    place-items: center;
+    min-height: 26px;
+    padding: 4px 10px;
+    background: #2a1608;
+    border: 3px solid rgba(255,218,90,.36);
+    color: #fff1bf;
+    font-size: .74rem;
+    font-weight: 1000;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    box-shadow: 0 2px 0 rgba(0,0,0,.18);
+}
+
+.celebration-card strong {
+    max-width: 100%;
+    color: #2b1608;
+    font-size: clamp(2rem, 9vw, 3.1rem);
+    line-height: .82;
+    letter-spacing: -.04em;
+    text-shadow: 0 2px 0 rgba(255,255,255,.45);
+    overflow-wrap: anywhere;
+}
+
+.celebration-card p {
+    max-width: 270px;
+    color: #5b350d;
+    font-size: .98rem;
+    font-weight: 1000;
+    line-height: 1.1;
+}
+
+.celebration-overlay.is-super-rare .celebration-card,
+.celebration-overlay.is-jackpot .celebration-card {
+    background: linear-gradient(180deg, #fffbe5, #ffd951 52%, #e89612);
+    border-color: #9c6100;
+    box-shadow: 0 10px 0 rgba(0,0,0,.34), 0 0 36px rgba(255,222,65,.62), inset 0 2px 0 rgba(255,255,255,.62);
+}
+
+.celebration-overlay.is-office .celebration-card,
+.celebration-overlay.is-office-complete .celebration-card {
+    background: linear-gradient(180deg, #f4ffd1, #acd66d);
+    border-color: #4d7924;
+}
+
+.celebration-overlay.is-word .celebration-card {
+    background: linear-gradient(180deg, #fff8d8, #d8efa1);
+    border-color: #5a8025;
+}
+
+.celebration-overlay.is-offline .celebration-card {
+    background: linear-gradient(180deg, #e8f6ff, #b7d7ff);
+    border-color: #315c8b;
+}
+
+@keyframes celebrationPop {
+    0% { opacity: 0; transform: translateY(18px) scale(.82); }
+    16% { opacity: 1; transform: translateY(0) scale(1.04); }
+    28% { transform: translateY(0) scale(1); }
+    82% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-10px) scale(.98); }
+}
+
+.dock-badge.is-pulsing {
+    animation: dockBadgePulse 1.45s ease-in-out infinite;
+}
+
+@keyframes dockBadgePulse {
+    0%,100% { transform: translate(30%,-30%) scale(1); }
+    50% { transform: translate(30%,-30%) scale(1.15); }
+}
+
+.progress-card.is-affordable .progress-buy-button:not(:disabled),
+.collection-reward-card.is-ready .collection-claim-button,
+.office-chapter-card.is-ready .office-reward-button,
+.quest-card.is-ready .milestone-claim-button,
+.milestone-card.is-ready .milestone-claim-button {
+    animation: claimPulse 1.55s ease-in-out infinite !important;
+}
+
+.upgrade-panel {
+    transition: opacity .2s ease, visibility .2s ease !important;
+}
+
+.upgrade-sheet {
+    transform: translateY(0) scale(1);
+    transition: transform .22s ease !important;
+}
+
+.upgrade-panel.is-hidden .upgrade-sheet {
+    transform: translateY(28px) scale(.985);
+}
+
+.float-reward.is-offline {
+    background: linear-gradient(180deg, #eef8ff, #b7d7ff);
+    border-color: #315c8b;
+    color: #193654;
+}
+
+.hire-burst-piece.is-jackpot,
+.hire-burst-piece.is-super-rare,
+.hire-burst-piece.is-office,
+.hire-burst-piece.is-office-complete,
+.hire-burst-piece.is-quest,
+.hire-burst-piece.is-milestone,
+.hire-burst-piece.is-word,
+.hire-burst-piece.is-offline {
+    filter: drop-shadow(0 0 7px rgba(255,220,75,.78));
+}
+
+.mb-wallet-pill strong,
+.dock-tile,
+.dock-type,
+.progress-buy-button {
+    -webkit-font-smoothing: antialiased;
+}
+
+.mb-dock {
+    padding-bottom: max(9px, env(safe-area-inset-bottom)) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mb-app.is-shaking,
+    .mb-app.is-big-shake,
+    .celebration-card,
+    .dock-badge.is-pulsing,
+    .progress-buy-button:not(:disabled) {
+        animation: none !important;
+    }
+
+    .celebration-overlay,
+    .upgrade-panel,
+    .upgrade-sheet {
+        transition: none !important;
+    }
+}
+
+.celebration-card {
+    position: relative;
+}
