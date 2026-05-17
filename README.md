@@ -267,3 +267,21 @@ Changed-files-only patch.
 - Added small desk bases under monkeys so they feel seated at workstations.
 - Kept the v26 automatic typing engine intact.
 - Updated cache busting to `?v=27`.
+
+
+## Version 29 Logic Audit Patch
+
+Changed-files-only patch.
+
+### Logic fixes
+- Replaced the requestAnimationFrame-based monkey typing loop with a timer-backed per-monkey scheduler.
+- Each normal monkey keeps its own ~2-second typing schedule.
+- Additional monkeys now continue typing independently after being hired.
+- Super rare monkeys and speed upgrades still reduce the delay per keystroke.
+- Made quest/milestone claim buttons use delegated event handling so dynamically re-rendered buttons remain tappable.
+- Hardened milestone claiming so a ready quest updates the panel and save data immediately.
+- Added a lightweight `window.MonkeyBusinessDebug` helper for future logic audits.
+
+### UI support
+- Claimable buttons now show a clearer active/tappable state.
+- Disabled claim/buy buttons no longer intercept touches.

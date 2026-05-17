@@ -3311,3 +3311,33 @@
         font-size: .66rem !important;
     }
 }
+
+
+/* v29 logic-audit polish: claimable buttons should be visibly tappable. */
+.milestone-card.is-ready,
+.quest-card.is-ready,
+.quest-card.compact-quest-card.is-ready {
+    box-shadow: 0 0 0 2px rgba(255, 210, 57, .24), 0 4px 0 rgba(83, 50, 17, .16) !important;
+}
+
+.progress-buy-button:not(:disabled),
+.milestone-claim-button:not(:disabled) {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+    filter: brightness(1.06) drop-shadow(0 3px 0 rgba(0,0,0,.18)) !important;
+}
+
+.progress-buy-button:disabled,
+.milestone-claim-button:disabled {
+    pointer-events: none !important;
+}
+
+.quest-side,
+.quest-card.compact-quest-card .quest-reward-label {
+    pointer-events: none;
+}
+
+.quest-side .progress-buy-button,
+.quest-side .milestone-claim-button {
+    pointer-events: auto;
+}

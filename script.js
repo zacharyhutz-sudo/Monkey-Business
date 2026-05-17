@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v28';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v29';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -489,7 +489,7 @@ function getEstimatedWordRate() {
 
 function getEstimatedBananaRate() {
     const avgPoints = Math.max(3, 3 + getUpgradeLevel('betterDictionary') + (getCurrentOffice().wordBonus || 0));
-    return getEstimatedWordRate() * avgPoints * getOfficeIncomeMultiplier();
+    return getEstimatedWordRate() * avgPoints * getWordIncomeMultiplier();
 }
 
 function getActiveQuestCount() {
@@ -774,15 +774,6 @@ function syncMonkeyTypingSchedule(now = performance.now(), runSoon = false) {
     }
 }
 
-function primeMonkeyForTyping(monkeyIndex, delayMs = 450) {
-    if (monkeyIndex == null || monkeyIndex < 0) {
-        return;
-    }
-
-    const now = performance.now();
-    syncMonkeyTypingSchedule(now, false);
-    monkeyNextTypeAt[monkeyIndex] = now + delayMs;
-}
 
 function getMonkeySeat(index, total) {
     const layouts = {
@@ -860,7 +851,9 @@ function buyMonkey() {
     updateDisplay();
     saveGame();
     spawnMonkeyHireMessage(hiredMonkeyType);
-    primeMonkeyForTyping(newMonkeyIndex, 500);
+
+    // Prime the new hire and keep every existing monkey on its own two-second schedule.
+    primeMonkeyForTyping(newMonkeyIndex, 450);
     startMonkeyTypingEngine(true);
 
     requestAnimationFrame(() => {
@@ -878,7 +871,7 @@ function clearPendingMonkeyTyping() {
 
 function stopMonkeyTypingEngine() {
     if (monkeyTypingEngineId) {
-        cancelAnimationFrame(monkeyTypingEngineId);
+        clearInterval(monkeyTypingEngineId);
         monkeyTypingEngineId = null;
     }
 
@@ -891,47 +884,51 @@ function stopMonkeyTypingEngine() {
     }
 }
 
-function startMonkeyTypingWatchdog() {
-    if (monkeyTypingWatchdogId) {
-        clearInterval(monkeyTypingWatchdogId);
+function syncMonkeyTypingSchedule(now = performance.now(), runSoon = false) {
+    ensureMonkeyRosterMatchesCount();
+
+    if (monkeyNextTypeAt.length > monkeysOwned) {
+        monkeyNextTypeAt = monkeyNextTypeAt.slice(0, monkeysOwned);
     }
 
-    monkeyTypingWatchdogId = setInterval(() => {
-        if (monkeysOwned > 0 && !document.hidden) {
-            const now = performance.now();
-            const hasDueMonkey = monkeyNextTypeAt.some((nextAt) => now >= nextAt + 250);
-            if (hasDueMonkey) {
-                runMonkeyTyping(now);
-            }
+    while (monkeyNextTypeAt.length < monkeysOwned) {
+        const monkeyIndex = monkeyNextTypeAt.length;
+        const typeId = monkeyRoster[monkeyIndex];
+        const stagger = runSoon ? 350 + (monkeyIndex % 6) * 130 : getMonkeyTypingDelay(typeId);
+        monkeyNextTypeAt.push(now + stagger);
+    }
 
-            if (!monkeyTypingEngineId) {
-                monkeyTypingEngineId = requestAnimationFrame(monkeyTypingFrame);
-            }
-        }
-    }, 1000);
+    if (runSoon && monkeysOwned > 0) {
+        monkeyNextTypeAt = monkeyNextTypeAt.map((nextAt, index) => {
+            const stagger = 350 + (index % 6) * 130;
+            return Math.min(Number(nextAt) || Infinity, now + stagger);
+        });
+    }
+}
+
+function primeMonkeyForTyping(monkeyIndex, delayMs = 450) {
+    if (monkeyIndex == null || monkeyIndex < 0) {
+        return;
+    }
+
+    const now = performance.now();
+    syncMonkeyTypingSchedule(now, false);
+    monkeyNextTypeAt[monkeyIndex] = now + delayMs;
 }
 
 function startMonkeyTypingEngine(runSoon = false) {
     const now = performance.now();
     syncMonkeyTypingSchedule(now, runSoon);
 
-    if (runSoon && monkeysOwned > 0) {
-        monkeyNextTypeAt = monkeyNextTypeAt.map((nextAt, index) => {
-            const spreadDelay = 420 + (index % 4) * 160;
-            return Math.min(nextAt || Infinity, now + spreadDelay);
-        });
-    }
-
     if (!monkeyTypingEngineId) {
-        monkeyTypingEngineId = requestAnimationFrame(monkeyTypingFrame);
+        // A short scheduler tick is more reliable on mobile Safari than chaining requestAnimationFrame
+        // for a background idle mechanic. Each monkey still has its own ~2s due time.
+        monkeyTypingEngineId = setInterval(() => runMonkeyTyping(performance.now()), 250);
     }
 
-    startMonkeyTypingWatchdog();
-}
-
-function monkeyTypingFrame(timestamp) {
-    runMonkeyTyping(timestamp);
-    monkeyTypingEngineId = requestAnimationFrame(monkeyTypingFrame);
+    if (runSoon) {
+        window.setTimeout(() => runMonkeyTyping(performance.now()), 80);
+    }
 }
 
 function runMonkeyTyping(timestamp = performance.now()) {
@@ -951,12 +948,12 @@ function runMonkeyTyping(timestamp = performance.now()) {
 
     monkeyRoster.forEach((typeId, index) => {
         const delay = getMonkeyTypingDelay(typeId);
-        const nextAt = monkeyNextTypeAt[index] || (timestamp + delay);
+        const nextAt = Number(monkeyNextTypeAt[index]) || (timestamp + delay);
 
         if (timestamp >= nextAt) {
             typeRandomLetter('monkey', index);
 
-            // If the browser paused briefly, don't try to catch up with a burst.
+            // Schedule the next keystroke from now so a paused tab never dumps a burst of catch-up letters.
             monkeyNextTypeAt[index] = timestamp + delay;
         }
     });
@@ -1061,19 +1058,22 @@ function unlockNextOffice() {
 }
 
 function claimMilestone(milestoneId) {
-    const milestone = MILESTONES.find((entry) => entry.id === milestoneId);
-    if (!milestone || claimedMilestones.includes(milestoneId)) {
+    const normalizedId = String(milestoneId || '');
+    const milestone = MILESTONES.find((entry) => entry.id === normalizedId);
+    if (!milestone || claimedMilestones.includes(normalizedId)) {
         return;
     }
 
     if (getMilestoneProgress(milestone) < milestone.target) {
+        updateProgressionPanel();
         return;
     }
 
-    claimedMilestones.push(milestoneId);
+    claimedMilestones.push(normalizedId);
     bananas += milestone.reward;
     spawnFloatingMessage(`GOAL +${formatNumber(milestone.reward)} BANANAS`, 'is-hire');
     updateDisplay();
+    updateProgressionPanel();
     saveGame();
 }
 
@@ -1360,30 +1360,74 @@ function canAffordOfficeUnlock() {
     return Boolean(nextOffice && bananas >= nextOffice.unlockCost);
 }
 
-function bindProgressionButtons() {
-    const officeButton = officeUpgradeList.querySelector('[data-office-unlock]');
-    if (officeButton && !officeButton.dataset.bound) {
-        officeButton.dataset.bound = 'true';
-        bindFastTap(officeButton, unlockNextOffice);
+function runProgressionButtonAction(button) {
+    if (!button || button.disabled) {
+        return;
     }
 
-    skillsUpgradeList.querySelectorAll('[data-upgrade-id]').forEach((button) => {
-        if (button.dataset.bound) {
+    if (button.matches('[data-office-unlock]')) {
+        unlockNextOffice();
+        return;
+    }
+
+    if (button.dataset.upgradeId) {
+        buyUpgrade(button.dataset.upgradeId);
+        return;
+    }
+
+    if (button.dataset.milestoneId) {
+        claimMilestone(button.dataset.milestoneId);
+    }
+}
+
+function bindProgressionActionArea(container) {
+    if (!container || container.dataset.delegatedBound) {
+        return;
+    }
+
+    container.dataset.delegatedBound = 'true';
+    let handledByPointer = false;
+
+    const findActionButton = (target) => {
+        return target && target.closest
+            ? target.closest('[data-office-unlock], [data-upgrade-id], [data-milestone-id]')
+            : null;
+    };
+
+    container.addEventListener('pointerdown', (event) => {
+        const button = findActionButton(event.target);
+        if (!button || !container.contains(button) || button.disabled) {
             return;
         }
 
-        button.dataset.bound = 'true';
-        bindFastTap(button, () => buyUpgrade(button.dataset.upgradeId));
-    });
-
-    [...milestonesList.querySelectorAll('[data-milestone-id]'), ...questsList.querySelectorAll('[data-milestone-id]')].forEach((button) => {
-        if (button.dataset.bound) {
+        if (event.pointerType === 'mouse' && event.button !== 0) {
             return;
         }
 
-        button.dataset.bound = 'true';
-        bindFastTap(button, () => claimMilestone(button.dataset.milestoneId));
+        handledByPointer = true;
+        event.preventDefault();
+        runProgressionButtonAction(button);
     });
+
+    container.addEventListener('click', (event) => {
+        const button = findActionButton(event.target);
+        if (!button || !container.contains(button) || button.disabled) {
+            return;
+        }
+
+        if (handledByPointer) {
+            handledByPointer = false;
+            event.preventDefault();
+            return;
+        }
+
+        runProgressionButtonAction(button);
+    });
+}
+
+function bindProgressionButtons() {
+    // Dynamic progress cards are rebuilt often. Delegated handlers below are bound once,
+    // so claim/buy buttons remain reliable after every render.
 }
 
 function openUpgradesPanel(view = 'upgrades') {
@@ -1523,6 +1567,11 @@ function bindFastTap(button, handler) {
     });
 }
 
+bindProgressionActionArea(officeUpgradeList);
+bindProgressionActionArea(skillsUpgradeList);
+bindProgressionActionArea(milestonesList);
+bindProgressionActionArea(questsList);
+
 bindFastTap(typeButton, () => typeRandomLetter('player'));
 bindFastTap(buyMonkeyButton, buyMonkey);
 resetButton.addEventListener('click', resetGame);
@@ -1556,6 +1605,48 @@ document.addEventListener('keydown', (event) => {
         closeUpgradesPanel();
     }
 });
+
+window.MonkeyBusinessDebug = {
+    getState() {
+        return {
+            bananas,
+            lettersTyped,
+            wordsTyped,
+            monkeysOwned,
+            monkeyCost,
+            monkeyRoster: [...monkeyRoster],
+            monkeyNextTypeAt: [...monkeyNextTypeAt],
+            officeLevel,
+            upgrades: { ...upgrades },
+            claimedMilestones: [...claimedMilestones],
+            recentWords: [...recentWords]
+        };
+    },
+    setState(partialState = {}) {
+        if (Number.isFinite(Number(partialState.bananas))) bananas = Number(partialState.bananas);
+        if (Number.isFinite(Number(partialState.lettersTyped))) lettersTyped = Number(partialState.lettersTyped);
+        if (Number.isFinite(Number(partialState.wordsTyped))) wordsTyped = Number(partialState.wordsTyped);
+        if (Number.isFinite(Number(partialState.monkeysOwned))) monkeysOwned = Math.max(0, Number(partialState.monkeysOwned));
+        if (Number.isFinite(Number(partialState.monkeyCost))) monkeyCost = Math.max(1, Number(partialState.monkeyCost));
+        if (typeof partialState.typedStream === 'string') typedStream = partialState.typedStream.slice(-maxSavedStreamLength);
+        if (Array.isArray(partialState.monkeyRoster)) monkeyRoster = partialState.monkeyRoster.map(normalizeRosterEntry);
+        if (Number.isFinite(Number(partialState.officeLevel))) officeLevel = clamp(Number(partialState.officeLevel), 1, OFFICE_BUILDINGS.length);
+        if (partialState.upgrades && typeof partialState.upgrades === 'object') upgrades = { ...upgrades, ...partialState.upgrades };
+        if (Array.isArray(partialState.claimedMilestones)) claimedMilestones = partialState.claimedMilestones.map(String);
+        ensureMonkeyRosterMatchesCount();
+        ensureProgressionState();
+        forceMonkeyOfficeRender();
+        updateDisplay();
+        saveGame();
+        startMonkeyTypingEngine(true);
+    },
+    claimMilestone,
+    runMonkeyTyping,
+    buyMonkey,
+    typeRandomLetter,
+    updateDisplay,
+    startMonkeyTypingEngine
+};
 
 loadGame();
 forceMonkeyOfficeRender();
