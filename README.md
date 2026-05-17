@@ -181,3 +181,17 @@ Focused code pass after v20.
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=21`
+
+
+## Version 22 Main Screen Layout Lockup
+
+- Reduced the home screen from 6 dock buttons to 5: Hire, Upgrades, TYPE, Monkeys, Quests.
+- Milestones remain available as a tab inside the progression panel.
+- Tightened the top bar, HUD, office header, letter tape, recent words, and bottom dock so the full screen fits better on iPhone.
+- Improved office header text fit and shortened summary copy to avoid cutoffs.
+- Reworked progression tabs to icon-above-label layout so tab labels are less likely to truncate.
+- Preserved all existing mechanics and added save compatibility from v21.
+
+Test with:
+
+`https://zacharyhutz-sudo.github.io/?v=22`

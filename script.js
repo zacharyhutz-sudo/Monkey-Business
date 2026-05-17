@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v21';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v22';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -769,18 +769,18 @@ function renderMonkeyOffice() {
     ensureMonkeyRosterMatchesCount();
 
     if (monkeysOwned === 0) {
-        monkeyOfficeSummary.textContent = 'No monkeys hired yet.';
+        monkeyOfficeSummary.textContent = 'No monkeys yet.';
         monkeyOfficeGrid.innerHTML = `
             <div class="office-empty-state">
                 <div class="empty-circle" aria-hidden="true"></div>
-                <strong>Open for business</strong>
-                <span>Hire a monkey to start typing.</span>
+                <strong>Hire your first monkey</strong>
+                <span>Start the typing floor.</span>
             </div>
         `;
         return;
     }
 
-    monkeyOfficeSummary.textContent = `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in the office`;
+    monkeyOfficeSummary.textContent = `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in office`;
     monkeyOfficeGrid.innerHTML = monkeyRoster
         .map((typeId, index) => {
             const monkeyType = getMonkeyType(typeId);
