@@ -236,3 +236,18 @@ Changed-files-only patch.
 - Added a modal footer helper line.
 - Fixed the “No words yet” clipping on the main screen.
 - Updated cache busting to `?v=25`.
+
+
+## Version 26 Automatic Typing Fix + Office Life Pass
+
+Changed-files-only patch.
+
+- Replaced the interval-based monkey typing engine with a requestAnimationFrame timing engine.
+- Normal monkeys now schedule one letter about every 2 seconds.
+- Super rare monkeys and speed upgrades reduce the delay per letter instead of relying on burst logic.
+- Added a watchdog fallback that nudges typing if mobile Safari stalls the animation frame loop.
+- Hiring a monkey primes that monkey to type shortly after appearing.
+- Added intentional seat positions so monkeys appear in planned office locations instead of flex wrapping.
+- Improved monkey letter bubbles and office depth.
+- Continued tightening the quest modal card sizes.
+- Updated cache busting to `?v=26`.
