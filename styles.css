@@ -4486,3 +4486,142 @@
 .celebration-card {
     position: relative;
 }
+
+/* v36 office pan + sprite/card cleanup */
+.monkey-office-grid {
+    position: absolute !important;
+    inset: 0 8px 0 8px !important;
+    display: block !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    z-index: 12 !important;
+    --office-stage-width: 100%;
+    --office-pan-offset: 0%;
+    --office-pan-duration: 0s;
+}
+
+.monkey-office-pan {
+    position: absolute !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: var(--office-stage-width, 100%) !important;
+    min-width: 100% !important;
+    height: 76% !important;
+    transform: translate3d(0,0,0) !important;
+    will-change: transform;
+    pointer-events: none !important;
+}
+
+.monkey-office-grid.is-scrolling-office .monkey-office-pan {
+    animation: officeCrewPan var(--office-pan-duration, 34s) ease-in-out infinite alternate !important;
+}
+
+@keyframes officeCrewPan {
+    0%, 9% { transform: translate3d(0,0,0); }
+    91%, 100% { transform: translate3d(var(--office-pan-offset, -35%),0,0); }
+}
+
+.monkey-office-pan > .office-monkey {
+    position: absolute !important;
+    left: var(--seat-x, 50%) !important;
+    bottom: var(--seat-y, 5%) !important;
+    width: clamp(58px, 13vw, 76px) !important;
+    min-height: clamp(70px, 15vw, 92px) !important;
+    transform: translateX(-50%) scale(var(--seat-scale, 1)) !important;
+    transform-origin: bottom center !important;
+    z-index: var(--seat-z, 10) !important;
+    display: grid !important;
+    place-items: end center !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: none !important;
+}
+
+.monkey-office-grid.is-scrolling-office .office-monkey:nth-child(n) .office-monkey-art,
+.monkey-office-grid.is-two-row-office .office-monkey:nth-child(n) .office-monkey-art,
+.monkey-office-grid.is-three-row-office .office-monkey:nth-child(n) .office-monkey-art {
+    transform: translateY(-8px) !important;
+}
+
+.monkey-office-grid.is-three-row-office .office-monkey-art {
+    transform: translateY(-6px) !important;
+}
+
+.monkey-office-grid.is-scrolling-office::before,
+.monkey-office-grid.is-scrolling-office::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 34px;
+    z-index: 30;
+    pointer-events: none;
+}
+
+.monkey-office-grid.is-scrolling-office::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(6,21,10,.24), transparent);
+}
+
+.monkey-office-grid.is-scrolling-office::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(6,21,10,.24), transparent);
+}
+
+.monkey-office-grid.is-scrolling-office .office-monkey::after {
+    width: 84% !important;
+    height: 27% !important;
+}
+
+.collection-art {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+    min-height: 98px !important;
+    padding: 4px !important;
+}
+
+.collection-art img {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: 92% !important;
+    max-height: 92% !important;
+    margin: auto !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: none !important;
+    image-rendering: pixelated !important;
+}
+
+.collection-reward-card.is-ready .collection-claim-button:not(:disabled),
+.office-chapter-card.is-ready .office-reward-button:not(:disabled) {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+@media (max-height: 760px) {
+    .monkey-office-pan {
+        height: 78% !important;
+    }
+
+    .monkey-office-pan > .office-monkey {
+        width: clamp(52px, 12vw, 68px) !important;
+        min-height: clamp(64px, 14vw, 84px) !important;
+    }
+
+    .monkey-office-grid.is-three-row-office .office-monkey-art,
+    .monkey-office-grid.is-scrolling-office .office-monkey:nth-child(n) .office-monkey-art {
+        transform: translateY(-5px) !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .monkey-office-grid.is-scrolling-office .monkey-office-pan {
+        animation: none !important;
+        transform: translate3d(0,0,0) !important;
+    }
+}
