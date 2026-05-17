@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v18';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v19';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -249,6 +249,7 @@ const navPanelButtons = document.querySelectorAll('[data-panel-view]');
 const upgradeTabs = document.querySelectorAll('[data-panel-tab]');
 const currentOfficeNameEl = document.getElementById('current-office-name');
 const currentOfficeBonusEl = document.getElementById('current-office-bonus');
+const currentOfficePerksEl = document.getElementById('current-office-perks');
 const recentWordsList = document.getElementById('recent-words-list');
 const dictionaryStatus = document.getElementById('dictionary-status');
 const monkeyOfficeGrid = document.getElementById('monkey-office-grid');
@@ -466,6 +467,24 @@ function getQuestIconSrc(milestone) {
         default:
             return 'icon-quests.png';
     }
+}
+
+function getOfficePerkBadges(office) {
+    const perks = [];
+    const incomePct = Math.round(((office.incomeMultiplier || 1) - 1) * 100);
+    if (incomePct > 0) {
+        perks.push({ icon: 'icon-bananas.png', text: `+${incomePct}% All Production` });
+    }
+    const speedPct = Math.round((office.speedBonus || 0) * 100);
+    if (speedPct > 0) {
+        perks.push({ icon: 'icon-typewriter.png', text: `+${speedPct}% Type Speed` });
+    }
+    if ((office.wordBonus || 0) > 0) {
+        perks.push({ icon: 'icon-book.png', text: `+${office.wordBonus} Word Bonus` });
+    }
+    const rarePct = Math.round((0.10 + (office.rareBonus || 0)) * 100);
+    perks.push({ icon: 'icon-clover.png', text: `${rarePct}% Rare Monkey Odds` });
+    return perks;
 }
 
 function updateDisplay() {
@@ -725,7 +744,8 @@ function renderMonkeyOffice() {
         monkeyOfficeGrid.innerHTML = `
             <div class="office-empty-state">
                 <div class="empty-circle" aria-hidden="true"></div>
-                <p>Hire your first monkey to fill the office.</p>
+                <strong>Hire your first monkey</strong>
+                <span>Fill the office and start building your typing company.</span>
             </div>
         `;
         return;
@@ -917,7 +937,7 @@ function renderQuests() {
         return;
     }
 
-    const activeQuests = MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 5);
+    const activeQuests = MILESTONES.filter((milestone) => !claimedMilestones.includes(milestone.id)).slice(0, 4);
     if (questsBadge) questsBadge.textContent = String(activeQuests.length);
 
     if (activeQuests.length === 0) {
@@ -930,9 +950,9 @@ function renderQuests() {
         const ratio = clamp(progress / milestone.target, 0, 1);
         const isReady = progress >= milestone.target;
         return `
-            <article class="quest-card">
+            <article class="quest-card detailed-quest-card">
                 <div class="quest-art"><img src="${getQuestIconSrc(milestone)}" alt="" /></div>
-                <div class="milestone-copy">
+                <div class="milestone-copy quest-copy">
                     <h3>${milestone.name}</h3>
                     <p>${milestone.description}</p>
                     <div class="milestone-bar" aria-hidden="true"><span style="width: ${Math.round(ratio * 100)}%"></span></div>
@@ -946,7 +966,6 @@ function renderQuests() {
         `;
     }).join('');
 }
-
 function renderUpgradeCard(upgradeId) {
     const upgrade = UPGRADE_DEFS[upgradeId];
     const level = getUpgradeLevel(upgradeId);
@@ -1000,15 +1019,24 @@ function updateProgressionPanel() {
     const nextOffice = getNextOffice();
 
     currentOfficeNameEl.textContent = `${currentOffice.name} — Floor ${currentOffice.floor}`;
-    currentOfficeBonusEl.textContent = `${getOfficeBonusSummary(currentOffice)} • Rare odds ${Math.round(getSuperRareChance() * 100)}%`;
+    currentOfficeBonusEl.textContent = currentOffice.description || 'A small office with big potential.';
+
+    if (currentOfficePerksEl) {
+        currentOfficePerksEl.innerHTML = getOfficePerkBadges(currentOffice)
+            .map((perk) => `<span class="perk-chip"><img src="${perk.icon}" alt="" />${perk.text}</span>`)
+            .join('');
+    }
 
     officeUpgradeList.innerHTML = `
-        <article class="progress-card office-progress-card">
+        <article class="progress-card office-progress-card office-progress-rich">
             <div class="progress-card-copy">
-                <span class="progress-branch">Office</span>
+                <span class="progress-branch">Office Building</span>
                 <h3>${nextOffice ? nextOffice.name : 'All Offices Unlocked'}</h3>
                 <p>${nextOffice ? nextOffice.description : 'You have reached the top of the monkey business ladder.'}</p>
-                <span class="progress-meta">${nextOffice ? getOfficeBonusSummary(nextOffice) : getOfficeBonusSummary(currentOffice)}</span>
+                <div class="upgrade-perks-inline">
+                    ${getOfficePerkBadges(nextOffice || currentOffice).map((perk) => `<span class="perk-chip"><img src="${perk.icon}" alt="" />${perk.text}</span>`).join('')}
+                </div>
+                <span class="progress-meta">${nextOffice ? `Unlock Floor ${nextOffice.floor}` : 'Every office has been unlocked'}</span>
             </div>
             <button class="progress-buy-button" data-office-unlock="true" ${(!nextOffice || bananas < nextOffice.unlockCost) ? 'disabled' : ''}>
                 ${nextOffice ? costButtonLabel(nextOffice.unlockCost) : 'Maxed'}
@@ -1035,7 +1063,7 @@ function updateProgressionPanel() {
                     <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)} • Reward ${formatNumber(milestone.reward)} bananas</small>
                 </div>
                 <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>
-                    ${isClaimed ? 'Claimed' : 'Claim'}
+                    ${isClaimed ? 'Claimed' : isReady ? 'Claim' : 'Active'}
                 </button>
             </article>
         `;
@@ -1046,7 +1074,6 @@ function updateProgressionPanel() {
     syncPanelVisibility();
     bindProgressionButtons();
 }
-
 function canAffordOfficeUnlock() {
     const nextOffice = getNextOffice();
     return Boolean(nextOffice && bananas >= nextOffice.unlockCost);

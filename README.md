@@ -140,3 +140,11 @@ Test with:
 Test with:
 
 `https://zacharyhutz-sudo.github.io/?v=18`
+
+
+## Version 19 Detail Pass
+
+- Added a more detailed, mockup-inspired visual polish pass with richer trim, inner borders, subtle panel detailing, and stronger texture illusions.
+- Refined the office scene, section framing, dock, and top HUD so the UI feels less blocky and closer to the concept art.
+- Upgraded the progression panel with office perk chips and more detailed quest card layout.
+- Added a clover rarity icon and updated cache busting to `?v=19`.
