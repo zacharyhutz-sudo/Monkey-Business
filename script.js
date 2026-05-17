@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v36';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v35', 'monkey-business-save-v34', 'monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v37';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v36', 'monkey-business-save-v35', 'monkey-business-save-v34', 'monkey-business-save-v33', 'monkey-business-save-v32', 'monkey-business-save-v31', 'monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -14,7 +14,7 @@ const officeOfflineCapStepMs = 30 * 60 * 1000;
 const maxOfflineCapMs = 6 * 60 * 60 * 1000;
 const officeScrollStartCount = 7;
 const maxOfficeCrewRows = 3;
-const visibleOfficeColumns = 4.25;
+const visibleOfficeColumns = 3.6;
 
 const fallbackWords = ['ape', 'bad', 'bag', 'ban', 'bar', 'bat', 'bee', 'big', 'bun', 'bus', 'cat', 'dog', 'fun', 'hat', 'jam', 'man', 'map', 'monkey', 'nap', 'pen', 'run', 'sun', 'tag', 'tan', 'tap', 'top', 'van', 'win', 'zoo'];
 const wordList = Array.isArray(window.MONKEY_WORDS) && window.MONKEY_WORDS.length > 0
@@ -267,10 +267,10 @@ const COLLECTION_BONUS_DEFS = [
 ];
 
 const COLLECTION_REWARDS = [
-    { id: 'collected-5', name: 'Starter Crew', description: 'Collect 5 unique monkey types.', target: 5, rewardBananas: 1000, bonus: {} },
-    { id: 'collected-10', name: 'Roster Rhythm', description: 'Collect 10 unique monkey types.', target: 10, rewardBananas: 4000, bonus: { speedBonus: 0.05 } },
-    { id: 'collected-20', name: 'Talent Bench', description: 'Collect 20 unique monkey types.', target: 20, rewardBananas: 15000, bonus: {} },
-    { id: 'collected-30', name: 'Rare Recruit Network', description: 'Collect 30 unique monkey types.', target: 30, rewardBananas: 0, bonus: { rareBonus: 0.03 } },
+    { id: 'collected-5', name: 'Starter Crew', description: 'Hire 5 total monkeys.', target: 5, rewardBananas: 1000, bonus: {} },
+    { id: 'collected-10', name: 'Roster Rhythm', description: 'Hire 10 total monkeys.', target: 10, rewardBananas: 4000, bonus: { speedBonus: 0.05 } },
+    { id: 'collected-20', name: 'Talent Bench', description: 'Hire 20 total monkeys.', target: 20, rewardBananas: 15000, bonus: {} },
+    { id: 'collected-30', name: 'Rare Recruit Network', description: 'Hire 30 total monkeys.', target: 30, rewardBananas: 0, bonus: { rareBonus: 0.03 } },
     { id: 'collected-all', name: 'Complete Company', description: 'Collect every monkey type.', target: MONKEY_TYPES.length, rewardBananas: 0, bonus: { speedBonus: 0.10, incomeBonus: 0.10 } }
 ];
 
@@ -387,6 +387,7 @@ let lifetimeStats = {
     uniqueWords: 0
 };
 let discoveredWords = [];
+let lastOfficeRenderSignature = '';
 const monkeyAnimationTimeouts = new Map();
 let pendingMonkeyTypeTimeouts = [];
 let monkeyTypingEngineId = null;
@@ -659,12 +660,23 @@ function getUniqueMonkeyTypeCount() {
     return getOwnedMonkeyTypeBreakdown().totalOwned;
 }
 
+function getCollectionRewardTotalCount() {
+    ensureMonkeyRosterMatchesCount();
+    return Math.max(monkeysOwned, lifetimeStats.monkeysHired || 0, monkeyRoster.length || 0);
+}
+
+function getCollectionRewardBasis(reward) {
+    return reward && reward.id === 'collected-all'
+        ? getUniqueMonkeyTypeCount()
+        : getCollectionRewardTotalCount();
+}
+
 function getCollectionRewardProgress(reward) {
-    return Math.min(getUniqueMonkeyTypeCount(), reward.target);
+    return Math.min(getCollectionRewardBasis(reward), reward.target);
 }
 
 function canClaimCollectionReward(reward) {
-    return Boolean(reward) && !claimedCollectionRewards.includes(reward.id) && getUniqueMonkeyTypeCount() >= reward.target;
+    return Boolean(reward) && !claimedCollectionRewards.includes(reward.id) && getCollectionRewardBasis(reward) >= reward.target;
 }
 
 function getClaimableCollectionRewardCount() {
@@ -949,8 +961,9 @@ function ensureProgressionState() {
 function syncOfficeVisuals(force = false) {
     const renderedMonkeyCount = monkeyOfficeGrid.querySelectorAll('[data-monkey-slot]').length;
     const hasEmptyState = Boolean(monkeyOfficeGrid.querySelector('.office-empty-state'));
+    const renderSignature = getOfficeRenderSignature();
 
-    if (force || renderedMonkeyCount !== monkeysOwned || (monkeysOwned === 0 && !hasEmptyState) || (monkeysOwned > 0 && hasEmptyState)) {
+    if (force || renderSignature !== lastOfficeRenderSignature || renderedMonkeyCount !== monkeysOwned || (monkeysOwned === 0 && !hasEmptyState) || (monkeysOwned > 0 && hasEmptyState)) {
         renderMonkeyOffice();
         return;
     }
@@ -1688,10 +1701,12 @@ function getOfficeStageLayout(total) {
         };
     }
 
-    const rowAdjustedVisibleColumns = rows >= 3 ? visibleOfficeColumns + 0.75 : visibleOfficeColumns;
-    const stageWidth = clamp(Math.ceil((columns / rowAdjustedVisibleColumns) * 100), 128, 560);
+    // The pan track must be visibly wider than the clipped office viewport.
+    // v36 used a smaller track and long pauses, which made the camera feel stuck.
+    const rowAdjustedVisibleColumns = rows >= 3 ? visibleOfficeColumns - 0.15 : visibleOfficeColumns;
+    const stageWidth = clamp(Math.ceil((columns / rowAdjustedVisibleColumns) * 100), 156, 720);
     const panOffset = -(((stageWidth - 100) / stageWidth) * 100);
-    const duration = clamp(18 + (columns * 3.6), 26, 74);
+    const duration = clamp(12 + (columns * 2.05), 18, 42);
 
     return {
         rows,
@@ -1705,12 +1720,12 @@ function getOfficeStageLayout(total) {
 
 function getMonkeySeat(index, total) {
     const layouts = {
-        1: [{ x: 50, y: 10, scale: 1.1 }],
-        2: [{ x: 38, y: 11, scale: 1.02 }, { x: 62, y: 11, scale: 1.02 }],
-        3: [{ x: 24, y: 12, scale: .92 }, { x: 50, y: 13, scale: 1.04 }, { x: 76, y: 12, scale: .92 }],
-        4: [{ x: 18, y: 12, scale: .88 }, { x: 40, y: 14, scale: .96 }, { x: 60, y: 14, scale: .96 }, { x: 82, y: 12, scale: .88 }],
-        5: [{ x: 24, y: 27, scale: .88 }, { x: 50, y: 29, scale: .96 }, { x: 76, y: 27, scale: .88 }, { x: 37, y: 9, scale: .96 }, { x: 63, y: 9, scale: .96 }],
-        6: [{ x: 22, y: 28, scale: .86 }, { x: 50, y: 30, scale: .94 }, { x: 78, y: 28, scale: .86 }, { x: 26, y: 9, scale: .92 }, { x: 50, y: 10, scale: .98 }, { x: 74, y: 9, scale: .92 }]
+        1: [{ x: 50, y: 12, scale: 1.1 }],
+        2: [{ x: 38, y: 12, scale: 1.02 }, { x: 62, y: 12, scale: 1.02 }],
+        3: [{ x: 24, y: 13, scale: .92 }, { x: 50, y: 14, scale: 1.04 }, { x: 76, y: 13, scale: .92 }],
+        4: [{ x: 18, y: 13, scale: .88 }, { x: 40, y: 15, scale: .96 }, { x: 60, y: 15, scale: .96 }, { x: 82, y: 13, scale: .88 }],
+        5: [{ x: 24, y: 29, scale: .88 }, { x: 50, y: 31, scale: .96 }, { x: 76, y: 29, scale: .88 }, { x: 37, y: 11, scale: .96 }, { x: 63, y: 11, scale: .96 }],
+        6: [{ x: 22, y: 30, scale: .86 }, { x: 50, y: 32, scale: .94 }, { x: 78, y: 30, scale: .86 }, { x: 26, y: 11, scale: .92 }, { x: 50, y: 12, scale: .98 }, { x: 74, y: 11, scale: .92 }]
     };
 
     if (total <= 6) {
@@ -1724,28 +1739,33 @@ function getMonkeySeat(index, total) {
     const x = ((col + 0.5) / layout.columns) * 100;
     const rowProfiles = layout.rows === 3
         ? [
-            { y: 50, scale: .70 },
-            { y: 28, scale: .80 },
-            { y: 5, scale: .90 }
+            { y: 10, scale: .82 },
+            { y: 30, scale: .74 },
+            { y: 50, scale: .66 }
         ]
         : [
-            { y: 33, scale: .82 },
-            { y: 5, scale: .94 }
+            { y: 12, scale: .90 },
+            { y: 38, scale: .76 }
         ];
     const profile = rowProfiles[row] || rowProfiles[rowProfiles.length - 1];
     const stagger = col % 2 === 0 ? 0 : 2;
 
     return {
         x,
-        y: profile.y + (row === layout.rows - 1 ? stagger * 0.35 : stagger),
+        y: profile.y + (row === 0 ? stagger * 0.35 : stagger),
         scale: profile.scale
     };
 }
 
 function getMonkeySeatStyle(index, total) {
     const seat = getMonkeySeat(index, total);
-    const zIndex = Math.max(2, Math.round(110 - seat.y + index * 0.01));
+    const zIndex = Math.max(2, Math.round(120 - seat.y + index * 0.01));
     return `--seat-x:${seat.x}%; --seat-y:${seat.y}%; --seat-scale:${seat.scale}; --seat-z:${zIndex};`;
+}
+
+function getOfficeRenderSignature() {
+    ensureMonkeyRosterMatchesCount();
+    return [officeLevel, monkeysOwned, monkeyRoster.join(',')].join('|');
 }
 
 function typeRandomLetter(source = 'player', monkeyIndex = null) {
@@ -1914,6 +1934,7 @@ function renderMonkeyOffice() {
     monkeyOfficeGrid.style.removeProperty('--office-pan-duration');
 
     if (monkeysOwned === 0) {
+        lastOfficeRenderSignature = getOfficeRenderSignature();
         monkeyOfficeSummary.textContent = 'No monkeys yet.';
         monkeyOfficeGrid.innerHTML = `
             <div class="office-empty-state">
@@ -1934,9 +1955,10 @@ function renderMonkeyOffice() {
     monkeyOfficeGrid.style.setProperty('--office-pan-offset', `${layout.panOffset.toFixed(3)}%`);
     monkeyOfficeGrid.style.setProperty('--office-pan-duration', `${layout.duration}s`);
 
+    lastOfficeRenderSignature = getOfficeRenderSignature();
     monkeyOfficeSummary.textContent = `${formatNumber(monkeysOwned)} monkey${monkeysOwned === 1 ? '' : 's'} in office`;
     monkeyOfficeGrid.innerHTML = `
-        <div class="monkey-office-pan" style="--office-stage-width:${layout.stageWidth}%; --office-pan-offset:${layout.panOffset.toFixed(3)}%; --office-pan-duration:${layout.duration}s;">
+        <div class="monkey-office-pan" data-office-pan-columns="${layout.columns}" style="--office-stage-width:${layout.stageWidth}%; --office-pan-offset:${layout.panOffset.toFixed(3)}%; --office-pan-duration:${layout.duration}s;">
             ${monkeyRoster
                 .map((typeId, index) => {
                     const monkeyType = getMonkeyType(typeId);
@@ -2405,7 +2427,7 @@ function renderMonkeyCollection() {
                 <div class="collection-section-header">
                     <div>
                         <strong>Collection Rewards</strong>
-                        <span>${claimableRewards} ready to claim • based on unique monkey types collected.</span>
+                        <span>${claimableRewards} ready to claim • based on total monkeys hired.</span>
                     </div>
                 </div>
                 <div class="collection-reward-list">
@@ -2781,6 +2803,7 @@ function bindProgressionActionArea(container) {
 
     container.dataset.delegatedBound = 'true';
     let handledByPointer = false;
+    let lastHandledAt = 0;
 
     const findActionButton = (target) => {
         return target && target.closest
@@ -2802,6 +2825,14 @@ function bindProgressionActionArea(container) {
             return false;
         }
 
+        const now = Date.now();
+        if (now - lastHandledAt < 260) {
+            event.preventDefault();
+            event.stopPropagation();
+            return true;
+        }
+
+        lastHandledAt = now;
         event.mbProgressionHandled = true;
         event.preventDefault();
         event.stopPropagation();
@@ -2812,6 +2843,12 @@ function bindProgressionActionArea(container) {
     container.addEventListener('pointerdown', (event) => {
         handledByPointer = handleActionEvent(event, true);
     });
+
+    container.addEventListener('touchend', (event) => {
+        if (!handledByPointer) {
+            handledByPointer = handleActionEvent(event, false);
+        }
+    }, { passive: false });
 
     container.addEventListener('click', (event) => {
         if (handledByPointer) {

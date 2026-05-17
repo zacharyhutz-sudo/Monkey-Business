@@ -4625,3 +4625,196 @@
         transform: translate3d(0,0,0) !important;
     }
 }
+
+/* v37 office pan reliability + mobile polish */
+.monkey-office-grid {
+    inset: 0 6px 4px 6px !important;
+    overflow: hidden !important;
+    contain: layout paint !important;
+    --office-pan-duration: 22s;
+    --office-pan-offset: 0%;
+}
+
+.monkey-office-pan {
+    left: 0 !important;
+    bottom: 3% !important;
+    width: var(--office-stage-width, 100%) !important;
+    min-width: 100% !important;
+    height: 83% !important;
+    transform: translateX(0) !important;
+    transform-origin: left bottom !important;
+    will-change: transform !important;
+    backface-visibility: hidden !important;
+}
+
+.monkey-office-grid.is-scrolling-office .monkey-office-pan {
+    animation: officeCrewPanV37 var(--office-pan-duration, 22s) linear infinite alternate !important;
+}
+
+@keyframes officeCrewPanV37 {
+    0% { transform: translateX(0) !important; }
+    100% { transform: translateX(var(--office-pan-offset, -45%)) !important; }
+}
+
+.monkey-office-pan > .office-monkey {
+    width: clamp(60px, 12.6vw, 74px) !important;
+    min-height: clamp(72px, 15vw, 90px) !important;
+}
+
+.monkey-office-pan > .office-monkey .office-monkey-art,
+.monkey-office-grid.is-scrolling-office .office-monkey:nth-child(n) .office-monkey-art,
+.monkey-office-grid.is-two-row-office .office-monkey:nth-child(n) .office-monkey-art,
+.monkey-office-grid.is-three-row-office .office-monkey:nth-child(n) .office-monkey-art {
+    width: clamp(60px, 12.6vw, 74px) !important;
+    height: clamp(72px, 15vw, 90px) !important;
+    transform: none !important;
+}
+
+.monkey-office-grid.is-scrolling-office::before,
+.monkey-office-grid.is-scrolling-office::after {
+    width: 42px !important;
+    z-index: 35 !important;
+}
+
+.monkey-office-grid.is-scrolling-office::before {
+    background: linear-gradient(90deg, rgba(6, 21, 10, .44), rgba(6, 21, 10, 0)) !important;
+}
+
+.monkey-office-grid.is-scrolling-office::after {
+    background: linear-gradient(270deg, rgba(6, 21, 10, .44), rgba(6, 21, 10, 0)) !important;
+}
+
+/* Keep the hire button readable even when the player is saving up. */
+.dock-hire,
+.dock-hire:disabled {
+    opacity: 1 !important;
+    filter: none !important;
+    background: linear-gradient(180deg, #315f25, #16421f 55%, #0a2514) !important;
+    color: #fff3bf !important;
+    text-shadow: 0 2px 0 rgba(0,0,0,.55) !important;
+}
+
+.dock-hire.can-afford {
+    background: linear-gradient(180deg, #a9ee58, #65a82c 52%, #356a1e) !important;
+    color: #14240a !important;
+    text-shadow: 0 1px 0 rgba(255,255,255,.24) !important;
+}
+
+.dock-hire strong {
+    color: inherit !important;
+    opacity: 1 !important;
+    letter-spacing: .04em !important;
+}
+
+.dock-hire small {
+    color: #ffe16b !important;
+    opacity: 1 !important;
+    font-size: clamp(.58rem, 2.25vw, .74rem) !important;
+    font-weight: 1000 !important;
+    text-shadow: 0 2px 0 rgba(0,0,0,.5) !important;
+}
+
+.dock-hire.can-afford small {
+    color: #fff9c8 !important;
+}
+
+/* Badges should sit on the corner of the nav tile, not over the art. */
+.dock-badge {
+    top: -8px !important;
+    right: -6px !important;
+    z-index: 10 !important;
+    min-width: 26px !important;
+    height: 26px !important;
+    padding: 0 6px !important;
+    border-width: 3px !important;
+    font-size: .82rem !important;
+    box-shadow: 0 3px 0 rgba(0,0,0,.34), 0 0 10px rgba(255,78,28,.28) !important;
+}
+
+@keyframes dockBadgePulse {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(0, 0) scale(1.14); }
+}
+
+/* Keep word reward tickets from blocking the active letter lane. */
+.output-area {
+    align-content: flex-end !important;
+    align-items: center !important;
+    gap: 3px !important;
+    overflow-y: hidden !important;
+}
+
+.word-found {
+    min-width: 76px !important;
+    min-height: 27px !important;
+    height: 27px !important;
+    padding: 0 6px !important;
+    font-size: .76rem !important;
+    line-height: .95 !important;
+    transform: translateY(-1px) !important;
+}
+
+.word-found em {
+    font-size: .48rem !important;
+    padding: 1px 3px !important;
+}
+
+.typed-char {
+    width: 1.12em !important;
+    height: 1.12em !important;
+    font-size: .84rem !important;
+}
+
+/* Make horizontally clipped recent words feel intentional. */
+.mb-words-card {
+    position: relative !important;
+}
+
+.mb-words-card::before {
+    content: "";
+    position: absolute;
+    top: 32px;
+    right: 0;
+    bottom: 8px;
+    width: 34px;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(270deg, #06200f, rgba(6,32,15,0)) !important;
+}
+
+.recent-words-list {
+    padding-right: 20px !important;
+}
+
+/* Claim buttons stay easy to tap and visibly ready. */
+.collection-reward-card.is-ready .collection-claim-button:not(:disabled),
+.office-chapter-card.is-ready .office-reward-button:not(:disabled) {
+    min-height: 64px !important;
+    background: linear-gradient(180deg, #ffe16b, #e89512) !important;
+    color: #321a00 !important;
+    text-shadow: 0 1px 0 rgba(255,255,255,.26) !important;
+    border-color: #5c300e !important;
+    opacity: 1 !important;
+    filter: none !important;
+}
+
+@media (max-height: 760px) {
+    .monkey-office-pan {
+        height: 86% !important;
+        bottom: 1% !important;
+    }
+
+    .monkey-office-pan > .office-monkey,
+    .monkey-office-pan > .office-monkey .office-monkey-art,
+    .monkey-office-grid.is-scrolling-office .office-monkey:nth-child(n) .office-monkey-art {
+        width: clamp(52px, 11.8vw, 66px) !important;
+        height: clamp(64px, 13.8vw, 82px) !important;
+        min-height: clamp(64px, 13.8vw, 82px) !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .monkey-office-grid.is-scrolling-office .monkey-office-pan {
+        animation: officeCrewPanV37 56s linear infinite alternate !important;
+    }
+}
