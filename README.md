@@ -208,3 +208,17 @@ Changed-files-only patch.
 - After hiring, monkeys now immediately animate and begin a typing cycle instead of waiting for the next interval.
 - Added a typing guard so the monkey office redraws if the roster and rendered monkey count ever get out of sync.
 - Updated cache busting to `?v=23`.
+
+
+## Version 24 Visual Cleanup + Typing Engine Fix
+
+Changed-files-only patch.
+
+- Rebuilt the monkey typing loop into a restartable typing engine.
+- Hiring a monkey now immediately types a letter, then restarts the monkey typing engine.
+- Added page visibility restart logic so monkeys resume typing after Safari/tab interruptions.
+- Reduced the noisy v23 texture/detail treatment.
+- Regenerated cleaner pixel UI frames, textures, and icons.
+- Fixed office title clipping by reducing vine dominance and raising the title layer.
+- Reduced the empty-office overlay so the office remains the hero.
+- Updated cache busting to `?v=24`.

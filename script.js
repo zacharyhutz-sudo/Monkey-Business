@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v23';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v24';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -219,6 +219,7 @@ let upgrades = {
 let claimedMilestones = [];
 const monkeyAnimationTimeouts = new Map();
 let pendingMonkeyTypeTimeouts = [];
+let monkeyTypingEngineId = null;
 let activePanelView = 'upgrades';
 
 const bananasEl = document.getElementById('bananas');
@@ -458,6 +459,7 @@ function forceMonkeyOfficeRender() {
 
     if (monkeysOwned > 0 && monkeyOfficeGrid.querySelectorAll('[data-monkey-slot]').length === 0) {
         requestAnimationFrame(() => renderMonkeyOffice());
+        window.setTimeout(renderMonkeyOffice, 80);
     }
 }
 
@@ -726,6 +728,7 @@ function buyMonkey() {
     const hiredTypeId = getRandomMonkeyTypeId();
     monkeyRoster.push(hiredTypeId);
     const hiredMonkeyType = getMonkeyType(hiredTypeId);
+    const newMonkeyIndex = monkeysOwned - 1;
 
     monkeyCost = Math.ceil(monkeyCost * 1.55);
 
@@ -736,8 +739,15 @@ function buyMonkey() {
 
     requestAnimationFrame(() => {
         forceMonkeyOfficeRender();
-        animateMonkey(monkeysOwned - 1, hiredMonkeyType.rarity === 'super-rare' ? '★' : '!');
-        runMonkeyTyping();
+        animateMonkey(newMonkeyIndex, hiredMonkeyType.rarity === 'super-rare' ? '★' : '!');
+
+        window.setTimeout(() => {
+            if (monkeysOwned > 0) {
+                typeRandomLetter('monkey', newMonkeyIndex);
+            }
+        }, 140);
+
+        startMonkeyTypingEngine(true);
     });
 }
 
@@ -746,8 +756,30 @@ function clearPendingMonkeyTyping() {
     pendingMonkeyTypeTimeouts = [];
 }
 
+function stopMonkeyTypingEngine() {
+    if (monkeyTypingEngineId) {
+        clearInterval(monkeyTypingEngineId);
+        monkeyTypingEngineId = null;
+    }
+
+    clearPendingMonkeyTyping();
+}
+
+function startMonkeyTypingEngine(runSoon = false) {
+    if (monkeyTypingEngineId) {
+        clearInterval(monkeyTypingEngineId);
+    }
+
+    monkeyTypingEngineId = startMonkeyTypingEngine(true);
+
+    if (runSoon && monkeysOwned > 0) {
+        window.setTimeout(runMonkeyTyping, 350);
+    }
+}
+
 function runMonkeyTyping() {
     if (monkeysOwned <= 0) {
+        clearPendingMonkeyTyping();
         return;
     }
 
@@ -773,9 +805,11 @@ function runMonkeyTyping() {
         lettersThisCycle = clamp(lettersThisCycle, 1, 20);
 
         for (let burst = 0; burst < lettersThisCycle; burst += 1) {
-            const delay = Math.floor((monkeyTypingIntervalMs / lettersThisCycle) * burst + Math.random() * 80);
+            const delay = Math.floor((monkeyTypingIntervalMs / lettersThisCycle) * burst + Math.random() * 60);
             const timeoutId = setTimeout(() => {
-                typeRandomLetter('monkey', index);
+                if (monkeysOwned > 0) {
+                    typeRandomLetter('monkey', index);
+                }
             }, delay);
 
             pendingMonkeyTypeTimeouts.push(timeoutId);
@@ -1253,7 +1287,7 @@ function resetGame() {
 
     monkeyAnimationTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
     monkeyAnimationTimeouts.clear();
-    clearPendingMonkeyTyping();
+    stopMonkeyTypingEngine();
 
     [SAVE_KEY, ...LEGACY_SAVE_KEYS].forEach((key) => localStorage.removeItem(key));
     outputArea.innerHTML = '<span class="placeholder">Tap TYPE to begin...</span>';
@@ -1261,6 +1295,7 @@ function resetGame() {
         floatingRewardsLayer.innerHTML = '';
     }
     updateDisplay();
+    startMonkeyTypingEngine(false);
 }
 
 function bindFastTap(button, handler) {
@@ -1307,6 +1342,14 @@ upgradePanel.addEventListener('click', (event) => {
     }
 });
 
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        forceMonkeyOfficeRender();
+        startMonkeyTypingEngine(true);
+    }
+});
+
 document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && !upgradePanel.classList.contains('is-hidden')) {
         closeUpgradesPanel();
@@ -1316,4 +1359,4 @@ document.addEventListener('keydown', (event) => {
 loadGame();
 forceMonkeyOfficeRender();
 updateDisplay();
-setInterval(runMonkeyTyping, monkeyTypingIntervalMs);
+startMonkeyTypingEngine(true);

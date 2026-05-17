@@ -1839,3 +1839,249 @@
     background:
         linear-gradient(180deg, rgba(2,12,6,0), rgba(2,12,6,.62) 15%, rgba(2,12,6,.98) 35%) !important;
 }
+
+
+/* v24 visual cleanup + main screen polish */
+
+/* The v23 art pass got too noisy; v24 intentionally quiets texture/pattern density. */
+.mb-app {
+    background:
+        radial-gradient(circle at 50% -10%, rgba(145, 214, 94, .40), transparent 30%),
+        radial-gradient(circle at 12% 22%, rgba(238, 174, 49, .08), transparent 16%),
+        linear-gradient(180deg, #185b30 0%, #0b2b18 41%, #031008 100%) !important;
+}
+
+.mb-app::before,
+.mb-app::after {
+    opacity: .45 !important;
+}
+
+.mb-topbar {
+    padding-top: calc(env(safe-area-inset-top) + 7px) !important;
+}
+
+/* Better title balance */
+.mb-game-title {
+    font-size: clamp(1.55rem, 6.75vw, 2.08rem) !important;
+    text-shadow: 0 2px 0 #8d4d08, 0 4px 0 rgba(0,0,0,.24) !important;
+}
+
+.mb-status {
+    color: #eadcab !important;
+    text-shadow: 0 2px 0 rgba(0,0,0,.24);
+}
+
+/* HUD: cleaner, less busy */
+.mb-wallet {
+    filter: drop-shadow(0 5px 0 rgba(0,0,0,.24)) !important;
+}
+
+.mb-wallet::before {
+    background: linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.18)) !important;
+}
+
+.wallet-icon-wrap {
+    background: rgba(255,255,255,.03) !important;
+}
+
+.resource-img {
+    transform: scale(1) !important;
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,.30)) !important;
+}
+
+/* Office header: stop title clipping and reduce vine dominance */
+.mb-office-header {
+    padding-left: 15px !important;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.045), transparent 45%),
+        url("ui-wood-texture.png") center / 160px 160px repeat !important;
+}
+
+.mb-office-title-block,
+.mb-office-count-wrap {
+    position: relative !important;
+    z-index: 10 !important;
+}
+
+.mb-office-header h1 {
+    padding-left: 2px !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    max-width: 100% !important;
+}
+
+.vine-corner {
+    width: 45px !important;
+    height: 45px !important;
+    z-index: 3 !important;
+    opacity: .55 !important;
+}
+
+.vine-top-left {
+    top: 0 !important;
+    left: 0 !important;
+}
+
+.vine-top-right {
+    top: 0 !important;
+    right: 0 !important;
+}
+
+/* Keep info pill readable, not overpowering. */
+.mb-office-count {
+    font-size: clamp(.58rem, 2.15vw, .7rem) !important;
+}
+
+.office-info-button {
+    opacity: .95;
+}
+
+/* Office scene is the hero. */
+.office-empty-state {
+    opacity: .82 !important;
+    transform: translateY(12px) !important;
+    width: min(50%, 205px) !important;
+    box-shadow: 0 5px 0 rgba(0,0,0,.16), 0 0 14px rgba(255,235,174,.10) !important;
+}
+
+.empty-circle {
+    width: 34px !important;
+    height: 34px !important;
+}
+
+.office-empty-state strong {
+    font-size: clamp(.86rem, 3.65vw, 1.08rem) !important;
+}
+
+.office-empty-state span {
+    font-size: clamp(.56rem, 2.15vw, .72rem) !important;
+}
+
+/* Monkeys must always be visible and sit above scene overlays. */
+.monkey-office-grid {
+    z-index: 12 !important;
+}
+
+.office-monkey {
+    z-index: 15 !important;
+    display: grid !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.monkey-sprite {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Letter tape: less texture, better focus. */
+.mb-tape-card,
+.mb-words-card {
+    filter: drop-shadow(0 5px 0 rgba(0,0,0,.23)) !important;
+}
+
+.output-area {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.16), transparent 35%),
+        repeating-linear-gradient(180deg, #fff6da 0 28px, #dac38d 28px 30px) !important;
+}
+
+.word-found {
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,.16));
+}
+
+.mini-banana-icon {
+    background-image: url("icon-bananas.png") !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-color: transparent !important;
+}
+
+/* Recent words: avoid the dotted/striped feel. */
+.recent-words-list .empty-state {
+    color: rgba(255, 241, 191, .70) !important;
+}
+
+/* Dock: cleaner premium buttons */
+.dock-tile,
+.dock-type {
+    filter: drop-shadow(0 5px 0 rgba(0,0,0,.24)) !important;
+}
+
+.dock-tile::before,
+.dock-type::before {
+    opacity: .45 !important;
+}
+
+.dock-image,
+.dock-image-large {
+    transform: translateY(-1px) scale(1) !important;
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,.32)) !important;
+}
+
+.dock-type {
+    filter: drop-shadow(0 6px 0 rgba(95,54,3,.58)) drop-shadow(0 0 10px rgba(255,188,23,.10)) !important;
+}
+
+/* Modal cleanup: quieter backgrounds and better hierarchy. */
+.upgrade-panel {
+    background: rgba(0,0,0,.58) !important;
+}
+
+.upgrade-sheet {
+    background: #deb765 !important;
+}
+
+.upgrade-sheet-header {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.045), transparent 48%),
+        url("ui-wood-texture.png") center / 160px 160px repeat !important;
+}
+
+.upgrade-tab,
+.progress-card,
+.milestone-card,
+.quest-card,
+.upgrade-current-office {
+    filter: drop-shadow(0 4px 0 rgba(0,0,0,.12));
+}
+
+.upgrade-tab img,
+.quest-art img,
+.perk-chip img {
+    filter: drop-shadow(0 2px 0 rgba(0,0,0,.25)) !important;
+}
+
+/* Quest cards were too visually loud; tighten and lighten. */
+.quest-reward-label {
+    color: #fff1bf !important;
+}
+
+.quest-reward .progress-buy-button,
+.milestone-claim-button {
+    color: #fff4c8 !important;
+}
+
+/* Small device safety */
+@media (max-width: 390px), (max-height: 760px) {
+    .mb-office-header {
+        padding-left: 13px !important;
+    }
+
+    .vine-corner {
+        width: 38px !important;
+        height: 38px !important;
+        opacity: .45 !important;
+    }
+
+    .office-empty-state {
+        transform: translateY(8px) !important;
+        width: min(48%, 190px) !important;
+    }
+
+    .empty-circle {
+        width: 30px !important;
+        height: 30px !important;
+    }
+}
