@@ -2740,3 +2740,192 @@
         height: 28px !important;
     }
 }
+
+
+/* v27 recent words + office life polish */
+
+/* Recent words now uses a dedicated renderer and needs stable chip layout. */
+.recent-words-list {
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scrollbar-width: none !important;
+    padding-bottom: 0 !important;
+}
+
+.recent-words-list::-webkit-scrollbar {
+    display: none !important;
+}
+
+.recent-word {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    flex: 0 0 auto !important;
+}
+
+.recent-word-text {
+    display: inline-block !important;
+    max-width: 58px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.recent-words-list .empty-state {
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+    display: inline-flex !important;
+    height: 100% !important;
+    align-items: center !important;
+    line-height: 1 !important;
+}
+
+/* Fix the office thumbnail inside the progression panel. */
+.current-office-thumb {
+    position: relative !important;
+    overflow: hidden !important;
+    background: #6b3518 url("office-bg.png") center / cover no-repeat !important;
+}
+
+.current-office-thumb img {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    image-rendering: auto !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Give each monkey a small desk base so they feel seated, not floating on the floor. */
+.office-monkey {
+    isolation: isolate !important;
+}
+
+.office-monkey::after {
+    content: "" !important;
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 0 !important;
+    width: 70% !important;
+    height: 22% !important;
+    transform: translateX(-50%) !important;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.06), transparent 35%),
+        linear-gradient(180deg, #9b5d2a 0%, #6a3918 72%, #3b1c0a 100%) !important;
+    border: 3px solid #3a1a09 !important;
+    box-shadow: 0 4px 0 rgba(0,0,0,.18), inset 0 2px 0 rgba(255,205,126,.18) !important;
+    z-index: 1 !important;
+}
+
+.office-monkey-art {
+    transform: translateY(-4px) !important;
+    z-index: 2 !important;
+}
+
+.office-monkey:nth-child(n+7) .office-monkey-art {
+    transform: translateY(-2px) !important;
+}
+
+.office-monkey.is-super-rare::after {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.12), transparent 35%),
+        linear-gradient(180deg, #d98e20 0%, #8b5206 72%, #3b1c0a 100%) !important;
+    box-shadow: 0 4px 0 rgba(0,0,0,.18), 0 0 12px rgba(255,205,54,.22), inset 0 2px 0 rgba(255,239,160,.25) !important;
+}
+
+/* Seat-positioned monkeys should look naturally layered across the room. */
+.office-monkey::before {
+    bottom: -2px !important;
+    left: 8% !important;
+    right: 8% !important;
+    height: 11px !important;
+}
+
+.letter-bubble {
+    transform: translateY(-2px) !important;
+}
+
+/* Keep the office header calm and aligned. */
+.mb-office-header {
+    background:
+        linear-gradient(180deg, rgba(255,255,255,.04), transparent 42%),
+        url("ui-wood-texture.png") center / 240px 240px repeat !important;
+}
+
+.mb-office-header h1 {
+    text-shadow: 0 3px 0 rgba(0,0,0,.35) !important;
+}
+
+.mb-office-count {
+    white-space: nowrap !important;
+}
+
+/* Letter tape: lower word-chip dominance a touch. */
+.word-found {
+    min-width: 70px !important;
+    min-height: 26px !important;
+    font-size: .74rem !important;
+}
+
+.output-area {
+    gap: 3px !important;
+}
+
+/* Quest modal thumbnail/card cleanup. */
+.upgrade-current-office {
+    align-items: center !important;
+}
+
+.current-office-meta {
+    min-width: 0 !important;
+}
+
+.current-office-meta strong {
+    white-space: normal !important;
+}
+
+#panel-quests .progress-list {
+    padding-bottom: 4px !important;
+}
+
+.quest-card.compact-quest-card {
+    background: rgba(255, 241, 191, .55) !important;
+}
+
+.quest-main h3 {
+    letter-spacing: -.02em !important;
+}
+
+.quest-main .milestone-bar {
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.15) !important;
+}
+
+/* Small screen protection */
+@media (max-width: 390px), (max-height: 760px) {
+    .recent-word-text {
+        max-width: 48px !important;
+    }
+
+    .office-monkey::after {
+        height: 20% !important;
+        border-width: 2px !important;
+    }
+
+    .office-monkey-art {
+        transform: translateY(-3px) !important;
+    }
+
+    .mb-office-count {
+        white-space: normal !important;
+    }
+
+    .current-office-thumb img {
+        image-rendering: auto !important;
+    }
+}

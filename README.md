@@ -251,3 +251,19 @@ Changed-files-only patch.
 - Improved monkey letter bubbles and office depth.
 - Continued tightening the quest modal card sizes.
 - Updated cache busting to `?v=26`.
+
+
+## Version 27 Recent Words + Office Life Pass
+
+Changed-files-only patch.
+
+- Fixed Recent Words rendering with a dedicated DOM renderer.
+- Recent Words now updates immediately when monkey-typed or player-typed words are found.
+- Recent Words chips are horizontally scrollable and less likely to clip.
+- Fixed the blank office thumbnail in the progression/quests modal.
+- Added image fallback handling for the office thumbnail.
+- Reintroduced actual seat styles into monkey rendering.
+- Adjusted monkey seat positions so monkeys appear more intentionally placed around the office.
+- Added small desk bases under monkeys so they feel seated at workstations.
+- Kept the v26 automatic typing engine intact.
+- Updated cache busting to `?v=27`.

@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v26';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v27';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -253,6 +253,7 @@ const upgradeTabs = document.querySelectorAll('[data-panel-tab]');
 const currentOfficeNameEl = document.getElementById('current-office-name');
 const currentOfficeBonusEl = document.getElementById('current-office-bonus');
 const currentOfficePerksEl = document.getElementById('current-office-perks');
+const currentOfficeThumbEl = document.querySelector('.current-office-thumb');
 const recentWordsList = document.getElementById('recent-words-list');
 const dictionaryStatus = document.getElementById('dictionary-status');
 const monkeyOfficeGrid = document.getElementById('monkey-office-grid');
@@ -529,6 +530,58 @@ function getOfficePerkBadges(office) {
     return perks;
 }
 
+function normalizeRecentWords() {
+    if (!Array.isArray(recentWords)) {
+        recentWords = [];
+    }
+
+    recentWords = recentWords
+        .filter((entry) => entry && typeof entry.word === 'string')
+        .map((entry) => ({
+            word: entry.word.toLowerCase(),
+            points: Math.max(1, Number(entry.points) || calculateWordPoints(entry.word))
+        }))
+        .slice(0, recentWordLimit);
+}
+
+function renderRecentWords() {
+    if (!recentWordsList) {
+        return;
+    }
+
+    normalizeRecentWords();
+
+    recentWordsList.replaceChildren();
+
+    if (recentWords.length === 0) {
+        const empty = document.createElement('span');
+        empty.className = 'empty-state';
+        empty.textContent = 'No words yet.';
+        recentWordsList.appendChild(empty);
+        return;
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    recentWords.slice(0, recentWordLimit).forEach((entry) => {
+        const chip = document.createElement('span');
+        chip.className = 'recent-word';
+
+        const word = document.createElement('span');
+        word.className = 'recent-word-text';
+        word.textContent = getDisplayWord(entry.word);
+
+        const points = document.createElement('strong');
+        points.textContent = `+${entry.points}`;
+
+        chip.appendChild(word);
+        chip.appendChild(points);
+        fragment.appendChild(chip);
+    });
+
+    recentWordsList.appendChild(fragment);
+}
+
 function updateDisplay() {
     const currentOffice = getCurrentOffice();
 
@@ -552,11 +605,7 @@ function updateDisplay() {
     buyMonkeyButton.disabled = bananas < monkeyCost;
     buyMonkeyButton.classList.toggle('can-afford', bananas >= monkeyCost);
 
-    if (recentWords.length === 0) {
-        recentWordsList.innerHTML = '<span class="empty-state">No words yet.</span>';
-    } else {
-        recentWordsList.innerHTML = recentWords.map((entry) => `<span class="recent-word">${getDisplayWord(entry.word)} <strong>+${entry.points}</strong></span>`).join('');
-    }
+    renderRecentWords();
 
     syncOfficeVisuals();
     updateProgressionPanel();
@@ -647,15 +696,19 @@ function spawnMonkeyHireMessage(monkeyType) {
 
 function awardWords(words) {
     words.forEach((word) => {
-        const points = calculateWordPoints(word);
+        const normalizedWord = String(word).toLowerCase();
+        const points = calculateWordPoints(normalizedWord);
         bananas += points;
         wordsTyped += 1;
-        recentWords.unshift({ word, points });
-        appendWordReward(word, points);
-        spawnFloatingReward(points, word);
+
+        recentWords = recentWords.filter((entry) => entry.word !== normalizedWord);
+        recentWords.unshift({ word: normalizedWord, points });
+        appendWordReward(normalizedWord, points);
+        spawnFloatingReward(points, normalizedWord);
     });
 
     recentWords = recentWords.slice(0, recentWordLimit);
+    renderRecentWords();
 }
 
 function animateMonkey(monkeyIndex, letter) {
@@ -733,27 +786,27 @@ function primeMonkeyForTyping(monkeyIndex, delayMs = 450) {
 
 function getMonkeySeat(index, total) {
     const layouts = {
-        1: [{ x: 50, y: 3, scale: 1.08 }],
-        2: [{ x: 39, y: 3, scale: 1.04 }, { x: 61, y: 3, scale: 1.04 }],
-        3: [{ x: 50, y: 3, scale: 1.06 }, { x: 31, y: 16, scale: .98 }, { x: 69, y: 16, scale: .98 }],
-        4: [{ x: 34, y: 3, scale: 1 }, { x: 66, y: 3, scale: 1 }, { x: 25, y: 20, scale: .94 }, { x: 75, y: 20, scale: .94 }],
-        5: [{ x: 50, y: 3, scale: 1.02 }, { x: 30, y: 13, scale: .96 }, { x: 70, y: 13, scale: .96 }, { x: 20, y: 30, scale: .9 }, { x: 80, y: 30, scale: .9 }],
-        6: [{ x: 32, y: 3, scale: .97 }, { x: 50, y: 3, scale: 1 }, { x: 68, y: 3, scale: .97 }, { x: 22, y: 23, scale: .88 }, { x: 50, y: 25, scale: .9 }, { x: 78, y: 23, scale: .88 }]
+        1: [{ x: 50, y: 7, scale: 1.08 }],
+        2: [{ x: 38, y: 9, scale: 1.02 }, { x: 62, y: 9, scale: 1.02 }],
+        3: [{ x: 50, y: 6, scale: 1.06 }, { x: 31, y: 22, scale: .95 }, { x: 69, y: 22, scale: .95 }],
+        4: [{ x: 28, y: 26, scale: .93 }, { x: 72, y: 26, scale: .93 }, { x: 39, y: 8, scale: 1 }, { x: 61, y: 8, scale: 1 }],
+        5: [{ x: 50, y: 7, scale: 1.02 }, { x: 30, y: 24, scale: .92 }, { x: 70, y: 24, scale: .92 }, { x: 24, y: 42, scale: .82 }, { x: 76, y: 42, scale: .82 }],
+        6: [{ x: 31, y: 28, scale: .88 }, { x: 50, y: 28, scale: .9 }, { x: 69, y: 28, scale: .88 }, { x: 26, y: 8, scale: .96 }, { x: 50, y: 7, scale: 1 }, { x: 74, y: 8, scale: .96 }]
     };
 
     const defaultSeats = [
-        { x: 24, y: 3, scale: .88 },
-        { x: 42, y: 3, scale: .92 },
-        { x: 60, y: 3, scale: .92 },
-        { x: 78, y: 3, scale: .88 },
-        { x: 18, y: 21, scale: .82 },
-        { x: 36, y: 23, scale: .86 },
-        { x: 54, y: 23, scale: .86 },
-        { x: 72, y: 21, scale: .82 },
-        { x: 28, y: 39, scale: .76 },
-        { x: 50, y: 41, scale: .78 },
-        { x: 72, y: 39, scale: .76 },
-        { x: 50, y: 56, scale: .68 }
+        { x: 24, y: 31, scale: .82 },
+        { x: 42, y: 30, scale: .86 },
+        { x: 60, y: 30, scale: .86 },
+        { x: 78, y: 31, scale: .82 },
+        { x: 18, y: 14, scale: .88 },
+        { x: 36, y: 12, scale: .92 },
+        { x: 54, y: 12, scale: .92 },
+        { x: 72, y: 14, scale: .88 },
+        { x: 28, y: 48, scale: .74 },
+        { x: 50, y: 49, scale: .76 },
+        { x: 72, y: 48, scale: .74 },
+        { x: 50, y: 63, scale: .66 }
     ];
 
     const seats = layouts[Math.min(total, 6)] || defaultSeats;
@@ -935,7 +988,7 @@ function renderMonkeyOffice() {
                 : '';
 
             return `
-                <div class="office-monkey${rarityClass}" data-monkey-slot="${index}" title="${monkeyType.name} — ${rarityLabel}${monkeyType.rarity === 'super-rare' ? ' • 5x speed' : ''}" aria-label="${monkeyType.name}, ${rarityLabel}${monkeyType.rarity === 'super-rare' ? ', five times speed' : ''}">
+                <div class="office-monkey${rarityClass}" data-monkey-slot="${index}" style="${getMonkeySeatStyle(index, monkeysOwned)}" title="${monkeyType.name} — ${rarityLabel}${monkeyType.rarity === 'super-rare' ? ' • 5x speed' : ''}" aria-label="${monkeyType.name}, ${rarityLabel}${monkeyType.rarity === 'super-rare' ? ', five times speed' : ''}">
                     <span class="letter-bubble" aria-hidden="true"></span>
                     ${rarityBadge}
                     <div class="office-monkey-art">
@@ -1205,6 +1258,11 @@ function updateProgressionPanel() {
     currentOfficeNameEl.textContent = `${currentOffice.name} — Floor ${currentOffice.floor}`;
     currentOfficeBonusEl.textContent = currentOffice.description || 'A small office with big potential.';
 
+    if (currentOfficeThumbEl && !currentOfficeThumbEl.querySelector('img')) {
+        currentOfficeThumbEl.innerHTML = '<img src="office-bg.png" alt="">';
+    }
+
+
     if (currentOfficePerksEl) {
         currentOfficePerksEl.innerHTML = getOfficePerkBadges(currentOffice)
             .map((perk) => `<span class="perk-chip"><img src="${perk.icon}" alt="" />${perk.text}</span>`)
@@ -1350,6 +1408,7 @@ function loadGame() {
         monkeyCost = Number(saveData.monkeyCost) || 50;
         typedStream = typeof saveData.typedStream === 'string' ? saveData.typedStream.slice(-maxSavedStreamLength) : '';
         recentWords = Array.isArray(saveData.recentWords) ? saveData.recentWords.slice(0, recentWordLimit) : [];
+        normalizeRecentWords();
         monkeyRoster = Array.isArray(saveData.monkeyRoster) ? saveData.monkeyRoster.map(normalizeRosterEntry) : [];
         officeLevel = Number(saveData.officeLevel) || 1;
         upgrades = { ...upgrades, ...(saveData.upgrades || {}) };
