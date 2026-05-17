@@ -315,3 +315,35 @@ Changed-files-only patch.
 - Added progress metrics for upgrades, claimed quests, and banana balance.
 - Existing saves migrate from v29.
 - Invalid old milestone claim IDs are filtered safely.
+
+
+## Version 31 Progression Expansion
+
+Changed-files-only patch.
+
+### Progression depth
+- Added lifetime stats:
+  - lifetime bananas earned
+  - lifetime letters typed
+  - lifetime words found
+  - total monkeys hired
+  - total upgrades purchased
+  - quests claimed
+  - offices unlocked
+  - best word and longest word tracking
+  - super rare monkeys hired
+- Expanded the quest list into tiered progression.
+- Quests now unlock gradually as the player grows.
+- Added many more short-term quests and long-term milestones.
+- The Quests panel now shows the current quest tier and how many goals are still locked for later.
+
+### Office progression
+- Office unlocks now require both bananas and progress goals.
+- Floor 2 now requires 3 monkeys and 3 claimed quests.
+- Later offices require monkey count, upgrades, lifetime words, lifetime bananas, or super rare progress.
+- Office cards now show requirement chips with progress.
+
+### Save compatibility
+- Existing v30 saves migrate into v31.
+- Lifetime stats are backfilled from existing save data where possible.
+- Existing claimed goals are filtered safely against the expanded goal list.

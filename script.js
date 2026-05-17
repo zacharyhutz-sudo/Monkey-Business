@@ -1,5 +1,5 @@
-const SAVE_KEY = 'monkey-business-save-v30';
-const LEGACY_SAVE_KEYS = ['monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
+const SAVE_KEY = 'monkey-business-save-v31';
+const LEGACY_SAVE_KEYS = ['monkey-business-save-v30', 'monkey-business-save-v29', 'monkey-business-save-v28', 'monkey-business-save-v27', 'monkey-business-save-v26', 'monkey-business-save-v25', 'monkey-business-save-v24', 'monkey-business-save-v23', 'monkey-business-save-v22', 'monkey-business-save-v21', 'monkey-business-save-v20', 'monkey-business-save-v19', 'monkey-business-save-v18', 'monkey-business-save-v17', 'monkey-business-save-v15', 'monkey-business-save-v14', 'monkey-business-save-v13', 'monkey-business-save-v12', 'monkey-business-save-v11', 'monkey-business-save-v10', 'monkey-business-save-v9', 'monkey-business-save-v8', 'monkey-business-save-v7', 'monkey-business-save-v5', 'monkey-business-save-v4', 'monkey-business-save-v3', 'monkey-business-save-v2'];
 const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 const minWordLength = 3;
 const maxOutputNodes = 140;
@@ -71,7 +71,8 @@ const OFFICE_BUILDINGS = [
         speedBonus: 0,
         wordBonus: 0,
         incomeMultiplier: 1,
-        rareBonus: 0
+        rareBonus: 0,
+        requirements: []
     },
     {
         id: 'cubicle-jungle',
@@ -82,51 +83,75 @@ const OFFICE_BUILDINGS = [
         speedBonus: 0.08,
         wordBonus: 1,
         incomeMultiplier: 1,
-        rareBonus: 0
+        rareBonus: 0,
+        requirements: [
+            { metric: 'monkeys', target: 3, label: 'Hire 3 monkeys' },
+            { metric: 'claimedQuests', target: 3, label: 'Claim 3 quests' }
+        ]
     },
     {
         id: 'banana-bureau',
         name: 'Banana Bureau',
         floor: 3,
-        unlockCost: 12000,
+        unlockCost: 15000,
         description: 'A polished agency floor with better word payouts.',
         speedBonus: 0.12,
         wordBonus: 1,
         incomeMultiplier: 1.12,
-        rareBonus: 0
+        rareBonus: 0,
+        requirements: [
+            { metric: 'monkeys', target: 8, label: 'Hire 8 monkeys' },
+            { metric: 'totalUpgradesPurchased', target: 10, label: 'Buy 10 upgrades' },
+            { metric: 'claimedQuests', target: 8, label: 'Claim 8 quests' }
+        ]
     },
     {
         id: 'typewriter-tower',
         name: 'Typewriter Tower',
         floor: 4,
-        unlockCost: 60000,
+        unlockCost: 75000,
         description: 'A high-rise typing floor with upgraded word processing.',
         speedBonus: 0.16,
         wordBonus: 2,
         incomeMultiplier: 1.18,
-        rareBonus: 0
+        rareBonus: 0,
+        requirements: [
+            { metric: 'monkeys', target: 20, label: 'Hire 20 monkeys' },
+            { metric: 'lifetimeWords', target: 250, label: 'Find 250 lifetime words' },
+            { metric: 'officeLevel', target: 3, label: 'Unlock Floor 3' }
+        ]
     },
     {
         id: 'executive-treehouse',
         name: 'Executive Treehouse',
         floor: 5,
-        unlockCost: 250000,
+        unlockCost: 300000,
         description: 'A premium treetop headquarters for serious monkey business.',
         speedBonus: 0.26,
         wordBonus: 2,
         incomeMultiplier: 1.28,
-        rareBonus: 0.02
+        rareBonus: 0.02,
+        requirements: [
+            { metric: 'monkeys', target: 40, label: 'Hire 40 monkeys' },
+            { metric: 'claimedQuests', target: 22, label: 'Claim 22 quests' },
+            { metric: 'lifetimeBananas', target: 150000, label: 'Earn 150K lifetime bananas' }
+        ]
     },
     {
         id: 'golden-hq',
         name: 'Golden HQ',
         floor: 6,
-        unlockCost: 1000000,
+        unlockCost: 1250000,
         description: 'The legendary office where rare talent tends to appear.',
         speedBonus: 0.35,
         wordBonus: 3,
         incomeMultiplier: 1.45,
-        rareBonus: 0.05
+        rareBonus: 0.05,
+        requirements: [
+            { metric: 'superRares', target: 1, label: 'Hire 1 super rare monkey' },
+            { metric: 'totalUpgradesPurchased', target: 40, label: 'Buy 40 upgrades' },
+            { metric: 'lifetimeBananas', target: 750000, label: 'Earn 750K lifetime bananas' }
+        ]
     }
 ];
 
@@ -170,25 +195,59 @@ const UPGRADE_DEFS = {
 };
 
 const MILESTONES = [
-    { id: 'letters-100', name: 'Warm Up', description: 'Type 100 letters.', metric: 'letters', target: 100, reward: 75, category: 'quest' },
-    { id: 'words-10', name: 'First Words', description: 'Find 10 words.', metric: 'words', target: 10, reward: 125, category: 'quest' },
-    { id: 'monkeys-1', name: 'First Hire', description: 'Hire 1 monkey.', metric: 'monkeys', target: 1, reward: 150, category: 'quest' },
-    { id: 'upgrades-1', name: 'Tool Upgrade', description: 'Buy 1 upgrade.', metric: 'upgrades', target: 1, reward: 225, category: 'quest' },
-    { id: 'monkeys-3', name: 'Tiny Team', description: 'Hire 3 monkeys.', metric: 'monkeys', target: 3, reward: 350, category: 'quest' },
-    { id: 'words-50', name: 'Word Finder', description: 'Find 50 words.', metric: 'words', target: 50, reward: 500, category: 'quest' },
-    { id: 'bananas-500', name: 'Banana Buffer', description: 'Hold 500 bananas at once.', metric: 'bananas', target: 500, reward: 300, category: 'quest' },
-    { id: 'monkeys-5', name: 'Small Staff', description: 'Hire 5 monkeys.', metric: 'monkeys', target: 5, reward: 650, category: 'quest' },
-    { id: 'quests-3', name: 'Checklist Champ', description: 'Claim 3 quests.', metric: 'claimedQuests', target: 3, reward: 700, category: 'quest' },
-    { id: 'office-2', name: 'New Lease', description: 'Unlock Floor 2.', metric: 'officeLevel', target: 2, reward: 1000, category: 'quest' },
+    // Tier 1 — Start the Business
+    { id: 'letters-100', name: 'Warm Up', description: 'Type 100 letters.', metric: 'lifetimeLetters', target: 100, reward: 75, category: 'quest', tier: 1 },
+    { id: 'words-10', name: 'First Words', description: 'Find 10 words.', metric: 'lifetimeWords', target: 10, reward: 125, category: 'quest', tier: 1 },
+    { id: 'monkeys-1', name: 'First Hire', description: 'Hire 1 monkey.', metric: 'totalMonkeysHired', target: 1, reward: 150, category: 'quest', tier: 1 },
+    { id: 'upgrades-1', name: 'Tool Upgrade', description: 'Buy 1 upgrade.', metric: 'totalUpgradesPurchased', target: 1, reward: 225, category: 'quest', tier: 1 },
+    { id: 'bananas-500', name: 'Banana Buffer', description: 'Earn 500 lifetime bananas.', metric: 'lifetimeBananas', target: 500, reward: 300, category: 'quest', tier: 1 },
 
-    { id: 'letters-500', name: 'First Shift', description: 'Type 500 letters.', metric: 'letters', target: 500, reward: 150, category: 'milestone' },
-    { id: 'letters-2500', name: 'Long Day', description: 'Type 2,500 letters.', metric: 'letters', target: 2500, reward: 750, category: 'milestone' },
-    { id: 'letters-10000', name: 'Overtime', description: 'Type 10,000 letters.', metric: 'letters', target: 10000, reward: 3500, category: 'milestone' },
-    { id: 'words-250', name: 'Dictionary Desk', description: 'Find 250 words.', metric: 'words', target: 250, reward: 1800, category: 'milestone' },
-    { id: 'words-1000', name: 'Lexicon Legend', description: 'Find 1,000 words.', metric: 'words', target: 1000, reward: 9000, category: 'milestone' },
-    { id: 'monkeys-15', name: 'Full Office', description: 'Hire 15 monkeys.', metric: 'monkeys', target: 15, reward: 4500, category: 'milestone' },
+    // Tier 2 — Build the Office
+    { id: 'monkeys-3', name: 'Tiny Team', description: 'Hire 3 monkeys.', metric: 'totalMonkeysHired', target: 3, reward: 350, category: 'quest', tier: 2 },
+    { id: 'words-50', name: 'Word Finder', description: 'Find 50 lifetime words.', metric: 'lifetimeWords', target: 50, reward: 500, category: 'quest', tier: 2 },
+    { id: 'monkeys-5', name: 'Small Staff', description: 'Hire 5 monkeys.', metric: 'totalMonkeysHired', target: 5, reward: 650, category: 'quest', tier: 2 },
+    { id: 'upgrades-3', name: 'Better Tools', description: 'Buy 3 upgrades.', metric: 'totalUpgradesPurchased', target: 3, reward: 450, category: 'quest', tier: 2 },
+    { id: 'quests-3', name: 'Checklist Champ', description: 'Claim 3 quests.', metric: 'claimedQuests', target: 3, reward: 700, category: 'quest', tier: 2 },
+    { id: 'office-2', name: 'New Lease', description: 'Unlock Floor 2.', metric: 'officeLevel', target: 2, reward: 1000, category: 'quest', tier: 2 },
+
+    // Tier 3 — Scale the Company
+    { id: 'monkeys-8', name: 'Growing Crew', description: 'Hire 8 monkeys.', metric: 'totalMonkeysHired', target: 8, reward: 1200, category: 'quest', tier: 3 },
+    { id: 'upgrades-10', name: 'Office Systems', description: 'Buy 10 upgrades.', metric: 'totalUpgradesPurchased', target: 10, reward: 1800, category: 'quest', tier: 3 },
+    { id: 'words-150', name: 'Word Department', description: 'Find 150 lifetime words.', metric: 'lifetimeWords', target: 150, reward: 2200, category: 'quest', tier: 3 },
+    { id: 'bananas-10000', name: 'Banana Revenue', description: 'Earn 10,000 lifetime bananas.', metric: 'lifetimeBananas', target: 10000, reward: 2500, category: 'quest', tier: 3 },
+    { id: 'office-3', name: 'Banana Bureau', description: 'Unlock Floor 3.', metric: 'officeLevel', target: 3, reward: 4000, category: 'quest', tier: 3 },
+
+    // Tier 4 — Banana Enterprise
+    { id: 'monkeys-20', name: 'Full Shift', description: 'Hire 20 monkeys.', metric: 'totalMonkeysHired', target: 20, reward: 6000, category: 'quest', tier: 4 },
+    { id: 'words-500', name: 'Dictionary Engine', description: 'Find 500 lifetime words.', metric: 'lifetimeWords', target: 500, reward: 8000, category: 'quest', tier: 4 },
+    { id: 'upgrades-25', name: 'Optimized Office', description: 'Buy 25 upgrades.', metric: 'totalUpgradesPurchased', target: 25, reward: 9000, category: 'quest', tier: 4 },
+    { id: 'rare-1-quest', name: 'Rare Recruit', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 10000, category: 'quest', tier: 4 },
+    { id: 'office-4', name: 'Typewriter Tower', description: 'Unlock Floor 4.', metric: 'officeLevel', target: 4, reward: 15000, category: 'quest', tier: 4 },
+
+    // Tier 5 — Golden Company
+    { id: 'monkeys-40', name: 'Monkey Company', description: 'Hire 40 monkeys.', metric: 'totalMonkeysHired', target: 40, reward: 22000, category: 'quest', tier: 5 },
+    { id: 'words-1500', name: 'Word Factory', description: 'Find 1,500 lifetime words.', metric: 'lifetimeWords', target: 1500, reward: 35000, category: 'quest', tier: 5 },
+    { id: 'bananas-250000', name: 'Quarter Million', description: 'Earn 250K lifetime bananas.', metric: 'lifetimeBananas', target: 250000, reward: 45000, category: 'quest', tier: 5 },
+    { id: 'upgrades-50', name: 'Peak Efficiency', description: 'Buy 50 upgrades.', metric: 'totalUpgradesPurchased', target: 50, reward: 50000, category: 'quest', tier: 5 },
+    { id: 'office-5', name: 'Executive Treehouse', description: 'Unlock Floor 5.', metric: 'officeLevel', target: 5, reward: 75000, category: 'quest', tier: 5 },
+
+    // Long-term milestones
+    { id: 'letters-500', name: 'First Shift', description: 'Type 500 lifetime letters.', metric: 'lifetimeLetters', target: 500, reward: 150, category: 'milestone' },
+    { id: 'letters-2500', name: 'Long Day', description: 'Type 2,500 lifetime letters.', metric: 'lifetimeLetters', target: 2500, reward: 750, category: 'milestone' },
+    { id: 'letters-10000', name: 'Overtime', description: 'Type 10,000 lifetime letters.', metric: 'lifetimeLetters', target: 10000, reward: 3500, category: 'milestone' },
+    { id: 'letters-50000', name: 'Keyboard Jungle', description: 'Type 50,000 lifetime letters.', metric: 'lifetimeLetters', target: 50000, reward: 22000, category: 'milestone' },
+    { id: 'words-250', name: 'Dictionary Desk', description: 'Find 250 lifetime words.', metric: 'lifetimeWords', target: 250, reward: 1800, category: 'milestone' },
+    { id: 'words-1000', name: 'Lexicon Legend', description: 'Find 1,000 lifetime words.', metric: 'lifetimeWords', target: 1000, reward: 9000, category: 'milestone' },
+    { id: 'words-5000', name: 'Word Empire', description: 'Find 5,000 lifetime words.', metric: 'lifetimeWords', target: 5000, reward: 60000, category: 'milestone' },
+    { id: 'monkeys-15', name: 'Full Office', description: 'Hire 15 monkeys.', metric: 'totalMonkeysHired', target: 15, reward: 4500, category: 'milestone' },
+    { id: 'monkeys-75', name: 'Hiring Spree', description: 'Hire 75 monkeys.', metric: 'totalMonkeysHired', target: 75, reward: 90000, category: 'milestone' },
     { id: 'rare-1', name: 'Rare Talent', description: 'Hire 1 super rare monkey.', metric: 'superRares', target: 1, reward: 2500, category: 'milestone' },
-    { id: 'office-4', name: 'High-Rise Hustle', description: 'Unlock Floor 4.', metric: 'officeLevel', target: 4, reward: 15000, category: 'milestone' }
+    { id: 'rare-5', name: 'Golden Bench', description: 'Hire 5 super rare monkeys.', metric: 'superRares', target: 5, reward: 60000, category: 'milestone' },
+    { id: 'best-word-20', name: 'Premium Word', description: 'Find a word worth 20 bananas.', metric: 'bestWordPoints', target: 20, reward: 6000, category: 'milestone' },
+    { id: 'longest-word-6', name: 'Six-Letter Shift', description: 'Find a 6-letter word.', metric: 'longestWordLength', target: 6, reward: 5000, category: 'milestone' },
+    { id: 'upgrades-75', name: 'Systems Master', description: 'Buy 75 upgrades.', metric: 'totalUpgradesPurchased', target: 75, reward: 120000, category: 'milestone' },
+    { id: 'office-6', name: 'Golden HQ', description: 'Unlock Floor 6.', metric: 'officeLevel', target: 6, reward: 200000, category: 'milestone' },
+    { id: 'bananas-1000000', name: 'Million Banana Business', description: 'Earn 1,000,000 lifetime bananas.', metric: 'lifetimeBananas', target: 1000000, reward: 250000, category: 'milestone' }
 ];
 
 const wordsByLength = new Map();
@@ -225,6 +284,19 @@ let upgrades = {
     rareRecruiter: 0
 };
 let claimedMilestones = [];
+let lifetimeStats = {
+    bananasEarned: 0,
+    lettersTyped: 0,
+    wordsFound: 0,
+    monkeysHired: 0,
+    upgradesPurchased: 0,
+    questsClaimed: 0,
+    officesUnlocked: 0,
+    bestWord: '',
+    bestWordPoints: 0,
+    longestWord: '',
+    superRaresHired: 0
+};
 const monkeyAnimationTimeouts = new Map();
 let pendingMonkeyTypeTimeouts = [];
 let monkeyTypingEngineId = null;
@@ -438,6 +510,68 @@ function ensureMonkeyRosterMatchesCount() {
     }
 }
 
+function getDefaultLifetimeStats() {
+    return {
+        bananasEarned: 0,
+        lettersTyped: 0,
+        wordsFound: 0,
+        monkeysHired: 0,
+        upgradesPurchased: 0,
+        questsClaimed: 0,
+        officesUnlocked: 0,
+        bestWord: '',
+        bestWordPoints: 0,
+        longestWord: '',
+        superRaresHired: 0
+    };
+}
+
+function normalizeLifetimeStats(rawStats = {}) {
+    const defaults = getDefaultLifetimeStats();
+    const normalized = { ...defaults, ...(rawStats || {}) };
+
+    normalized.bananasEarned = Math.max(Number(normalized.bananasEarned) || 0, bananas);
+    normalized.lettersTyped = Math.max(Number(normalized.lettersTyped) || 0, lettersTyped);
+    normalized.wordsFound = Math.max(Number(normalized.wordsFound) || 0, wordsTyped);
+    normalized.monkeysHired = Math.max(Number(normalized.monkeysHired) || 0, monkeysOwned);
+    normalized.upgradesPurchased = Math.max(
+        Number(normalized.upgradesPurchased) || 0,
+        Object.values(upgrades).reduce((total, level) => total + (Number(level) || 0), 0)
+    );
+    normalized.questsClaimed = Math.max(
+        Number(normalized.questsClaimed) || 0,
+        claimedMilestones.filter((id) => {
+            const entry = MILESTONES.find((milestone) => milestone.id === id);
+            return entry && isQuestMilestone(entry);
+        }).length
+    );
+    normalized.officesUnlocked = Math.max(Number(normalized.officesUnlocked) || 0, Math.max(0, officeLevel - 1));
+    normalized.bestWord = typeof normalized.bestWord === 'string' ? normalized.bestWord : '';
+    normalized.bestWordPoints = Math.max(Number(normalized.bestWordPoints) || 0, 0);
+    normalized.longestWord = typeof normalized.longestWord === 'string' ? normalized.longestWord : '';
+    normalized.superRaresHired = Math.max(Number(normalized.superRaresHired) || 0, getTotalSuperRaresOwned());
+
+    return normalized;
+}
+
+function addBananas(amount) {
+    const bananaAmount = Math.max(0, Math.floor(Number(amount) || 0));
+    bananas += bananaAmount;
+    lifetimeStats.bananasEarned += bananaAmount;
+    return bananaAmount;
+}
+
+function getTotalQuestClaims() {
+    return claimedMilestones.filter((id) => {
+        const entry = MILESTONES.find((milestone) => milestone.id === id);
+        return entry && isQuestMilestone(entry);
+    }).length;
+}
+
+function getTotalUpgradesPurchased() {
+    return Object.values(upgrades).reduce((total, level) => total + (Number(level) || 0), 0);
+}
+
 function ensureProgressionState() {
     officeLevel = clamp(Number(officeLevel) || 1, 1, OFFICE_BUILDINGS.length);
 
@@ -452,6 +586,7 @@ function ensureProgressionState() {
 
     const validMilestoneIds = new Set(MILESTONES.map((milestone) => milestone.id));
     claimedMilestones = [...new Set(claimedMilestones.map(String).filter((id) => validMilestoneIds.has(id)))];
+    lifetimeStats = normalizeLifetimeStats(lifetimeStats);
 }
 
 function syncOfficeVisuals(force = false) {
@@ -479,7 +614,7 @@ function forceMonkeyOfficeRender() {
 }
 
 function getPlayerLevel() {
-    return Math.max(1, Math.floor(wordsTyped / 60) + officeLevel);
+    return Math.max(1, Math.floor(lifetimeStats.wordsFound / 60) + officeLevel);
 }
 
 function getPassiveLetterRate() {
@@ -512,10 +647,40 @@ function isLongTermMilestone(milestone) {
     return milestone.category !== 'quest';
 }
 
+function getUnlockedQuestTier() {
+    if (officeLevel >= 4 || lifetimeStats.bananasEarned >= 250000 || getTotalQuestClaims() >= 20) {
+        return 5;
+    }
+
+    if (officeLevel >= 3 || lifetimeStats.wordsFound >= 250 || getTotalQuestClaims() >= 14) {
+        return 4;
+    }
+
+    if (officeLevel >= 2 || lifetimeStats.monkeysHired >= 8 || getTotalQuestClaims() >= 8) {
+        return 3;
+    }
+
+    if (lifetimeStats.monkeysHired >= 3 || getTotalQuestClaims() >= 3 || lifetimeStats.bananasEarned >= 1000) {
+        return 2;
+    }
+
+    return 1;
+}
+
+function getVisibleQuestPool() {
+    const unlockedTier = getUnlockedQuestTier();
+    return MILESTONES.filter((milestone) => isQuestMilestone(milestone) && (milestone.tier || 1) <= unlockedTier);
+}
+
+function getLockedQuestCount() {
+    const unlockedTier = getUnlockedQuestTier();
+    return MILESTONES.filter((milestone) => isQuestMilestone(milestone) && (milestone.tier || 1) > unlockedTier).length;
+}
+
 function getUnclaimedMilestones(category = null) {
     return MILESTONES.filter((milestone) => {
-        if (category === 'quest' && !isQuestMilestone(milestone)) {
-            return false;
+        if (category === 'quest') {
+            return getVisibleQuestPool().includes(milestone) && !claimedMilestones.includes(milestone.id);
         }
 
         if (category === 'milestone' && !isLongTermMilestone(milestone)) {
@@ -549,28 +714,43 @@ function sortProgressGoals(a, b) {
 }
 
 function getClaimableQuestCount() {
-    return MILESTONES.filter((milestone) => isQuestMilestone(milestone) && isMilestoneReady(milestone)).length;
+    return getVisibleQuestPool().filter((milestone) => isMilestoneReady(milestone)).length;
 }
 
 function getActiveQuestCount() {
     return getClaimableQuestCount();
 }
 
+
 function getQuestIconSrc(milestone) {
     switch (milestone.metric) {
         case 'letters':
+        case 'lifetimeLetters':
             return 'icon-typewriter.png';
         case 'words':
+        case 'lifetimeWords':
+        case 'longestWordLength':
+        case 'bestWordPoints':
             return 'icon-book.png';
         case 'monkeys':
+        case 'totalMonkeysHired':
         case 'superRares':
             return 'icon-monkey.png';
         case 'officeLevel':
+        case 'officesUnlocked':
+        case 'upgrades':
+        case 'totalUpgradesPurchased':
             return 'icon-upgrades.png';
+        case 'bananas':
+        case 'lifetimeBananas':
+            return 'icon-bananas.png';
+        case 'claimedQuests':
+            return 'icon-quests.png';
         default:
             return 'icon-quests.png';
     }
 }
+
 
 function getOfficePerkBadges(office) {
     const perks = [];
@@ -758,8 +938,18 @@ function awardWords(words) {
     words.forEach((word) => {
         const normalizedWord = String(word).toLowerCase();
         const points = calculateWordPoints(normalizedWord);
-        bananas += points;
+        addBananas(points);
         wordsTyped += 1;
+        lifetimeStats.wordsFound += 1;
+
+        if (points > lifetimeStats.bestWordPoints) {
+            lifetimeStats.bestWordPoints = points;
+            lifetimeStats.bestWord = normalizedWord;
+        }
+
+        if (normalizedWord.length > lifetimeStats.longestWord.length) {
+            lifetimeStats.longestWord = normalizedWord;
+        }
 
         recentWords = recentWords.filter((entry) => entry.word !== normalizedWord);
         recentWords.unshift({ word: normalizedWord, points });
@@ -866,6 +1056,7 @@ function typeRandomLetter(source = 'player', monkeyIndex = null) {
     }
 
     lettersTyped += 1;
+    lifetimeStats.lettersTyped += 1;
     appendOutputLetter(randomLetter, source);
     animateMonkey(monkeyIndex, randomLetter);
 
@@ -885,10 +1076,14 @@ function buyMonkey() {
 
     bananas -= monkeyCost;
     monkeysOwned += 1;
+    lifetimeStats.monkeysHired += 1;
 
     const hiredTypeId = getRandomMonkeyTypeId();
     monkeyRoster.push(hiredTypeId);
     const hiredMonkeyType = getMonkeyType(hiredTypeId);
+    if (hiredMonkeyType.rarity === 'super-rare') {
+        lifetimeStats.superRaresHired += 1;
+    }
     const newMonkeyIndex = monkeysOwned - 1;
 
     monkeyCost = Math.ceil(monkeyCost * 1.9);
@@ -1046,26 +1241,85 @@ function getMilestoneProgress(milestone) {
     switch (milestone.metric) {
         case 'letters':
             return lettersTyped;
+        case 'lifetimeLetters':
+            return lifetimeStats.lettersTyped;
         case 'words':
             return wordsTyped;
+        case 'lifetimeWords':
+            return lifetimeStats.wordsFound;
         case 'monkeys':
             return monkeysOwned;
+        case 'totalMonkeysHired':
+            return lifetimeStats.monkeysHired;
         case 'superRares':
-            return getTotalSuperRaresOwned();
+            return Math.max(getTotalSuperRaresOwned(), lifetimeStats.superRaresHired);
         case 'officeLevel':
             return officeLevel;
+        case 'officesUnlocked':
+            return lifetimeStats.officesUnlocked;
         case 'upgrades':
-            return Object.values(upgrades).reduce((total, level) => total + (Number(level) || 0), 0);
+        case 'totalUpgradesPurchased':
+            return Math.max(getTotalUpgradesPurchased(), lifetimeStats.upgradesPurchased);
         case 'claimedQuests':
-            return claimedMilestones.filter((id) => {
-                const entry = MILESTONES.find((milestoneEntry) => milestoneEntry.id === id);
-                return entry && isQuestMilestone(entry);
-            }).length;
+            return Math.max(getTotalQuestClaims(), lifetimeStats.questsClaimed);
         case 'bananas':
             return bananas;
+        case 'lifetimeBananas':
+            return lifetimeStats.bananasEarned;
+        case 'bestWordPoints':
+            return lifetimeStats.bestWordPoints;
+        case 'longestWordLength':
+            return lifetimeStats.longestWord.length;
         default:
             return 0;
     }
+}
+
+function getRequirementProgress(requirement) {
+    return getMilestoneProgress({ metric: requirement.metric, target: requirement.target });
+}
+
+function getOfficeRequirementStatus(office) {
+    const requirements = Array.isArray(office && office.requirements) ? office.requirements : [];
+    return requirements.map((requirement) => {
+        const progress = getRequirementProgress(requirement);
+        return {
+            ...requirement,
+            progress,
+            complete: progress >= requirement.target
+        };
+    });
+}
+
+function meetsOfficeRequirements(office) {
+    return getOfficeRequirementStatus(office).every((requirement) => requirement.complete);
+}
+
+function getOfficeRequirementMessage(office) {
+    const incomplete = getOfficeRequirementStatus(office).filter((requirement) => !requirement.complete);
+    if (incomplete.length === 0) {
+        return '';
+    }
+
+    const first = incomplete[0];
+    return `${first.label}: ${formatNumber(Math.min(first.progress, first.target))}/${formatNumber(first.target)}`;
+}
+
+function renderOfficeRequirements(office) {
+    const requirements = getOfficeRequirementStatus(office);
+    if (requirements.length === 0) {
+        return '<div class="office-requirements"><span class="office-requirement is-complete">Ready to unlock</span></div>';
+    }
+
+    return `
+        <div class="office-requirements">
+            ${requirements.map((requirement) => `
+                <span class="office-requirement ${requirement.complete ? 'is-complete' : ''}">
+                    ${requirement.complete ? '✓' : '•'} ${requirement.label} <em>${formatNumber(Math.min(requirement.progress, requirement.target))}/${formatNumber(requirement.target)}</em>
+                </span>
+            `).join('')}
+        </div>
+    `;
 }
 
 
@@ -1087,6 +1341,7 @@ function buyUpgrade(upgradeId) {
 
     bananas -= cost;
     upgrades[upgradeId] = currentLevel + 1;
+    lifetimeStats.upgradesPurchased += 1;
     spawnFloatingMessage(`${upgrade.name.toUpperCase()} +1`, 'is-hire');
     updateDisplay();
     saveGame();
@@ -1099,6 +1354,13 @@ function unlockNextOffice() {
         return;
     }
 
+    if (!meetsOfficeRequirements(nextOffice)) {
+        const requirementMessage = getOfficeRequirementMessage(nextOffice);
+        spawnFloatingMessage(requirementMessage ? requirementMessage.toUpperCase() : 'FINISH OFFICE GOALS FIRST', 'is-hire');
+        updateProgressionPanel();
+        return;
+    }
+
     if (bananas < nextOffice.unlockCost) {
         const needed = nextOffice.unlockCost - bananas;
         spawnFloatingMessage(`NEED ${formatNumber(needed)} MORE BANANAS`, 'is-hire');
@@ -1108,10 +1370,12 @@ function unlockNextOffice() {
 
     bananas -= nextOffice.unlockCost;
     officeLevel = clamp(officeLevel + 1, 1, OFFICE_BUILDINGS.length);
+    lifetimeStats.officesUnlocked = Math.max(lifetimeStats.officesUnlocked, officeLevel - 1);
     spawnFloatingMessage(`${nextOffice.name.toUpperCase()} UNLOCKED`, 'is-super-rare');
     updateDisplay();
     saveGame();
 }
+
 
 function claimMilestone(milestoneId) {
     const normalizedId = String(milestoneId || '');
@@ -1126,7 +1390,10 @@ function claimMilestone(milestoneId) {
     }
 
     claimedMilestones.push(normalizedId);
-    bananas += milestone.reward;
+    if (isQuestMilestone(milestone)) {
+        lifetimeStats.questsClaimed += 1;
+    }
+    addBananas(milestone.reward);
     spawnFloatingMessage(`GOAL +${formatNumber(milestone.reward)} BANANAS`, 'is-hire');
     updateDisplay();
     updateProgressionPanel();
@@ -1258,44 +1525,60 @@ function renderQuests() {
         return;
     }
 
-    const activeQuests = getUnclaimedMilestones('quest').sort(sortProgressGoals).slice(0, 5);
+    const unlockedTier = getUnlockedQuestTier();
+    const lockedQuestCount = getLockedQuestCount();
+    const activeQuests = getUnclaimedMilestones('quest').sort(sortProgressGoals).slice(0, 6);
     if (questsBadge) questsBadge.textContent = String(getClaimableQuestCount());
+
+    const tierHeader = `
+        <div class="quest-tier-header">
+            <div>
+                <strong>Quest Tier ${unlockedTier}</strong>
+                <span>${activeQuests.length} active goals${lockedQuestCount > 0 ? ` • ${lockedQuestCount} locked for later` : ''}</span>
+            </div>
+            <em>${getClaimableQuestCount()} ready</em>
+        </div>
+    `;
 
     if (activeQuests.length === 0) {
         questsList.innerHTML = `
+            ${tierHeader}
             <article class="quest-card compact-quest-card is-complete">
                 <div class="quest-art"><img src="icon-quests.png" alt="" /></div>
                 <div class="quest-main">
-                    <h3>All starter quests complete</h3>
-                    <p>Keep pushing long-term milestones as the office grows.</p>
+                    <h3>All visible quests complete</h3>
+                    <p>Unlock the next office tier to reveal more goals.</p>
                 </div>
             </article>
         `;
         return;
     }
 
-    questsList.innerHTML = activeQuests.map((milestone) => {
-        const progress = getMilestoneProgress(milestone);
-        const ratio = clamp(progress / milestone.target, 0, 1);
-        const isReady = progress >= milestone.target;
-        const percent = Math.round(ratio * 100);
+    questsList.innerHTML = `
+        ${tierHeader}
+        ${activeQuests.map((milestone) => {
+            const progress = getMilestoneProgress(milestone);
+            const ratio = clamp(progress / milestone.target, 0, 1);
+            const isReady = progress >= milestone.target;
+            const percent = Math.round(ratio * 100);
 
-        return `
-            <article class="quest-card compact-quest-card ${isReady ? 'is-ready' : ''}">
-                <div class="quest-art"><img src="${getQuestIconSrc(milestone)}" alt="" /></div>
-                <div class="quest-main">
-                    <h3>${milestone.name}</h3>
-                    <p>${milestone.description}</p>
-                    <div class="milestone-bar" aria-hidden="true"><span style="width: ${percent}%"></span></div>
-                    <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)}</small>
-                </div>
-                <div class="quest-side">
-                    <div class="quest-reward-label"><b>Reward</b><span><img src="icon-bananas.png" alt="" /> ${formatNumber(milestone.reward)}</span></div>
-                    <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>${isReady ? 'Claim' : 'Active'}</button>
-                </div>
-            </article>
-        `;
-    }).join('');
+            return `
+                <article class="quest-card compact-quest-card ${isReady ? 'is-ready' : ''}">
+                    <div class="quest-art"><img src="${getQuestIconSrc(milestone)}" alt="" /></div>
+                    <div class="quest-main">
+                        <h3>${milestone.name}</h3>
+                        <p>${milestone.description}</p>
+                        <div class="milestone-bar" aria-hidden="true"><span style="width: ${percent}%"></span></div>
+                        <small>${formatNumber(Math.min(progress, milestone.target))} / ${formatNumber(milestone.target)}</small>
+                    </div>
+                    <div class="quest-side">
+                        <div class="quest-reward-label"><b>Reward</b><span><img src="icon-bananas.png" alt="" /> ${formatNumber(milestone.reward)}</span></div>
+                        <button class="progress-buy-button milestone-claim-button" data-milestone-id="${milestone.id}" ${!isReady ? 'disabled' : ''}>${isReady ? 'Claim' : 'Active'}</button>
+                    </div>
+                </article>
+            `;
+        }).join('')}
+    `;
 }
 
 
@@ -1385,8 +1668,10 @@ function updateProgressionPanel() {
             .join('');
     }
 
+    const canUnlockNextOffice = Boolean(nextOffice && bananas >= nextOffice.unlockCost && meetsOfficeRequirements(nextOffice));
+
     officeUpgradeList.innerHTML = `
-        <article class="progress-card office-progress-card office-progress-rich ${nextOffice && bananas >= nextOffice.unlockCost ? 'is-affordable' : ''}">
+        <article class="progress-card office-progress-card office-progress-rich ${canUnlockNextOffice ? 'is-affordable' : ''}">
             <div class="progress-card-copy">
                 <span class="progress-branch">Office Building</span>
                 <h3>${nextOffice ? `${nextOffice.name} — Floor ${nextOffice.floor}` : 'All Offices Unlocked'}</h3>
@@ -1394,9 +1679,10 @@ function updateProgressionPanel() {
                 <div class="upgrade-perks-inline">
                     ${getOfficePerkBadges(nextOffice || currentOffice).map((perk) => `<span class="perk-chip"><img src="${perk.icon}" alt="" />${perk.text}</span>`).join('')}
                 </div>
+                ${nextOffice ? renderOfficeRequirements(nextOffice) : ''}
                 <span class="progress-meta">${nextOffice ? `Unlock cost ${formatNumber(nextOffice.unlockCost)} bananas` : 'Every office has been unlocked'}</span>
             </div>
-            <button class="progress-buy-button" data-office-unlock="true" ${(!nextOffice || bananas < nextOffice.unlockCost) ? 'disabled' : ''}>
+            <button class="progress-buy-button" data-office-unlock="true" ${(!nextOffice || !canUnlockNextOffice) ? 'disabled' : ''}>
                 ${nextOffice ? costButtonLabel(nextOffice.unlockCost) : 'Maxed'}
             </button>
         </article>
@@ -1535,7 +1821,8 @@ function saveGame() {
         monkeyRoster,
         officeLevel,
         upgrades,
-        claimedMilestones
+        claimedMilestones,
+        lifetimeStats
     };
 
     localStorage.setItem(SAVE_KEY, JSON.stringify(saveData));
@@ -1577,6 +1864,7 @@ function loadGame() {
         officeLevel = Number(saveData.officeLevel) || 1;
         upgrades = { ...upgrades, ...(saveData.upgrades || {}) };
         claimedMilestones = Array.isArray(saveData.claimedMilestones) ? saveData.claimedMilestones : [];
+        lifetimeStats = normalizeLifetimeStats(saveData.lifetimeStats || {});
 
         ensureProgressionState();
         ensureMonkeyRosterMatchesCount();
@@ -1610,6 +1898,7 @@ function resetGame() {
         rareRecruiter: 0
     };
     claimedMilestones = [];
+    lifetimeStats = getDefaultLifetimeStats();
 
     monkeyAnimationTimeouts.forEach((timeoutId) => clearTimeout(timeoutId));
     monkeyAnimationTimeouts.clear();
@@ -1701,7 +1990,9 @@ window.MonkeyBusinessDebug = {
             officeLevel,
             upgrades: { ...upgrades },
             claimedMilestones: [...claimedMilestones],
-            recentWords: [...recentWords]
+            recentWords: [...recentWords],
+            lifetimeStats: { ...lifetimeStats },
+            unlockedQuestTier: getUnlockedQuestTier()
         };
     },
     setState(partialState = {}) {
@@ -1715,6 +2006,7 @@ window.MonkeyBusinessDebug = {
         if (Number.isFinite(Number(partialState.officeLevel))) officeLevel = clamp(Number(partialState.officeLevel), 1, OFFICE_BUILDINGS.length);
         if (partialState.upgrades && typeof partialState.upgrades === 'object') upgrades = { ...upgrades, ...partialState.upgrades };
         if (Array.isArray(partialState.claimedMilestones)) claimedMilestones = partialState.claimedMilestones.map(String);
+        if (partialState.lifetimeStats && typeof partialState.lifetimeStats === 'object') lifetimeStats = normalizeLifetimeStats(partialState.lifetimeStats);
         ensureMonkeyRosterMatchesCount();
         ensureProgressionState();
         forceMonkeyOfficeRender();
